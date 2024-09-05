@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,8 @@ public class MenuService {
                 .ifPresent(servingSize -> findMenu.setServingSize(menu.getServingSize()));
         Optional.ofNullable(menu.getImageUrl())
                 .ifPresent(imageUrl -> findMenu.setImageUrl(menu.getImageUrl()));
+        Optional.ofNullable(menu.getRecipes())
+                .ifPresent(recipes -> findMenu.setRecipes(new ArrayList<>(recipes)));
 
         return menuRepository.save(findMenu);
     }
@@ -59,6 +62,7 @@ public class MenuService {
         menuRepository.delete(menu);
     }
 
+    //메뉴 좋아요 기능(추후에 authentication으로 검증)
     public void createLike(long menuId){
         Menu menu = findMenuById(menuId);
         menu.setMenuLikeCount(menu.getMenuLikeCount() + 1);

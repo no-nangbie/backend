@@ -55,7 +55,6 @@ public class MenuDto {
 
         private Menu.MenuCategory menuCategory;
 
-        @NotBlank
         private List<String> recipes;
 
         @Pattern(regexp = "^.{1,5}$", message = "요리 시간은 1~5 글자 이어야 합니다.")
