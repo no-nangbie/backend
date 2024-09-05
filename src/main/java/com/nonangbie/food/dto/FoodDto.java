@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class FoodDto {
 
@@ -17,7 +18,7 @@ public class FoodDto {
         @NotBlank
         private String foodName;
 
-        @NotBlank
+        @NotNull
         private FoodCategory foodCategory;
     }
 
