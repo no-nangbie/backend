@@ -1,5 +1,6 @@
 package com.nonangbie.menu.dto;
 
+import com.nonangbie.foodMenu.dto.FoodMenuDto;
 import com.nonangbie.menu.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,8 @@ import java.util.List;
 public class MenuDto {
 
     @Getter
+    @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
     @Setter
     @NoArgsConstructor
@@ -56,7 +59,7 @@ public class MenuDto {
         private String menuDescription;
 
         private Menu.MenuCategory menuCategory;
-
+      
         private List<String> recipes;
 
 
@@ -79,7 +82,7 @@ public class MenuDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Reponse{
+    public static class Response{
         private long menuId;
         private String menuTitle;
         private String menuDescription;
@@ -89,5 +92,6 @@ public class MenuDto {
         private Menu.Difficulty difficulty;
         private List<String> recipes;
         private int menuLikeCount;
+        private List<FoodMenuDto.Response> foodMenuQuantityList;
     }
 }

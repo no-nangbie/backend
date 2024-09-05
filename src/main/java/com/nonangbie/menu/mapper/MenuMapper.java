@@ -33,8 +33,8 @@ public interface MenuMapper {
     }
     Menu menuPatchDtoToMenu(MenuDto.Patch menuPatchDto);
 
-    default MenuDto.Reponse menuToMenuResponseDto(Menu menu){
-        MenuDto.Reponse menuResponseDto = new MenuDto.Reponse();
+    default MenuDto.Response menuToMenuResponseDto(Menu menu){
+        MenuDto.Response menuResponseDto = new MenuDto.Response();
 
         menuResponseDto.setMenuId(menu.getMenuId());
         menuResponseDto.setMenuTitle(menu.getMenuTitle());
@@ -49,9 +49,5 @@ public interface MenuMapper {
         return menuResponseDto;
     }
 
-    default List<MenuDto.Reponse> menusToMenuResponseDtos(List<Menu> menus){
-        return menus.stream()
-                .map(this:: menuToMenuResponseDto)
-                .collect(Collectors.toList());
-    }
+    List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus);
 }
