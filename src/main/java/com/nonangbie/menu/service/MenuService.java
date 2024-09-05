@@ -59,4 +59,10 @@ public class MenuService {
         menuRepository.delete(menu);
     }
 
+    public void createLike(long menuId){
+        Menu menu = findMenuById(menuId);
+        menu.setMenuLikeCount(menu.getMenuLikeCount() + 1);
+        menuRepository.save(menu);
+    }
+
 }

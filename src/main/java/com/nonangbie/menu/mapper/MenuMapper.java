@@ -23,6 +23,7 @@ public interface MenuMapper {
         menu.setServingSize(menuPostDto.getServingSize());
         menu.setDifficulty(menuPostDto.getDifficulty());
 
+
         List<String> recipeList = new ArrayList<>();
         for(String recipe : menuPostDto.getRecipes()){
             recipeList.add(recipe);
@@ -44,6 +45,7 @@ public interface MenuMapper {
         menuResponseDto.setCookingTime(menu.getCookingTime());
         menuResponseDto.setServingSize(menu.getServingSize());
         menuResponseDto.setRecipes(menu.getRecipes());
+        menuResponseDto.setMenuLikeCount(menu.getMenuLikeCount());
 
         return menuResponseDto;
     }

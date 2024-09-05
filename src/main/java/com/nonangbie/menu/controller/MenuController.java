@@ -74,6 +74,13 @@ public class MenuController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    //메뉴 좋아요
+    @PostMapping("/{menu-id}/like")
+    public ResponseEntity postLike(@PathVariable("menu-id") @Positive long menuId) {
+        menuService.createLike(menuId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 
 }

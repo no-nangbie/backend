@@ -84,5 +84,6 @@ public class MenuDto {
         private String servingSize;
         private Menu.Difficulty difficulty;
         private List<String> recipes;
+        private int menuLikeCount;
     }
 }
