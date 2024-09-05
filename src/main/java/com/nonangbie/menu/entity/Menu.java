@@ -24,8 +24,9 @@ public class Menu {
     @Column(nullable = false)
     private String menuDescription;
 
+    @ElementCollection
     @Column(nullable = false)
-    private static List<String> recipes = new ArrayList<>();
+    private List<String> recipes = new ArrayList<>();
 
     @Column(nullable = false)
     private String imageUrl;

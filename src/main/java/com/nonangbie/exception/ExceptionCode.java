@@ -12,7 +12,11 @@ public enum ExceptionCode {
     NICKNAME_EXISTS(409, "NickName exists"),
 
     //menu 관련
-    MENU_NOT_FOUND(404, "Menu Not Found");
+    MENU_NOT_FOUND(404, "Menu Not Found"),
+
+    //food 관련
+    FOOD_NOT_FOUND(404, "Food Not Found");
+
 
     @Getter
     private int statusCode;
