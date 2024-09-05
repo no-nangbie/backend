@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface MenuMapper {
@@ -32,5 +33,24 @@ public interface MenuMapper {
     }
     Menu menuPatchDtoToMenu(MenuDto.Patch menuPatchDto);
 
-    MenuDto.Reponse menuToMenuResponseDto(Menu menu);
+    default MenuDto.Reponse menuToMenuResponseDto(Menu menu){
+        MenuDto.Reponse menuResponseDto = new MenuDto.Reponse();
+
+        menuResponseDto.setMenuId(menu.getMenuId());
+        menuResponseDto.setMenuTitle(menu.getMenuTitle());
+        menuResponseDto.setMenuDescription(menu.getMenuDescription());
+        menuResponseDto.setMenuCategory(menu.getMenuCategory());
+        menuResponseDto.setDifficulty(menu.getDifficulty());
+        menuResponseDto.setCookingTime(menu.getCookingTime());
+        menuResponseDto.setServingSize(menu.getServingSize());
+        menuResponseDto.setRecipes(menu.getRecipes());
+
+        return menuResponseDto;
+    }
+
+    default List<MenuDto.Reponse> menusToMenuResponseDtos(List<Menu> menus){
+        return menus.stream()
+                .map(this:: menuToMenuResponseDto)
+                .collect(Collectors.toList());
+    }
 }

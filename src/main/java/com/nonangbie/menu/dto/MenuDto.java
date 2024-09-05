@@ -72,8 +72,11 @@ public class MenuDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Reponse{
+        private long menuId;
         private String menuTitle;
         private String menuDescription;
         private Menu.MenuCategory menuCategory;
