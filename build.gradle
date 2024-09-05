@@ -1,8 +1,11 @@
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.0'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'io.spring.dependency-management' version '1.1.6'
 }
+
+//group = 'com.continewbie'
+//version = '0.0.1-SNAPSHOT'
 
 javadoc.options.encoding = 'UTF-8'
 
@@ -27,46 +30,34 @@ repositories {
 }
 
 dependencies {
-	// Spring Boot
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-	// JWT
-//	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-//	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	// Lombok
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'com.h2database:h2'
+	implementation 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'com.google.code.gson:gson'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
-	// H2
-	runtimeOnly 'com.h2database:h2'
-
-	// mysql
-//	implementation 'mysql:mysql-connector-java:8.0.32'
-
-	// Mapstruct
-	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
+//   implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+//   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-tasks.named('test') {
-	useJUnitPlatform()
+
+//   implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+//   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+//   runtimeOnly   'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
 }
 
 tasks.named('javadoc') {
 	source = sourceSets.main.allJava
 	options.memberLevel = JavadocMemberLevel.PRIVATE
 	destinationDir = file("build/docs/javadoc")
-}
-
-jar {
-	enabled = false
 }
