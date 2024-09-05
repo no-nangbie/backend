@@ -17,8 +17,6 @@ public class MenuDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Setter
-    @NoArgsConstructor
     public static class Post{
 
         @Pattern(regexp = "^.{1,20}$", message = "메뉴 제목은 1~20 글자 이어야 합니다.")
