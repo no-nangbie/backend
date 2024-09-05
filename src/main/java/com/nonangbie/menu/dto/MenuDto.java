@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -26,11 +28,11 @@ public class MenuDto {
 
         private List<String> recipes;
 
-        @Pattern(regexp = "^.{1,5}$", message = "요리 시간은 1~5 글자 이어야 합니다.")
-        private String cookingTime;
+        @Min(value = 0, message = "요리 시간은 분(minutes) 단위이며  0 이상이어야 합니다.")
+        private int cookingTime;
 
-        @Pattern(regexp = "^.{1,15}$", message = "음식량은 1~5 글자 이어야 합니다.")
-        private String servingSize;
+        @Range(min = 1, max = 10, message = "음식량은 1~10인분 이어야 합니다.")
+        private int servingSize;
 
         private Menu.Difficulty difficulty;
 
@@ -58,10 +60,10 @@ public class MenuDto {
         private List<String> recipes;
 
         @Pattern(regexp = "^.{1,5}$", message = "요리 시간은 1~5 글자 이어야 합니다.")
-        private String cookingTime;
+        private int cookingTime;
 
         @Pattern(regexp = "^.{1,15}$", message = "음식량은 1~5 글자 이어야 합니다.")
-        private String servingSize;
+        private int servingSize;
 
         private Menu.Difficulty difficulty;
 
@@ -79,8 +81,8 @@ public class MenuDto {
         private String menuTitle;
         private String menuDescription;
         private Menu.MenuCategory menuCategory;
-        private String cookingTime;
-        private String servingSize;
+        private int cookingTime;
+        private int servingSize;
         private Menu.Difficulty difficulty;
         private List<String> recipes;
         private int menuLikeCount;
