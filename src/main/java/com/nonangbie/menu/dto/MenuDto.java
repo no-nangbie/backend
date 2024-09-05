@@ -1,5 +1,6 @@
 package com.nonangbie.menu.dto;
 
+import com.nonangbie.foodMenu.dto.FoodMenuDto;
 import com.nonangbie.menu.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,8 @@ import java.util.List;
 public class MenuDto {
 
     @Getter
+    @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Post{
 
@@ -55,7 +58,7 @@ public class MenuDto {
 
         private Menu.MenuCategory menuCategory;
 
-        @NotBlank
+
         private List<String> recipes;
 
         @Pattern(regexp = "^.{1,5}$", message = "요리 시간은 1~5 글자 이어야 합니다.")
@@ -73,7 +76,7 @@ public class MenuDto {
 
     @Getter
     @AllArgsConstructor
-    public static class Reponse{
+    public static class Response{
         private String menuTitle;
         private String menuDescription;
         private Menu.MenuCategory menuCategory;
@@ -81,5 +84,6 @@ public class MenuDto {
         private String servingSize;
         private Menu.Difficulty difficulty;
         private List<String> recipes;
+        private List<FoodMenuDto.Response> foodMenuQuantityList;
     }
 }

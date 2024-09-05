@@ -1,5 +1,7 @@
 package com.nonangbie.menu.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.foodMenu.entity.FoodMenu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,7 +53,7 @@ public class Menu {
     @Column(nullable = false)
     private int menuLikeCount = 0;
 
-    public enum MenuCategory{
+    public enum MenuCategory {
         MENU_CATEGORY_SIDE("밑 반찬"),
         MENU_CATEGORY_SOUP("국/찌개"),
         MENU_CATEGORY_DESSERT("디저트"),
@@ -66,12 +68,12 @@ public class Menu {
         @Getter
         private String status;
 
-        MenuCategory(String status){
+        MenuCategory(String status) {
             this.status = status;
         }
     }
 
-    public enum Difficulty{
+    public enum Difficulty {
         DIFFICULTY_EASY("쉬움"),
         DIFFICULTY_MEDIUM("보통"),
         DIFFICULTY_HARD("어려움");
@@ -79,8 +81,12 @@ public class Menu {
         @Getter
         private String status;
 
-        Difficulty(String status){
+        Difficulty(String status) {
             this.status = status;
         }
     }
+
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<FoodMenu> foodMenuList = new ArrayList<>();
 }

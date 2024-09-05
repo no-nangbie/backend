@@ -1,25 +1,20 @@
-package com.nonangbie.food.dto;
+package com.nonangbie.foodMenu.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.nonangbie.food.entity.Food.FoodCategory;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-public class FoodDto {
+public class FoodMenuDto {
 
     @Getter
     @Setter
     @NoArgsConstructor
     public static class Post {
         @NotBlank
-        private String foodName;
-
-        @NotNull
-        private FoodCategory foodCategory;
+        private String foodQuantity;
     }
 
     @Getter
@@ -27,21 +22,18 @@ public class FoodDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Patch {
-        private long foodId;
-
-        private String foodName;
-
-        private FoodCategory foodCategory;
-
+        private long foodMenuId;
+        private String foodQuantity;
     }
 
     @Getter
-    @Setter
     @AllArgsConstructor
+    @Setter
     @NoArgsConstructor
     public static class Response {
+        private long foodMenuId;
+        private long menuId;
         private long foodId;
-        private String foodName;
-        private FoodCategory foodCategory;
+        private String foodQuantity;
     }
 }
