@@ -26,5 +26,5 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build -t no-nangbie .
-          docker tag spring-cicd shinminjun/no-nangbie:${GITHUB_SHA::7}
+          docker tag no-nangbie shinminjun/no-nangbie:${GITHUB_SHA::7}
           docker push shinminjun/no-nangbie:${GITHUB_SHA::7}
