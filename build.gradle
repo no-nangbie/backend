@@ -31,25 +31,34 @@ repositories {
 
 dependencies {
 
+	//Spring Boot
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'com.h2database:h2'
-	implementation 'mysql:mysql-connector-java'
+//   implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	//DB - h2
+//	runtimeOnly 'com.h2database:h2'
+
+	//DB - Mysql
+	implementation 'mysql:mysql-connector-java:8.0.32'
+
+	//Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//Gson
 	implementation 'com.google.code.gson:gson'
+
+	//MapStruct & Lombok - 순서에 주의..!
+	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
-//   implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
-//   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 //   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-
+	//Jwt
 //   implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 //   runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 //   runtimeOnly   'io.jsonwebtoken:jjwt-jackson:0.11.5'
