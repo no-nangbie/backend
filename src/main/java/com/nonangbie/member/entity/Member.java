@@ -1,10 +1,14 @@
 package com.nonangbie.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "member")
 @Getter
@@ -23,6 +27,10 @@ public class Member {
 
     @Column(name = "nickname", length = 20, nullable = false)
     private String nickname;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
