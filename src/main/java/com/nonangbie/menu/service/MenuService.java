@@ -6,6 +6,7 @@ import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.reposiitory.MenuRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +33,10 @@ public class MenuService {
                 .ifPresent(menuDescription -> findMenu.setMenuDescription(menu.getMenuDescription()));
         Optional.ofNullable(menu.getMenuCategory())
                 .ifPresent(menuCategory -> findMenu.setMenuCategory(menu.getMenuCategory()));
-        Optional.ofNullable(menu.getCookingTime())
-                .ifPresent(cookingTime -> findMenu.setCookingTime(menu.getCookingTime()));
+        Optional.ofNullable(menu.getMenuCategory())
+                .ifPresent(menuCategory -> findMenu.setMenuCategory(menu.getMenuCategory()));
+        Optional.ofNullable(menu.getRecipes())
+                .ifPresent(recipe -> findMenu.setRecipes(menu.getRecipes()));
         Optional.ofNullable(menu.getServingSize())
                 .ifPresent(servingSize -> findMenu.setServingSize(menu.getServingSize()));
         Optional.ofNullable(menu.getImageUrl())
@@ -52,6 +55,16 @@ public class MenuService {
 
     public Page<Menu> findMenus(int page, int size){
         return menuRepository.findAll(PageRequest.of(page, size, Sort.by("menuId")));
+    }
+
+    public Page<Menu> findMenuSort(int page, int size, Sort sort, Menu.MenuCategory menuCategory) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return menuRepository.findByMenuCategory(pageable, menuCategory);
+    }
+
+    public Page<Menu> search(Pageable pageable, String keyword, Menu.MenuCategory menuCategory) {
+        Page<Menu> menuList = menuRepository.searchByMenuTitleAndCategory(pageable, keyword, menuCategory);
+        return menuList;
     }
 
     public void deleteMenu(long menuId){

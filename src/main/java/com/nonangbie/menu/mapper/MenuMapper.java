@@ -32,5 +32,7 @@ public interface MenuMapper {
     }
     Menu menuPatchDtoToMenu(MenuDto.Patch menuPatchDto);
 
-    MenuDto.Reponse menuToMenuResponseDto(Menu menu);
+    MenuDto.Response menuToMenuResponseDto(Menu menu);
+
+    List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus);
 }

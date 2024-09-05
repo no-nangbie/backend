@@ -1,10 +1,14 @@
 package com.nonangbie.food.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.foodMenu.entity.FoodMenu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,10 +27,6 @@ public class Food {
     @Column(nullable = false)
     private FoodCategory foodCategory;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
-    private FoodStatus foodStatus = FoodStatus.FRESH;
-
     public enum FoodCategory {
         VEGETABLES_FRUITS("채소 및 과일류"),
         MEAT("육류"),
@@ -43,17 +43,7 @@ public class Food {
         }
     }
 
-    public enum FoodStatus {
-        FRESH("여유"),
-        APPROACHING_EXPIRY("임박"),
-        EXPIRED("만료");
-
-        @Getter
-        private String foodStatus;
-
-        FoodStatus(String foodStatus) {
-            this.foodStatus = foodStatus;
-        }
-
-    }
+    @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<FoodMenu> foodMenuList = new ArrayList<>();
 }

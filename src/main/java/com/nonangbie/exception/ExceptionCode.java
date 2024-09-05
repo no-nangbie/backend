@@ -15,7 +15,10 @@ public enum ExceptionCode {
     MENU_NOT_FOUND(404, "Menu Not Found"),
 
     //food 관련
-    FOOD_NOT_FOUND(404, "Food Not Found");
+    FOOD_NOT_FOUND(404, "Food Not Found"),
+
+    FOOD_MENU_NOT_FOUND(404, "Food Menu Not Found"),;
+
 
 
     @Getter
