@@ -38,13 +38,13 @@ public class Menu {
     private MenuCategory menuCategory = MenuCategory.MENU_CATEGORY_ETC;
 
     @Column(nullable = false)
-    private String cookingTime;
+    private int cookingTime;
 
 //    @Column(nullable = false)
 //    private String cookingFood;
 
     @Column(nullable = false)
-    private String servingSize;
+    private int servingSize;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
