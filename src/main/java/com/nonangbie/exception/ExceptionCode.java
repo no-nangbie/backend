@@ -9,7 +9,8 @@ public enum ExceptionCode {
     //member 관련
     MEMBER_NOT_FOUND(404,"Member Not Found"),
     MEMBER_EXISTS(409,"Member exists"),
-    NICKNAME_EXISTS(409, "NickName exists");
+    NICKNAME_EXISTS(409, "NickName exists"),
+    FOOD_NOT_FOUND(404, "Food Not Found");
 
     @Getter
     private int statusCode;
