@@ -6,6 +6,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionCode {
 
+    //board 관련
+    BOARD_NOT_FOUND(404,"Board Not Found"),
+    BOARD_EXISTS(409,"Board exists"),
+    INVALID_BOARD_FILTER_TYPE(400, "Invalid Board Filter Type"),
+
     //member 관련
     MEMBER_NOT_FOUND(404,"Member Not Found"),
     MEMBER_EXISTS(409,"Member exists"),
@@ -16,8 +21,10 @@ public enum ExceptionCode {
 
     //food 관련
     FOOD_NOT_FOUND(404, "Food Not Found"),
+    FOOD_MENU_NOT_FOUND(404, "Food Menu Not Found"),
 
-    FOOD_MENU_NOT_FOUND(404, "Food Menu Not Found");
+    //Access
+    ACCESS_DENIED(403,"Access denied");
 
 
 
