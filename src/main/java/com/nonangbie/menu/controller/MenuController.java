@@ -47,7 +47,11 @@ public class MenuController {
     public ResponseEntity patchMenu(@Valid @RequestBody MenuDto.Patch menuPatchDto,
                                     @PathVariable("menu-id") @Positive long menuId) {
         menuPatchDto.setMenuId(menuId);
-        Menu menu = menuService.updateMenu(menuMapper.menuPatchDtoToMenu(menuPatchDto));
+
+        Menu patchMenu = menuMapper.menuPatchDtoToMenu(menuPatchDto);
+
+        Menu menu = menuService.updateMenu(patchMenu);
+
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(menu)), HttpStatus.OK);
     }
 

@@ -3,7 +3,6 @@ package com.nonangbie.menu.mapper;
 import com.nonangbie.menu.dto.MenuDto;
 import com.nonangbie.menu.entity.Menu;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.ArrayList;
