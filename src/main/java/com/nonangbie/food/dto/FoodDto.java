@@ -13,7 +13,8 @@ import javax.validation.constraints.NotNull;
 public class FoodDto {
 
     @Getter
-    @AllArgsConstructor
+    @Setter
+    @NoArgsConstructor
     public static class Post {
         @NotBlank
         private String foodName;
@@ -23,15 +24,14 @@ public class FoodDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch {
-        @Setter
         private long foodId;
 
-        @NotBlank
         private String foodName;
 
-        @NotBlank
         private FoodCategory foodCategory;
 
     }
