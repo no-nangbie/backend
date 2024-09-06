@@ -1,7 +1,9 @@
 package com.nonangbie.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nonangbie.audit.Auditable;
+import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,36 +24,40 @@ public class Board extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long boardId;
 
-    @Column(name = "BOARD_TITLE", nullable = false)
+    @Column(name = "board_title", nullable = false)
     private String title;
 
-    @Column(name = "BOARD_CONTENT",columnDefinition = "Text")
+    @Column(name = "board_content",columnDefinition = "Text")
     private String boardContent;
 
-    @Column(name = "FOOD_CONTENT",columnDefinition = "Text")
+    @Column(name = "food_content",columnDefinition = "Text")
     private String foodContent;
 
-    @Column(name = "RECIPE_CONTENT",columnDefinition = "Text")
+    @Column(name = "recipe_content",columnDefinition = "Text")
     private String recipeContent;
 
-    @Column(name = "IMAGE_URL")
+    @Column(name = "iamge_url")
     private String imageUrl;
 
-    @Column(name = "BOARD_CATEGORY")
+    @Column(name = "board_category")
     @Enumerated(value = EnumType.STRING)
     private MenuCategory menuCategory;
 
-    @Column(name = "COOKING_TIME")
+    @Column(name = "cooking_time")
     private int cookingTime;
 
-    @Column(name = "SERVING_SIZE")
+    @Column(name = "serving_size")
     private int servingSize;
 
-    @Column(name = "DIFFICULTY")
+    @Column(name = "difficulty")
     private Difficulty difficulty = Difficulty.DIFFICULTY_EASY;
 
-    @Column(name = "BOARD_LIKE_COUNT")
+    @Column(name = "board_like_count")
     private int likeCount = 0;
+
+    @OneToMany(mappedBy = "board",cascade = {CascadeType.REMOVE})
+    @JsonManagedReference
+    private List<BoardLike> boardLikeList = new ArrayList<>();
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.PERSIST)
