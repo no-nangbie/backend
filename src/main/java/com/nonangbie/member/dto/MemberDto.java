@@ -51,8 +51,6 @@ public class MemberDto {
         @Pattern(regexp = "^[a-zA-Z가-힣]+$",
                 message = "숫자와 특수문자는 사용할 수 없습니다. 알파벳과 한글만 입력해 주세요.")
         private String nickname;
-
-        private Member.MemberStatus memberStatus;
     }
 
     @Getter
@@ -63,6 +61,6 @@ public class MemberDto {
         private String email;
         private String password;
         private String nickname;
-        private Member.MemberStatus memberStatus;
+        private Member.memberStatus status;
     }
 }
