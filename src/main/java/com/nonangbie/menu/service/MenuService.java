@@ -56,8 +56,8 @@ public class MenuService {
         return findMenu;
     }
 
-    public Page<Menu> findMenus(int page, int size){
-        return menuRepository.findAll(PageRequest.of(page, size, Sort.by("menuId")));
+    public Page<Menu> findMenusSort(int page, int size, Sort sort){
+        return menuRepository.findAll(PageRequest.of(page, size, sort));
     }
 
     public Page<Menu> findMenuSort(int page, int size, Sort sort, Menu.MenuCategory menuCategory) {

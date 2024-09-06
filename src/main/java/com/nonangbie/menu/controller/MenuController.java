@@ -60,6 +60,22 @@ public class MenuController {
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(menu)), HttpStatus.OK);
     }
 
+    @GetMapping("all")
+    public ResponseEntity getAllMenus(@Positive @RequestParam int page,
+                                      @Positive @RequestParam int size,
+                                      @RequestParam String sort) {
+        Sort sortOrder = Sort.by(sort.split("_")[0]).ascending();
+        if(sort.split("_")[1].equalsIgnoreCase("desc")) {
+            sortOrder = sortOrder.descending();
+        }
+
+        Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder);
+        List<Menu> menus = pageMenu.getContent();
+        return new ResponseEntity(
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus), pageMenu), HttpStatus.OK
+        );
+    }
+
     @GetMapping("/{menu-id}")
     public ResponseEntity getMenu(@PathVariable("menu-id") @Positive long menuId) {
         Menu findMenu = menuService.findMenuById(menuId);
