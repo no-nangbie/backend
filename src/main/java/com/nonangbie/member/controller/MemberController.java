@@ -1,5 +1,6 @@
 package com.nonangbie.member.controller;
 
+//import com.nonangbie.auth.service.AuthService;
 import com.nonangbie.dto.MultiResponseDto;
 import com.nonangbie.dto.SingleResponseDto;
 import com.nonangbie.member.dto.MemberDto;
@@ -40,8 +41,8 @@ public class MemberController {
 //
 //        return ResponseEntity.accepted().body("이메일로 인증 코드를 전송했습니다. 인증 코드를 입력하여 회원가입을 완료하세요.");
 //    }
-//
-//    // 인증코드 검증
+
+    // 인증코드 검증
 //    @PostMapping("/verify-auth-code")
 //    public ResponseEntity verifyEmail(@Valid @RequestBody VerificationRequest verificationRequest) {
 //        String email = verificationRequest.getEmail();
