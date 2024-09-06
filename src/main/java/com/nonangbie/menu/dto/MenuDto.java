@@ -1,6 +1,7 @@
 package com.nonangbie.menu.dto;
 
 import com.nonangbie.foodMenu.dto.FoodMenuDto;
+import com.nonangbie.foodMenu.entity.FoodMenu;
 import com.nonangbie.menu.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
