@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MenuDto {
@@ -39,6 +40,7 @@ public class MenuDto {
 
         @Pattern(regexp = "^(http|https)://.*$", message = "Image URL must be a valid URL.")
         private String imageUrl;
+
     }
 
 
@@ -74,6 +76,7 @@ public class MenuDto {
         @Pattern(regexp = "^(http|https)://.*$", message = "Image URL must be a valid URL.")
         private String imageUrl;
 
+
     }
 
     @Getter
@@ -91,5 +94,7 @@ public class MenuDto {
         private List<String> recipes;
         private int menuLikeCount;
         private List<FoodMenuDto.Response> foodMenuQuantityList;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }

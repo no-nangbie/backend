@@ -5,6 +5,7 @@ import com.nonangbie.menu.entity.Menu;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,8 @@ public interface MenuMapper {
         menu.setCookingTime(menuPostDto.getCookingTime());
         menu.setServingSize(menuPostDto.getServingSize());
         menu.setDifficulty(menuPostDto.getDifficulty());
-
+        menu.setCreatedAt(LocalDateTime.now());
+        menu.setModifiedAt(LocalDateTime.now());
 
         List<String> recipeList = new ArrayList<>();
         for(String recipe : menuPostDto.getRecipes()){
@@ -45,6 +47,8 @@ public interface MenuMapper {
         menuResponseDto.setServingSize(menu.getServingSize());
         menuResponseDto.setRecipes(menu.getRecipes());
         menuResponseDto.setMenuLikeCount(menu.getMenuLikeCount());
+        menuResponseDto.setCreatedAt(menu.getCreatedAt());
+        menuResponseDto.setModifiedAt(menu.getModifiedAt());
 
         return menuResponseDto;
     }
