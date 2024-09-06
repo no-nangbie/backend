@@ -58,7 +58,7 @@ public interface MenuMapper {
 //        return menuResponseDto;
 //    }
 
-    @Mapping(target = "foodMenuQuantityList", qualifiedByName = "foodMenu")
+    @Mapping(source = "foodMenuList",target = "foodMenuQuantityList", qualifiedByName = "foodMenusToFoodMenuResponse")
     MenuDto.Response menuToMenuResponseDto(Menu menu);
 
     List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus);

@@ -89,8 +89,7 @@ public class Menu extends Auditable {
         }
     }
 
-    @Column
-    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<FoodMenu> foodMenuList = new ArrayList<>();
 }

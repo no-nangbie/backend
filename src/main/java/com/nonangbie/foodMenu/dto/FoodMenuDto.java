@@ -31,9 +31,7 @@ public class FoodMenuDto {
     @Setter
     @NoArgsConstructor
     public static class Response {
-        private long foodMenuId;
-        private long menuId;
-        private long foodId;
+        private String foodName;
         private String foodQuantity;
     }
 }
