@@ -2,6 +2,7 @@ package com.nonangbie.board.service;
 
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.board.repository.BoardRepository;
+import com.nonangbie.boardLike.repository.BoardLikeRepository;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository repository;
+    private final BoardLikeRepository boardLikeRepository;
     public Board createBoard(Board board) {
         //시큐리티 적용 시 내용 추가 예정
         Member member = new Member();
