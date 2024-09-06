@@ -1,5 +1,7 @@
 package com.nonangbie.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,8 +28,13 @@ public class Member {
     @Column(name = "nickname", length = 20, nullable = false)
     private String nickname;
 
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)

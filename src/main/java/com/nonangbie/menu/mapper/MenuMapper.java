@@ -3,11 +3,11 @@ package com.nonangbie.menu.mapper;
 import com.nonangbie.menu.dto.MenuDto;
 import com.nonangbie.menu.entity.Menu;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface MenuMapper {
@@ -22,6 +22,7 @@ public interface MenuMapper {
         menu.setServingSize(menuPostDto.getServingSize());
         menu.setDifficulty(menuPostDto.getDifficulty());
 
+
         List<String> recipeList = new ArrayList<>();
         for(String recipe : menuPostDto.getRecipes()){
             recipeList.add(recipe);
@@ -32,7 +33,21 @@ public interface MenuMapper {
     }
     Menu menuPatchDtoToMenu(MenuDto.Patch menuPatchDto);
 
-    MenuDto.Response menuToMenuResponseDto(Menu menu);
+    default MenuDto.Response menuToMenuResponseDto(Menu menu){
+        MenuDto.Response menuResponseDto = new MenuDto.Response();
+
+        menuResponseDto.setMenuId(menu.getMenuId());
+        menuResponseDto.setMenuTitle(menu.getMenuTitle());
+        menuResponseDto.setMenuDescription(menu.getMenuDescription());
+        menuResponseDto.setMenuCategory(menu.getMenuCategory());
+        menuResponseDto.setDifficulty(menu.getDifficulty());
+        menuResponseDto.setCookingTime(menu.getCookingTime());
+        menuResponseDto.setServingSize(menu.getServingSize());
+        menuResponseDto.setRecipes(menu.getRecipes());
+        menuResponseDto.setMenuLikeCount(menu.getMenuLikeCount());
+
+        return menuResponseDto;
+    }
 
     List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus);
 }

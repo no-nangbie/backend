@@ -52,7 +52,11 @@ public class MenuController {
     public ResponseEntity patchMenu(@Valid @RequestBody MenuDto.Patch menuPatchDto,
                                     @PathVariable("menu-id") @Positive long menuId) {
         menuPatchDto.setMenuId(menuId);
-        Menu menu = menuService.updateMenu(menuMapper.menuPatchDtoToMenu(menuPatchDto));
+
+        Menu patchMenu = menuMapper.menuPatchDtoToMenu(menuPatchDto);
+
+        Menu menu = menuService.updateMenu(patchMenu);
+
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(menu)), HttpStatus.OK);
     }
 
@@ -137,11 +141,19 @@ public class MenuController {
         );
     }
 
-
     @DeleteMapping("/{menu-id}")
     public ResponseEntity deleteMenu(@PathVariable("menu-id") @Positive long menuId) {
         menuService.deleteMenu(menuId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    //메뉴 좋아요
+    @PostMapping("/{menu-id}/like")
+    public ResponseEntity postLike(@PathVariable("menu-id") @Positive long menuId) {
+        menuService.createLike(menuId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 
 }
