@@ -24,7 +24,9 @@ public enum ExceptionCode {
     FOOD_MENU_NOT_FOUND(404, "Food Menu Not Found"),
 
     //Access
-    ACCESS_DENIED(403,"Access denied");
+    ACCESS_DENIED(403,"Access denied"),
+
+    MEMBER_FOOD_NOT_FOUND(404, "Member Food Not Found");
 
 
 
