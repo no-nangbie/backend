@@ -17,10 +17,9 @@ public interface FoodMenuMapper {
 
     FoodMenu foodMenuPatchDtoToFoodMenu(FoodMenuDto.Patch requestBody);
 
-    @Mapping(source = "food.foodId", target = "foodId")
-    @Mapping(source = "menu.menuId", target = "menuId")
+    @Mapping(source = "food.foodName", target = "foodName")
     FoodMenuDto.Response foodMenuToFoodMenuResponseDto(FoodMenu foodMenu);
 
-    @Named("foodMenu")
+    @Named("foodMenusToFoodMenuResponse")
     List<FoodMenuDto.Response> foodMenusToFoodMenuResponseDtos(List<FoodMenu> foodMenuList);
 }
