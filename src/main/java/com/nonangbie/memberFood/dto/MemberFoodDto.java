@@ -17,6 +17,8 @@ public class MemberFoodDto {
     @Setter
     @NoArgsConstructor
     public static class Post {
+        @NotBlank
+        private String foodName;
 
         @NotNull
         private Food.FoodCategory foodCategory;
@@ -36,6 +38,8 @@ public class MemberFoodDto {
 
         private long memberFoodId;
 
+        private String foodName;
+
         private Food.FoodCategory foodCategory;
 
         @Pattern(regexp = "\\d{8}", message = "유통기한은 숫자 8자리로 입력해주세요 (예: 20240101)")
@@ -52,7 +56,7 @@ public class MemberFoodDto {
     public static class Response {
         private long memberFoodId;
         private long memberId;
-        private long foodId;
+        private String foodName;
         private Food.FoodCategory foodCategory;
         private String expirationDate;
         private String memo;

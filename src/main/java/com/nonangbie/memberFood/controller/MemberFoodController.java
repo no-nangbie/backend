@@ -2,16 +2,14 @@ package com.nonangbie.memberFood.controller;
 
 import com.nonangbie.dto.MultiResponseDto;
 import com.nonangbie.dto.SingleResponseDto;
+import com.nonangbie.food.entity.Food;
 import com.nonangbie.memberFood.dto.MemberFoodDto;
 import com.nonangbie.memberFood.entity.MemberFood;
 import com.nonangbie.memberFood.mapper.MemberFoodMapper;
 import com.nonangbie.memberFood.service.MemberFoodService;
 import com.nonangbie.utils.UriCreator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,11 +22,11 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/member/{member-id}/foods")
+@RequestMapping("/my_foods")
 @Slf4j
 public class MemberFoodController {
 
-    private final static String DEFAULT_MEMBER_FOOD_URL = "/member/{member-id}/foods";
+    private final static String DEFAULT_MEMBER_FOOD_URL = "/my_foods";
     private final MemberFoodMapper memberFoodMapper;
     private final MemberFoodService memberFoodService;
 
@@ -96,6 +94,27 @@ public class MemberFoodController {
         );
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/search_by_category")
+    public ResponseEntity searchByCategory(@RequestParam String keyword,
+                                           @RequestParam String category,
+                                           @Positive @RequestParam int page,
+                                           @Positive @RequestParam int size) {
+        Food.FoodCategory foodCategory;
+        try {
+            foodCategory = Food.FoodCategory.valueOf(category);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity("Invalid food category", HttpStatus.BAD_REQUEST);
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("foodName").ascending());
+        Page<MemberFood> memberFoods = memberFoodService.searchByCategory(pageable, keyword, foodCategory);
+        MultiResponseDto<MemberFoodDto.Response> responseDto = new MultiResponseDto<>(
+                memberFoodMapper.memberFoodsToMemberFoodResponseDtos(memberFoods.getContent()), memberFoods
+        );
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-food-id}")

@@ -12,12 +12,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface MemberFoodMapper {
 
+    @Mapping(source = "foodName", target = "food.foodName")
     MemberFood memberFoodPostDtoToMemberFood(MemberFoodDto.Post requestBody);
 
+    @Mapping(source = "foodName", target = "food.foodName")
     MemberFood memberFoodPatchDtoToMemberFood(MemberFoodDto.Patch requestBody);
 
     @Mapping(source = "member.memberId", target = "memberId")
-    @Mapping(source = "food.foodId", target = "foodId")
+    @Mapping(source = "food.foodName", target = "foodName")
     MemberFoodDto.Response memberFoodToMemberFoodResponseDto(MemberFood memberFood);
 
     List<MemberFoodDto.Response> memberFoodsToMemberFoodResponseDtos(List<MemberFood> memberFoods);
