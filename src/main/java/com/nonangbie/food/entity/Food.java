@@ -1,7 +1,9 @@
 package com.nonangbie.food.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.audit.Auditable;
 import com.nonangbie.foodMenu.entity.FoodMenu;
+import com.nonangbie.member.entity.Member;
 import com.nonangbie.memberFood.entity.MemberFood;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Food {
+public class Food extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +29,10 @@ public class Food {
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private FoodCategory foodCategory;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     public enum FoodCategory {
         VEGETABLES_FRUITS("채소 및 과일류"),

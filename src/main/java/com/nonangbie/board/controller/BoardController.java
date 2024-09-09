@@ -7,6 +7,7 @@ import com.nonangbie.board.mapper.BoardMapper;
 import com.nonangbie.board.service.BoardService;
 import com.nonangbie.dto.MultiResponseDto;
 import com.nonangbie.dto.SingleResponseDto;
+import com.nonangbie.utils.ExtractMemberEmail;
 import com.nonangbie.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
