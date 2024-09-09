@@ -7,6 +7,7 @@ import com.nonangbie.food.repository.FoodRepository;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,18 +20,13 @@ import java.util.Optional;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class FoodService extends ExtractMemberEmail {
     private final FoodRepository foodRepository;
     private final MemberRepository memberRepository;
 
-    public FoodService(FoodRepository foodRepository, MemberRepository memberRepository) {
-        this.foodRepository = foodRepository;
-        this.memberRepository = memberRepository;
-    }
-
     public Food createFood(Food food, Authentication authentication) {
-        Member member = extractMemberFromAuthentication(authentication,memberRepository);
-        food.setMember(member);
+        extractMemberFromAuthentication(authentication,memberRepository);
         return foodRepository.save(food);
     }
 
@@ -38,10 +34,6 @@ public class FoodService extends ExtractMemberEmail {
         extractMemberFromAuthentication(authentication,memberRepository);
         Food findFood = foodRepository.findById(food.getFoodId())
                         .orElseThrow(()-> new BusinessLogicException(ExceptionCode.FOOD_NOT_FOUND));
-
-        if (!findFood.getMember().getEmail().equals(authentication.getName())){
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
-        }
 
         Optional.ofNullable(food.getFoodName())
                 .ifPresent(foodName -> findFood.setFoodName(foodName));
@@ -55,10 +47,6 @@ public class FoodService extends ExtractMemberEmail {
         extractMemberFromAuthentication(authentication,memberRepository);
         Food findFood = foodRepository.findById(food.getFoodId())
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.FOOD_NOT_FOUND));
-
-        if (!findFood.getMember().getEmail().equals(authentication.getName())){
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
-        }
         return findFood;
     }
 
@@ -76,9 +64,6 @@ public class FoodService extends ExtractMemberEmail {
     public void deleteFood(long foodId, Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
         Food findFood = findVerifiedFood(foodId,authentication);
-        if (!findFood.getMember().getEmail().equals(authentication.getName())){
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
-        }
         foodRepository.delete(findFood);
     }
 
