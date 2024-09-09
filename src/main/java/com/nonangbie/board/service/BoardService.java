@@ -37,7 +37,7 @@ public class BoardService extends ExtractMemberEmail {
         Board findBoard = repository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         if(!Objects.equals(findBoard.getMember(), member))
-            throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
         board.setMember(member);
         board.setLikeCount(findBoard.getLikeCount());
         board.setBoardId(findBoard.getBoardId());
@@ -48,7 +48,7 @@ public class BoardService extends ExtractMemberEmail {
         Board findBoard = findVerifiedBoard(boardId, authentication);
         String email = (String) authentication.getPrincipal();
         if(!findBoard.getMember().getEmail().equals(email)) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
         }
         repository.delete(findBoard);
 //        findBoard.setBoardStatus(Board.BoardStatus.BOARD_DELETED);
