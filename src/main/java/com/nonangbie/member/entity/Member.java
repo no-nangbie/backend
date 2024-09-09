@@ -2,6 +2,7 @@ package com.nonangbie.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nonangbie.board.entity.Board;
+import com.nonangbie.boardLike.entity.BoardLike;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Member {
     @Column(name = "email", length = 20, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 20, nullable = false)
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
     @Column(name = "nickname", length = 20, nullable = false)
@@ -36,9 +37,9 @@ public class Member {
 //    @JsonManagedReference
 //    private List<MemberFood> memberFoodList = new ArrayList<>();
 //
-//    @OneToMany(mappedBy = "member", orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<BoardLike> boardLikeList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonManagedReference
+    private List<BoardLike> boardLikeList = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
@@ -65,5 +66,10 @@ public class Member {
             this.status = status;
         }
     }
+
+    public Member(String email) {
+        this.email = email;
+    }
+
 }
 

@@ -23,6 +23,10 @@ public enum ExceptionCode {
     FOOD_NOT_FOUND(404, "Food Not Found"),
     FOOD_MENU_NOT_FOUND(404, "Food Menu Not Found"),
 
+    //메일 전송 관련
+    UNABLE_TO_SEND_EMAIL(404, "이메일 전송에 실패했습니다."),
+    NO_SUCH_ALGORITHM(404, "No_Such_Algorithm"),
+
     //Access
     ACCESS_DENIED(403,"Access denied");
 

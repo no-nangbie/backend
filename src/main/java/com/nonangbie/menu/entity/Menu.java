@@ -1,6 +1,7 @@
 package com.nonangbie.menu.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.audit.Auditable;
 import com.nonangbie.foodMenu.entity.FoodMenu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Menu {
+public class Menu extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
