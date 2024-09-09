@@ -3,6 +3,7 @@ package com.nonangbie.menu.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nonangbie.audit.Auditable;
 import com.nonangbie.foodMenu.entity.FoodMenu;
+import com.nonangbie.utils.RecipesConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,8 +28,9 @@ public class Menu extends Auditable {
     @Column(nullable = false)
     private String menuDescription;
 
-    @ElementCollection
-    @Column(nullable = false)
+//    @ElementCollection
+    @Convert(converter = RecipesConverter.class)
+    @Column(nullable = false, columnDefinition = "TEXT")  // JSON 데이터는 길이가 길 수 있으므로 TEXT로 정의
     private List<String> recipes = new ArrayList<>();
 
     @Column(nullable = false)
@@ -87,7 +89,7 @@ public class Menu extends Auditable {
         }
     }
 
-    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<FoodMenu> foodMenuList = new ArrayList<>();
 }

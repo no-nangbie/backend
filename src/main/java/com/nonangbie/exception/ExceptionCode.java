@@ -28,7 +28,9 @@ public enum ExceptionCode {
     NO_SUCH_ALGORITHM(404, "No_Such_Algorithm"),
 
     //Access
-    ACCESS_DENIED(403,"Access denied");
+    ACCESS_DENIED(403,"Access denied"),
+
+    MEMBER_FOOD_NOT_FOUND(404, "Member Food Not Found");
 
 
 

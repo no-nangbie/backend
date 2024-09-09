@@ -2,6 +2,7 @@ package com.nonangbie.food.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nonangbie.foodMenu.entity.FoodMenu;
+import com.nonangbie.memberFood.entity.MemberFood;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,4 +47,8 @@ public class Food {
     @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JsonManagedReference
     private List<FoodMenu> foodMenuList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MemberFood> memberFoodList = new ArrayList<>();
 }
