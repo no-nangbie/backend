@@ -48,11 +48,8 @@ public class BoardService extends ExtractMemberEmail {
         Board findBoard = findVerifiedBoard(boardId, authentication);
         String email = (String) authentication.getPrincipal();
         if(!findBoard.getMember().getEmail().equals(email)) {
-            System.out.println("@@@@@@@Not Match@@@@@@");
-            System.out.println("@@@@@@@Not Match@@@@@@");
             throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
         }
-        System.out.println("@@@@@@@###Match###@@@@@@");
         repository.delete(findBoard);
 //        findBoard.setBoardStatus(Board.BoardStatus.BOARD_DELETED);
 //        boardRepository.save(findBoard);
