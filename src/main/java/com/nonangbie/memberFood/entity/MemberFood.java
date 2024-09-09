@@ -48,13 +48,12 @@ public class MemberFood {
         }
     }
 
-
     @ManyToOne
     @JoinColumn(name = "FOOD_ID")
     @JsonBackReference
     private Food food;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MEMBER_ID")
     @JsonBackReference
     private Member member;
