@@ -71,7 +71,7 @@ public class Board extends Auditable {
         MENU_CATEGORY_DESSERT("디저트"),
         MENU_CATEGORY_NOODLE("면"),
         MENU_CATEGORY_RICE("밥/죽/떡"),
-        MENU_CATEGORY_KIMCHI("김치/젓갈/장류"),
+        MENU_CATEGORY_KIMCHI("김치"),
         MENU_CATEGORY_FUSION("퓨전"),
         MENU_CATEGORY_SEASONING("양념"),
         MENU_CATEGORY_WESTERN("양식"),
