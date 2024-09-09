@@ -5,6 +5,7 @@ import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
+import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -41,7 +42,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Member findMember(Authentication authentication) {
-        Member member = extractMemberFromAuthentication(authentication);
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
         return member;
     }
 
@@ -51,7 +52,7 @@ public class MemberService {
     }
 
     public Member updateMember(Member member, Authentication authentication) {
-        Member authenticatedMember = extractMemberFromAuthentication(authentication);
+        Member authenticatedMember = extractMemberFromAuthentication(authentication,memberRepository);
 
         // 비밀번호가 null이 아니고, 기존 비밀번호와 다를 경우에만 업데이트
         if (member.getPassword() != null && !passwordEncoder.matches(member.getPassword(), authenticatedMember.getPassword())) {
@@ -87,7 +88,7 @@ public class MemberService {
     }
 
     public void deleteMember(Authentication authentication) {
-        Member authenticatedMember = extractMemberFromAuthentication(authentication);
+        Member authenticatedMember = extractMemberFromAuthentication(authentication,memberRepository);
         memberRepository.delete(authenticatedMember);
     }
 
@@ -113,13 +114,5 @@ public class MemberService {
         if(member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
-    }
-
-    private Member extractMemberFromAuthentication(Authentication authentication) {
-
-        String username = (String) authentication.getPrincipal();
-
-        return memberRepository.findByEmail(username)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }
