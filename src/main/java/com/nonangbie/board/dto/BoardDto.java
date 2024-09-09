@@ -37,10 +37,10 @@ public class BoardDto{
         @NotBlank
         private String imageUrl;
 
-        @NotBlank
+        @NotNull
         private int cookingTime;
 
-        @NotBlank
+        @NotNull
         private int servingSize;
 
         @NotNull
@@ -77,10 +77,10 @@ public class BoardDto{
         @NotBlank
         private String imageUrl;
 
-        @NotBlank
+        @NotNull
         private int cookingTime;
 
-        @NotBlank
+        @NotNull
         private int servingSize;
 
         @NotNull
