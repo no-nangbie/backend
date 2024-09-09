@@ -73,8 +73,7 @@ public class BoardController {
     }
 
     @GetMapping("/{board-id}")
-    public ResponseEntity getBoard(@PathVariable("board-id")
-                                   @Positive long boardId,
+    public ResponseEntity getBoard(@PathVariable("board-id") @Positive long boardId,
                                    Authentication authentication) {
         Board findBoard = service.findVerifiedBoard(boardId,authentication);
 

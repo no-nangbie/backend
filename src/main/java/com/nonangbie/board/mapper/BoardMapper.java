@@ -14,9 +14,11 @@ public interface BoardMapper {
 
     default BoardDto.Response boardToBoardDtoResponse(Board board) {
         BoardDto.Response response = new BoardDto.Response();
+        response.setMenuCategory(board.getMenuCategory().getStatus());
+        response.setDifficulty(board.getDifficulty().getStatus());
         response.setBoardId(board.getBoardId());
-        response.setTitle(board.getTitle());
         response.setAuthor(board.getMember().getNickname());
+        response.setTitle(board.getTitle());
         response.setBoardContent(board.getBoardContent());
         response.setFoodContent(board.getFoodContent());
         response.setRecipeContent(board.getRecipeContent());
@@ -24,8 +26,6 @@ public interface BoardMapper {
         response.setCookingTime(board.getCookingTime());
         response.setServingSize(board.getServingSize());
         response.setLikesCount(board.getLikeCount());
-        response.setMenuCategory(board.getMenuCategory().getStatus());
-        response.setDifficulty(board.getDifficulty().getStatus());
         response.setLikesCount(board.getLikeCount());
 
         return response;

@@ -44,7 +44,7 @@ public class BoardDto{
         private int servingSize;
 
         @NotNull
-        private Board.MenuCategory boardMenuCategory;
+        private Board.MenuCategory menuCategory;
 
         @NotNull
         private Board.Difficulty difficulty;
@@ -84,7 +84,7 @@ public class BoardDto{
         private int servingSize;
 
         @NotNull
-        private Board.MenuCategory boardMenuCategory;
+        private Board.MenuCategory menuCategory;
 
         @NotNull
         private Board.Difficulty difficulty;
