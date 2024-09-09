@@ -8,6 +8,7 @@ import com.nonangbie.memberFood.entity.MemberFood;
 import com.nonangbie.memberFood.mapper.MemberFoodMapper;
 import com.nonangbie.memberFood.service.MemberFoodService;
 import com.nonangbie.utils.UriCreator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
@@ -24,17 +25,12 @@ import java.util.List;
 @Validated
 @RequestMapping("/my-foods")
 @Slf4j
+@RequiredArgsConstructor
 public class MemberFoodController {
 
     private final static String DEFAULT_MEMBER_FOOD_URL = "/my-foods";
     private final MemberFoodMapper memberFoodMapper;
     private final MemberFoodService memberFoodService;
-
-    public MemberFoodController(MemberFoodMapper memberFoodMapper,
-                                MemberFoodService memberFoodService) {
-        this.memberFoodMapper = memberFoodMapper;
-        this.memberFoodService = memberFoodService;
-    }
 
     @PostMapping
     public ResponseEntity postMemberFood(@Valid @RequestBody MemberFoodDto.Post requestBody) {

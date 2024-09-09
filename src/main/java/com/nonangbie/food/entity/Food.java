@@ -30,10 +30,6 @@ public class Food extends Auditable {
     @Column(nullable = false)
     private FoodCategory foodCategory;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
     public enum FoodCategory {
         VEGETABLES_FRUITS("채소 및 과일류"),
         MEAT("육류"),

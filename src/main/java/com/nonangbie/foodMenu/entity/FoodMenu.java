@@ -2,6 +2,7 @@ package com.nonangbie.foodMenu.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nonangbie.food.entity.Food;
+import com.nonangbie.member.entity.Member;
 import com.nonangbie.menu.entity.Menu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
