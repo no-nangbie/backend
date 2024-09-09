@@ -22,11 +22,11 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/my_foods")
+@RequestMapping("/my-foods")
 @Slf4j
 public class MemberFoodController {
 
-    private final static String DEFAULT_MEMBER_FOOD_URL = "/my_foods";
+    private final static String DEFAULT_MEMBER_FOOD_URL = "/my-foods";
     private final MemberFoodMapper memberFoodMapper;
     private final MemberFoodService memberFoodService;
 

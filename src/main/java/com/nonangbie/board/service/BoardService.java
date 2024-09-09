@@ -11,10 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,13 +24,13 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository repository;
     private final BoardLikeRepository boardLikeRepository;
-    public Board createBoard(Board board) {
+    public Board createBoard(Board board, Authentication authentication) {
         //시큐리티 적용 시 내용 추가 예정
         Member member = new Member();
         board.setMember(member);
         return repository.save(board);
     }
-    public Board updateBoard(Board board,long boardId) {
+    public Board updateBoard(Board board,long boardId,Authentication authentication) {
         //시큐리티 적용 시 내용 추가 예정
         Member member = new Member();
         Board findBoard = repository.findById(boardId)
@@ -42,9 +42,9 @@ public class BoardService {
         return repository.save(board);
     }
 
-    public void deleteBoard(long boardId){
+    public void deleteBoard(long boardId,Authentication authentication) {
 //        extractMemberFromAuthentication(authentication);
-        Board findBoard = findVerifiedBoard(boardId);
+        Board findBoard = findVerifiedBoard(boardId, authentication);
         repository.delete(findBoard);
 //        if(!findBoard.getMember().getEmail().equals(authentication.getName())) {
 //            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
@@ -52,7 +52,7 @@ public class BoardService {
 //        findBoard.setBoardStatus(Board.BoardStatus.BOARD_DELETED);
 //        boardRepository.save(findBoard);
     }
-    public Page<Board> findBoardsByType(String type, String sort, int page, int size) {
+    public Page<Board> findBoardsByType(String type, String sort, int page, int size,Authentication authentication) {
         Sort sortBy;
         Board.MenuCategory menuCategory;
         try {
@@ -76,7 +76,7 @@ public class BoardService {
         return repository.findAllByMenuCategory(menuCategory, pageable);
     }
 
-    public boolean likeBoard(long boardId) {
+    public boolean likeBoard(long boardId,Authentication authentication) {
         Board findBoard = repository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         findBoard.setLikeCount(findBoard.getLikeCount() + 1);
@@ -84,7 +84,7 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Board findVerifiedBoard(long boardId){
+    public Board findVerifiedBoard(long boardId, Authentication authentication){
         Optional<Board> findBoard =
                 repository.findById(boardId);
         Board result = findBoard.orElseThrow(()->

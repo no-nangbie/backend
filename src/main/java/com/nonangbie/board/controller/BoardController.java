@@ -1,5 +1,6 @@
 package com.nonangbie.board.controller;
 
+import com.nonangbie.auth.service.AuthService;
 import com.nonangbie.board.dto.BoardDto;
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.board.mapper.BoardMapper;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,7 @@ public class BoardController {
     private final static String BOARD_DEFAULT_URL = "/boards";
     private final BoardService service;
     private final BoardMapper mapper;
+    private final AuthService authService;
 
     /**
      * 게시글 추가 메서드
@@ -36,8 +39,9 @@ public class BoardController {
      * @Author 신민준
      */
     @PostMapping
-    public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post requestBody) {
-        Board createBoard = service.createBoard(mapper.boardPostDtoToBoard(requestBody));
+    public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post requestBody,
+                                    Authentication authentication) {
+        Board createBoard = service.createBoard(mapper.boardPostDtoToBoard(requestBody),authentication);
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, createBoard.getBoardId());
 
         return ResponseEntity.created(location).build();
@@ -52,23 +56,26 @@ public class BoardController {
      */
     @PatchMapping("/{board-id}")
     public ResponseEntity patchBoard(@PathVariable("board-id") long boardId,
-                                    @Valid @RequestBody BoardDto.Patch requestBody) {
-        Board createBoard = service.updateBoard(mapper.boardpatchDtoToBoard(requestBody),boardId);
+                                    @Valid @RequestBody BoardDto.Patch requestBody,
+                                     Authentication authentication) {
+        Board createBoard = service.updateBoard(mapper.boardpatchDtoToBoard(requestBody),boardId,authentication);
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, createBoard.getBoardId());
 
         return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping("/{board-id}")
-    public ResponseEntity deleteBoard(@PathVariable("board-id") @Positive long boardId) {
-        service.deleteBoard(boardId);
+    public ResponseEntity deleteBoard(@PathVariable("board-id") @Positive long boardId,
+                                      Authentication authentication) {
+        service.deleteBoard(boardId,authentication);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{board-id}")
     public ResponseEntity getBoard(@PathVariable("board-id")
-                                   @Positive long boardId) {
-        Board findBoard = service.findVerifiedBoard(boardId);
+                                   @Positive long boardId,
+                                   Authentication authentication) {
+        Board findBoard = service.findVerifiedBoard(boardId,authentication);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.boardToBoardDtoResponse(findBoard)),
@@ -79,9 +86,10 @@ public class BoardController {
     public ResponseEntity getBoards(@RequestParam(name = "type") String boardType,
                                     @RequestParam(name = "sort") String sort,
                                     @Positive @RequestParam int page,
-                                    @Positive @RequestParam int size){
+                                    @Positive @RequestParam int size,
+                                    Authentication authentication) {
 
-        Page<Board> pageBoards = service.findBoardsByType(boardType, sort, page - 1, size);
+        Page<Board> pageBoards = service.findBoardsByType(boardType, sort, page - 1, size, authentication);
         List<Board> boards = pageBoards.getContent();
 
         return new ResponseEntity<>(
@@ -96,8 +104,8 @@ public class BoardController {
      * @return
      */
     @PostMapping("/{board-id}")
-    public ResponseEntity likeBoard(@PathVariable("board-id") long boardId) {
-        return service.likeBoard(boardId) ?
+    public ResponseEntity likeBoard(@PathVariable("board-id") long boardId,Authentication authentication) {
+        return service.likeBoard(boardId,authentication) ?
                 new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

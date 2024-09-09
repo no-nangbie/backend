@@ -59,7 +59,6 @@ public class MemberDto {
     public static class Response {
         private long memberId;
         private String email;
-        private String password;
         private String nickname;
         private Member.memberStatus status;
     }
