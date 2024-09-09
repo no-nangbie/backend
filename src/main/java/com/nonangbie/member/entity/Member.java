@@ -3,6 +3,7 @@ package com.nonangbie.member.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.boardLike.entity.BoardLike;
+import com.nonangbie.memberFood.entity.MemberFood;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,22 +21,22 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long memberId;
 
-    @Column(name = "email", length = 20, nullable = false)
+    @Column(name = "email", length = 255, nullable = false)
     private String email;
 
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @Column(name = "nickname", length = 20, nullable = false)
+    @Column(name = "nickname", length = 255, nullable = false)
     private String nickname;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<MemberFood> memberFoodList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MemberFood> memberFoodList = new ArrayList<>();
 //
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonManagedReference
