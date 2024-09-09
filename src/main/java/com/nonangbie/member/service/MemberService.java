@@ -1,5 +1,6 @@
 package com.nonangbie.member.service;
 
+import com.nonangbie.auth.utils.CustomAuthorityUtils;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
@@ -9,9 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -20,36 +24,47 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
     public Member createMember(Member member) {
         verifyExistMember(member.getEmail());
         verifyNickName(member.getNickname());
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         return memberRepository.save(member);
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(long memberId) {
-        return findVerifiedMember(memberId);
+    public Member findMember(Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication);
+        return member;
     }
 
-    public Page<Member> findMembers(int page, int size) {
+    public Page<Member> findMembers(int page, int size, Authentication authentication) {
         return memberRepository.findAll(PageRequest.of(page, size,
                 Sort.by("memberId").descending()));
     }
 
-    public Member updateMember(Member member) {
-        Member findMember = findVerifiedMember(member.getMemberId());
+    public Member updateMember(Member member, Authentication authentication) {
+        Member authenticatedMember = extractMemberFromAuthentication(authentication);
 
         // 비밀번호가 null이 아니고, 기존 비밀번호와 다를 경우에만 업데이트
-        if (member.getPassword() != null && !member.getPassword().equals(findMember.getPassword())) {
-            findMember.setPassword(member.getPassword()); // 평문 비밀번호 설정 (암호화 X)
+        if (member.getPassword() != null && !passwordEncoder.matches(member.getPassword(), authenticatedMember.getPassword())) {
+            String encryptedPassword = passwordEncoder.encode(member.getPassword()); // 비밀번호 암호화
+            authenticatedMember.setPassword(encryptedPassword); // 암호화된 비밀번호로 설정
         }
 
         // 닉네임 업데이트
-        if (member.getNickname() != null && !member.getNickname().equals(findMember.getNickname())) {
-            findMember.setNickname(member.getNickname());
+        if (member.getNickname() != null && !member.getNickname().equals(authenticatedMember.getNickname())) {
+            authenticatedMember.setNickname(member.getNickname());
         }
-        return memberRepository.save(findMember);
+
+        return memberRepository.save(authenticatedMember);
     }
 
     public Member findMemberId(Member member) {
@@ -71,9 +86,9 @@ public class MemberService {
         return member;
     }
 
-    public void deleteMember(long memberId) {
-        Member findMember = findVerifiedMember(memberId);
-        memberRepository.delete(findMember);
+    public void deleteMember(Authentication authentication) {
+        Member authenticatedMember = extractMemberFromAuthentication(authentication);
+        memberRepository.delete(authenticatedMember);
     }
 
     private void verifyExistMember(String email) {
@@ -100,24 +115,11 @@ public class MemberService {
         }
     }
 
-//    private Member extractMemberFromAuthentication(Authentication authentication) {
-//        /**
-//         * 첫 번째 if 블록에서는 메서드로 전달된 authentication 객체가 null인 경우,
-//         * SecurityContextHolder에서 인증 정보를 가져오려고 시도.
-//         * 두 번째 if 블록에서는 authentication이 여전히 null인 경우,
-//         * 사용자에게 인증되지 않았음을 알리고, 처리할 수 있도록 예외를 발생시킴.
-//         */
-////        if (authentication == null) {
-////            authentication = SecurityContextHolder.getContext().getAuthentication();
-////        }
-////
-////        if (authentication == null) {
-////            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-////        }
-//
-//        String username = (String) authentication.getPrincipal();
-//
-//        return memberRepository.findByEmail(username)
-//                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-//    }
+    private Member extractMemberFromAuthentication(Authentication authentication) {
+
+        String username = (String) authentication.getPrincipal();
+
+        return memberRepository.findByEmail(username)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
 }

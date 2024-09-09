@@ -63,4 +63,11 @@ public class MemberDto {
         private String nickname;
         private Member.memberStatus status;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class responseEmail {
+        private String email;
+    }
 }
