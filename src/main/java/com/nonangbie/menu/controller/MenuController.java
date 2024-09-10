@@ -1,5 +1,6 @@
 package com.nonangbie.menu.controller;
 
+import com.nonangbie.auth.service.AuthService;
 import com.nonangbie.dto.MultiResponseDto;
 import com.nonangbie.dto.SingleResponseDto;
 import com.nonangbie.menu.dto.MenuDto;
@@ -8,6 +9,7 @@ import com.nonangbie.menu.mapper.MenuMapper;
 import com.nonangbie.menu.reposiitory.MenuRepository;
 import com.nonangbie.menu.service.MenuService;
 import com.nonangbie.utils.UriCreator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,20 +32,18 @@ import java.util.stream.Collectors;
 @Validated
 @RequestMapping("/menus")
 @Slf4j
+@RequiredArgsConstructor
 public class MenuController {
     private final static String DEFAULT_MENU_URL = "/menus";
     private final MenuMapper menuMapper;
     private final MenuService menuService;
+    private final AuthService authService;
 
-    public MenuController(MenuMapper menuMapper, MenuService menuService) {
-        this.menuMapper = menuMapper;
-        this.menuService = menuService;
-    }
 
     @PostMapping
-    public ResponseEntity postMenu(@Valid @RequestBody MenuDto.Post menuPostDto) {
-        Menu menu = menuMapper.menuPostDtoToMenu(menuPostDto);
-        Menu createdMenu = menuService.createMenu(menu);
+    public ResponseEntity postMenu(@Valid @RequestBody MenuDto.Post menuPostDto,
+                                   Authentication authentication) {
+        Menu createdMenu = menuService.createMenu(menuMapper.menuPostDtoToMenu(menuPostDto),authentication);
         URI location = UriCreator.createUri(DEFAULT_MENU_URL, createdMenu.getMenuId());
 
         return ResponseEntity.created(location).build();
@@ -50,26 +51,26 @@ public class MenuController {
 
     @PatchMapping("/{menu-id}")
     public ResponseEntity patchMenu(@Valid @RequestBody MenuDto.Patch menuPatchDto,
-                                    @PathVariable("menu-id") @Positive long menuId) {
+                                    @PathVariable("menu-id") @Positive long menuId,
+                                    Authentication authentication) {
         menuPatchDto.setMenuId(menuId);
 
-        Menu patchMenu = menuMapper.menuPatchDtoToMenu(menuPatchDto);
+        Menu patchMenu = menuService.updateMenu(menuMapper.menuPatchDtoToMenu(menuPatchDto),authentication);
 
-        Menu menu = menuService.updateMenu(patchMenu);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(menu)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu)), HttpStatus.OK);
     }
 
     @GetMapping("all")
     public ResponseEntity getAllMenus(@Positive @RequestParam int page,
                                       @Positive @RequestParam int size,
-                                      @RequestParam String sort) {
+                                      @RequestParam String sort,
+                                      Authentication authentication) {
         Sort sortOrder = Sort.by(sort.split("_")[0]).ascending();
         if(sort.split("_")[1].equalsIgnoreCase("desc")) {
             sortOrder = sortOrder.descending();
         }
 
-        Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder);
+        Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder,authentication);
         List<Menu> menus = pageMenu.getContent();
         return new ResponseEntity(
                 new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus), pageMenu), HttpStatus.OK
@@ -77,8 +78,8 @@ public class MenuController {
     }
 
     @GetMapping("/{menu-id}")
-    public ResponseEntity getMenu(@PathVariable("menu-id") @Positive long menuId) {
-        Menu findMenu = menuService.findMenuById(menuId);
+    public ResponseEntity getMenu(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
+        Menu findMenu = menuService.findMenuById(menuId,authentication);
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(findMenu)), HttpStatus.OK);
     }
 
@@ -86,7 +87,8 @@ public class MenuController {
     public ResponseEntity getMenus(@Positive @RequestParam int page,
                                    @Positive @RequestParam int size,
                                    @RequestParam String sort,
-                                   @RequestParam String menuCategory) {
+                                   @RequestParam String menuCategory,
+                                   Authentication authentication) {
         Sort sortOrder = Sort.by(sort.split("_")[0]).ascending();
         if (sort.split("_")[1].equalsIgnoreCase("desc")) {
             sortOrder = sortOrder.descending();
@@ -99,7 +101,7 @@ public class MenuController {
             return new ResponseEntity("유효하지 않은 카테고리입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        Page<Menu> pageMenu = menuService.findMenuSort(page - 1, size, sortOrder, menuCategory_);
+        Page<Menu> pageMenu = menuService.findMenuSort(page - 1, size, sortOrder, menuCategory_,authentication);
         List<Menu> menus = pageMenu.getContent();
         return new ResponseEntity(
                 new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus), pageMenu), HttpStatus.OK
@@ -110,7 +112,8 @@ public class MenuController {
     public ResponseEntity search(@RequestParam("keyword") String keyword,
                                  @RequestParam(value = "sort", defaultValue = "menuId_desc") String sort, // 정렬 기준과 방향을 하나로 받음
                                  @PageableDefault Pageable pageable,
-                                 @RequestParam("menuCategory") String menuCategory) {
+                                 @RequestParam("menuCategory") String menuCategory,
+                                 Authentication authentication) {
 
         Menu.MenuCategory menuCategory_;
         try {
@@ -147,7 +150,7 @@ public class MenuController {
         // PageRequest에서 동적으로 정렬 기준 및 방향 설정
         pageable = PageRequest.of(page, pageable.getPageSize(), sortOrder);
 
-        Page<Menu> searchList = menuService.search(pageable, keyword, menuCategory_);
+        Page<Menu> searchList = menuService.search(pageable, keyword, menuCategory_,authentication);
         List<MenuDto.Response> responseList = searchList.stream()
                 .map(menuMapper::menuToMenuResponseDto)
                 .collect(Collectors.toList());
@@ -158,15 +161,15 @@ public class MenuController {
     }
 
     @DeleteMapping("/{menu-id}")
-    public ResponseEntity deleteMenu(@PathVariable("menu-id") @Positive long menuId) {
-        menuService.deleteMenu(menuId);
+    public ResponseEntity deleteMenu(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
+        menuService.deleteMenu(menuId,authentication);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     //메뉴 좋아요
     @PostMapping("/{menu-id}/like")
-    public ResponseEntity postLike(@PathVariable("menu-id") @Positive long menuId) {
-        menuService.createLike(menuId);
+    public ResponseEntity postLike(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
+        menuService.createLike(menuId,authentication);
         return new ResponseEntity(HttpStatus.OK);
     }
 
