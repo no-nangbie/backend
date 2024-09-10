@@ -129,4 +129,11 @@ public class MemberFoodController {
         memberFoodService.deleteMemberFood(memberFoodId,authentication);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping
+    public ResponseEntity deleteMultipleMemberFoods(@RequestBody List<Long> ids, Authentication authentication) {
+        memberFoodService.deleteMultipleMemberFoods(ids, authentication);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }
