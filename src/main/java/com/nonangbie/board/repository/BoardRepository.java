@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findAllByMenuCategory(Board.MenuCategory type, Pageable pageable);
+    Page<Board> findAll(Pageable pageable);
 }

@@ -83,7 +83,7 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity getBoards(@RequestParam(name = "type") String boardType,
+    public ResponseEntity getBoards(@RequestParam(name = "type", required = false, defaultValue = "ALL") String boardType,
                                     @RequestParam(name = "sort") String sort,
                                     @Positive @RequestParam int page,
                                     @Positive @RequestParam int size,

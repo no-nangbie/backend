@@ -58,24 +58,27 @@ public class BoardService extends ExtractMemberEmail {
         extractMemberFromAuthentication(authentication, memberRepository);
         Sort sortBy;
         Board.MenuCategory menuCategory;
-        try {
-            menuCategory = Board.MenuCategory.valueOf(type.toUpperCase());
-            switch (sort) {
-                case "LIKE_ASC":
-                    sortBy = Sort.by("likeCount").ascending(); break;
-                case "LIKE_DESC":
-                    sortBy = Sort.by("likeCount").descending(); break;
-                case "CREATED_AT_ASC":
-                    sortBy = Sort.by("boardId").ascending(); break;
-                case "CREATED_AT_DESC":
-                    sortBy = Sort.by("boardId").descending(); break;
-                default:
-                    throw new IllegalArgumentException("Invalid sort type: " + sort);
-            }
-        } catch (IllegalArgumentException e) {
-            throw new BusinessLogicException(ExceptionCode.INVALID_BOARD_FILTER_TYPE);
+        switch (sort) {
+            case "LIKE_ASC":
+                sortBy = Sort.by("likeCount").ascending(); break;
+            case "LIKE_DESC":
+                sortBy = Sort.by("likeCount").descending(); break;
+            case "CREATED_AT_ASC":
+                sortBy = Sort.by("boardId").ascending(); break;
+            case "CREATED_AT_DESC":
+                sortBy = Sort.by("boardId").descending(); break;
+            default:
+                throw new IllegalArgumentException("Invalid sort type: " + sort);
         }
         Pageable pageable = PageRequest.of(page, size, sortBy);
+
+        try {
+            menuCategory = Board.MenuCategory.valueOf(type.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            if(type.equals("ALL"))
+                return repository.findAll(pageable);
+            throw new BusinessLogicException(ExceptionCode.INVALID_BOARD_FILTER_TYPE);
+        }
         return repository.findAllByMenuCategory(menuCategory, pageable);
     }
 
