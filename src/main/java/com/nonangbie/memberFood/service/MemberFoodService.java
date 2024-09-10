@@ -131,6 +131,19 @@ public class MemberFoodService extends ExtractMemberEmail {
         memberFoodRepository.delete(findMemberFood);
     }
 
+    public void deleteMultipleMemberFoods(List<Long> ids, Authentication authentication) {
+        String email = (String) authentication.getPrincipal();
+
+        // 각 ID에 대해 MemberFood를 찾아서 삭제
+        for (Long id : ids) {
+            MemberFood findMemberFood = findMemberFood(id, authentication);
+            if (!findMemberFood.getMember().getEmail().equals(email)) {
+                throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
+            }
+            memberFoodRepository.delete(findMemberFood);
+        }
+    }
+
     public MemberFood findVerifiedMemberFood(long memberFoodId,Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
         Optional<MemberFood> optionalMemberFood = memberFoodRepository.findById(memberFoodId);
@@ -138,4 +151,5 @@ public class MemberFoodService extends ExtractMemberEmail {
                 new BusinessLogicException(ExceptionCode.MEMBER_FOOD_NOT_FOUND));
         return findmemberFood;
     }
+
 }
