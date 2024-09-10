@@ -121,7 +121,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:3000"));  // 모든 오리진 허용
-        configuration.setAllowedMethods(Arrays.asList("*"));  // 허용되는 HTTP 메서드
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 허용하는 HTTP 메서드 설정
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Accept", "content-type"));  // 허용되는 헤더g
         configuration.setExposedHeaders(Arrays.asList("Authorization", "memberId"));  // 노출할 헤더 추가
         configuration.setAllowCredentials(true);  // 인증 관련 정보를 허용
