@@ -11,9 +11,9 @@ public abstract class ExtractMemberEmail {
     public Member extractMemberFromAuthentication(Authentication authentication,
                                                   MemberRepository memberRepository)  {
 
-        String username = (String) authentication.getPrincipal();
+        String email = (String) authentication.getPrincipal();
 
-        return memberRepository.findByEmail(username)
+        return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }
