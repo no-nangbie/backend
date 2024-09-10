@@ -115,4 +115,9 @@ public class MemberService extends ExtractMemberEmail {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
     }
+    // 닉네임 중복 여부 확인 메서드
+    @Transactional(readOnly = true)
+    public boolean checkNicknameExists(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 }
