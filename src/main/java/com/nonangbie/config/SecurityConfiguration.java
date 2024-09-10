@@ -28,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -53,7 +54,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers().frameOptions().sameOrigin() // H2 콘솔 사용을 위한 설정
+                .headers().frameOptions().disable() // H2 콘솔 사용을 위한 설정
                 .and()
                 .csrf().disable() // CSRF 비활성화 (개발 환경에서 주로 사용)
                 .cors(withDefaults()) // CORS 설정 기본값 적용
@@ -119,9 +120,9 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));  // 모든 오리진 허용
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));  // 허용되는 HTTP 메서드
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Accept"));  // 허용되는 헤더
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:3000"));  // 모든 오리진 허용
+        configuration.setAllowedMethods(Arrays.asList("*"));  // 허용되는 HTTP 메서드
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Accept", "content-type"));  // 허용되는 헤더g
         configuration.setExposedHeaders(Arrays.asList("Authorization", "memberId"));  // 노출할 헤더 추가
         configuration.setAllowCredentials(true);  // 인증 관련 정보를 허용
 
