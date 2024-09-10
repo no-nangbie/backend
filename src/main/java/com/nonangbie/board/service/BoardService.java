@@ -2,6 +2,7 @@ package com.nonangbie.board.service;
 
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.board.repository.BoardRepository;
+import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.boardLike.repository.BoardLikeRepository;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
@@ -83,11 +84,37 @@ public class BoardService extends ExtractMemberEmail {
     }
 
     public boolean likeBoard(long boardId,Authentication authentication) {
-        extractMemberFromAuthentication(authentication, memberRepository);
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
         Board findBoard = repository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
-        findBoard.setLikeCount(findBoard.getLikeCount() + 1);
-        return true;
+        if(findVerifiedBoardLike(member,findBoard)) {
+            findBoard.setLikeCount(findBoard.getLikeCount() - 1);
+            return false;
+        }
+        else {
+            findBoard.setLikeCount(findBoard.getLikeCount() + 1);
+            return true;
+        }
+    }
+
+    private boolean findVerifiedBoardLike(Member member, Board board) {
+        Optional<BoardLike> findBoardLike = boardLikeRepository.findByMemberAndBoard(member,board);
+        if(findBoardLike.isPresent()){
+            boardLikeRepository.delete(findBoardLike.get());
+            return true;
+        }else{
+            BoardLike boardLike = new BoardLike();
+            boardLike.setBoard(board);
+            boardLike.setMember(member);
+            boardLikeRepository.save(boardLike);
+            return false;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public boolean findVerifiedBoardLike(String memberEmail, Board board) {
+        Optional<BoardLike> findBoardLike = boardLikeRepository.findByMember_emailAndBoard(memberEmail,board);
+        return findBoardLike.isPresent();
     }
 
     @Transactional(readOnly = true)

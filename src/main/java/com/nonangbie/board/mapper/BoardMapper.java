@@ -12,7 +12,7 @@ public interface BoardMapper {
     Board boardPostDtoToBoard(BoardDto.Post requestBody);
     Board boardpatchDtoToBoard(BoardDto.Patch requestBody);
 
-    default BoardDto.Response boardToBoardDtoResponse(Board board) {
+    default BoardDto.Response boardToBoardDtoResponse(Board board,boolean likeCheck) {
         BoardDto.Response response = new BoardDto.Response();
         response.setMenuCategory(board.getMenuCategory().getStatus());
         response.setDifficulty(board.getDifficulty().getStatus());
@@ -27,6 +27,10 @@ public interface BoardMapper {
         response.setServingSize(board.getServingSize());
         response.setLikesCount(board.getLikeCount());
         response.setLikesCount(board.getLikeCount());
+        if(likeCheck)
+            response.setLikeCheck("T");
+        else
+            response.setLikeCheck("F");
 
         return response;
     }
