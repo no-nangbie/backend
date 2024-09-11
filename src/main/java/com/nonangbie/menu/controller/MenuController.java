@@ -11,10 +11,7 @@ import com.nonangbie.menu.service.MenuService;
 import com.nonangbie.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,7 +105,7 @@ public class MenuController {
         );
     }
 
-    @GetMapping("search")
+    @GetMapping("search_by_category")
     public ResponseEntity search(@RequestParam("keyword") String keyword,
                                  @RequestParam(value = "sort", defaultValue = "menuId_desc") String sort, // 정렬 기준과 방향을 하나로 받음
                                  @PageableDefault Pageable pageable,
@@ -158,6 +155,20 @@ public class MenuController {
         return new ResponseEntity(
                 new MultiResponseDto<>(responseList, searchList), HttpStatus.OK
         );
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchMenu(@RequestParam String keyword,
+                                     @Positive @RequestParam int page,
+                                     @Positive @RequestParam int size,
+                                     Authentication authentication) {
+
+        List<Menu> menus = menuService.searchMenuByKeyword(keyword, authentication);
+        Page<Menu> menuPage = new PageImpl<>(menus, PageRequest.of(page, size), menus.size());
+        MultiResponseDto<MenuDto.Response> responseDto = new MultiResponseDto<>(
+                menuMapper.menusToMenuResponseDtos(menus), menuPage
+        );
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{menu-id}")

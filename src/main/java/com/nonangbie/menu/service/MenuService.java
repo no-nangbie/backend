@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,6 +81,11 @@ public class MenuService extends ExtractMemberEmail {
         extractMemberFromAuthentication(authentication,memberRepository);
         Page<Menu> menuList = menuRepository.searchByMenuTitleAndCategory(pageable, keyword, menuCategory);
         return menuList;
+    }
+
+    public List<Menu> searchMenuByKeyword(String keyword, Authentication authentication) {
+        extractMemberFromAuthentication(authentication, memberRepository);
+        return menuRepository.findByMenuTitleContainingOrMenuDescriptionContaining(keyword, keyword);
     }
 
     public void deleteMenu(long menuId,Authentication authentication) {
