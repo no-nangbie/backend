@@ -1,39 +1,45 @@
 package com.nonangbie.cloudapi.controller;
 
-import com.nonangbie.cloudapi.service.SpeechToTextService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.google.cloud.speech.v1.*;
+import com.google.protobuf.ByteString;
 
-import java.io.IOException;
-
-@Slf4j
 @RestController
-@RequestMapping("stt")
-@RequiredArgsConstructor // 생성자 인젝션을 위한 어노테이션
+@RequestMapping("/api/stt")
 public class SttController {
 
-    private final SpeechToTextService sttService;
+    @PostMapping("/recognize")
+    public String recognizeSpeech(@RequestParam("file") MultipartFile file) {
+        try {
+            // 파일을 바이트 배열로 변환
+            byte[] bytes = file.getBytes();
+            ByteString audioBytes = ByteString.copyFrom(bytes);
 
-    /**
-     * 녹음 파일을 받아서 텍스트로 변환하여 반환
-     *
-     * @param audioFile 오디오 파일
-     * @return 녹음 파일을 변환한 텍스트
-     */
-    @PostMapping(value = "/audio", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> handleAudioMessage(@RequestParam("audioFile") MultipartFile audioFile) throws IOException {
+            // STT 요청을 위한 오디오 구성
+            RecognitionAudio audio = RecognitionAudio.newBuilder()
+                    .setContent(audioBytes)
+                    .build();
 
-        String transcribe = sttService.transcribe(audioFile);
+            // 인식 구성 설정
+            RecognitionConfig config = RecognitionConfig.newBuilder()
+                    .setEncoding(RecognitionConfig.AudioEncoding.FLAC)
+                    .setSampleRateHertz(48000)
+                    .setLanguageCode("ko-KR")
+                    .build();
 
-        log.info("Received file: {}", audioFile.getOriginalFilename());
-        log.info("File size: {} bytes", audioFile.getSize());
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$");
-        System.out.println(audioFile.getOriginalFilename());
+            // Google Speech-to-Text 호출
+            try (SpeechClient speechClient = SpeechClient.create()) {
+                RecognizeResponse response = speechClient.recognize(config, audio);
+                StringBuilder transcription = new StringBuilder();
+                for (SpeechRecognitionResult result : response.getResultsList()) {
+                    transcription.append(result.getAlternativesList().get(0).getTranscript());
+                }
+                return transcription.toString();
+            }
 
-        return ResponseEntity.ok().body(transcribe);
+        } catch (Exception e) {
+            return "오디오 파일 처리 중 오류가 발생했습니다: " + e.getMessage();
+        }
     }
 }
