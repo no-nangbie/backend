@@ -36,7 +36,7 @@ public class SpeechToTextService {
             RecognitionConfig recognitionConfig =
                     RecognitionConfig.newBuilder()
                             .setEncoding(RecognitionConfig.AudioEncoding.FLAC) // 오디오 인코딩
-                            .setSampleRateHertz(44100) // 샘플레이트
+                            .setSampleRateHertz(16000) // 샘플레이트
                             .setLanguageCode("en-US") // 한국어 설정
 //                            .setModel("latest_short") // 여기에 원하는 모델을 설정 (예: latest_long, latest_short 등)
                             .build();

@@ -18,7 +18,7 @@ public class MemberDto {
         private String email;
 
         @NotNull(message = "비밀번호는 필수 항목입니다.")
-        @Size(min = 8, max = 20, message = "비밀번호는 8자에서 20자 사이여야 합니다.")
+        @Size(min = 8, max = 15, message = "비밀번호는 8자에서 15자 사이여야 합니다.")
         @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?`~]{8,15}$",
                 message = "비밀번호는 8자이상 15자 이하의 알파벳, 숫자, 특수문자만 포함할 수 있습니다.")
         private String password;

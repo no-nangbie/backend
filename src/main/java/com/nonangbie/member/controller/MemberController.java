@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -58,16 +59,19 @@ public class MemberController {
     }
 
     // 회원가입 완료
-    @PostMapping("/members")
+    @PostMapping("/signup")
     public ResponseEntity createMember(@Valid @RequestBody MemberDto.Post memberDto, BindingResult bindingResult) {
         // 유효성 검사 후 에러가 있으면 처리
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+            // 유효성 검사에서 발생한 오류 메시지들을 반환
+            List<String> errorMessages = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errorMessages);
         }
         Member member = memberMapper.memberPostToMember(memberDto);
         service.createMember(member);
         URI location = UriCreator.createUri(MEMBER_DEFAULT_URL, member.getMemberId());
-
         return ResponseEntity.created(location).build();
     }
 
@@ -148,5 +152,15 @@ public class MemberController {
         service.deleteMember(authentication);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    // 닉네임 중복 확인 API 추가
+    @GetMapping("/nickname-check")
+    public ResponseEntity<String> checkNickname(@RequestParam String nickname) {
+        boolean exists = service.checkNicknameExists(nickname);
+        if (exists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("NickName exists");
+        } else {
+            return ResponseEntity.ok("NickName available");
+        }
     }
 }

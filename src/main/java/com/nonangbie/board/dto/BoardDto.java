@@ -123,5 +123,6 @@ public class BoardDto{
         private int likesCount;
         private String MenuCategory;
         private String difficulty;
+        private String likeCheck;
     }
 }

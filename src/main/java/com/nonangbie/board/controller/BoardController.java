@@ -76,9 +76,10 @@ public class BoardController {
     public ResponseEntity getBoard(@PathVariable("board-id") @Positive long boardId,
                                    Authentication authentication) {
         Board findBoard = service.findVerifiedBoard(boardId,authentication);
+        boolean likeCheck = service.findVerifiedBoardLike((String) authentication.getPrincipal(),findBoard);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.boardToBoardDtoResponse(findBoard)),
+                new SingleResponseDto<>(mapper.boardToBoardDtoResponse(findBoard,likeCheck)),
                 HttpStatus.OK);
     }
 
@@ -103,8 +104,9 @@ public class BoardController {
      * @param boardId
      * @return
      */
-    @PostMapping("/{board-id}")
-    public ResponseEntity likeBoard(@PathVariable("board-id") long boardId,Authentication authentication) {
+    @PostMapping("/{board-id}/like")
+    public ResponseEntity likeBoard(@PathVariable("board-id") long boardId,
+                                    Authentication authentication) {
         return service.likeBoard(boardId,authentication) ?
                 new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NO_CONTENT);
     }

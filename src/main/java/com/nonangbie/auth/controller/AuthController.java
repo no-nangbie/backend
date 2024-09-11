@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
+    /**
+     * 로그아웃을 처리하는 Post요청
+     * @param authentication
+     * @return HTTP 응답 반환
+     */
     @PostMapping("/logout")
     public ResponseEntity postLogout(Authentication authentication) {
         String email = authentication.getName();
