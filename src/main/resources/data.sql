@@ -85,7 +85,6 @@ VALUES
      'https://example.com/images/chestnut-ramen.jpg',
      0,
      NOW()  -- 현재 시각으로 설정
-
     );
 
 INSERT IGNORE INTO menu (menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
