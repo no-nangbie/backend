@@ -39,6 +39,7 @@ public class MemberFoodService extends ExtractMemberEmail {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.FOOD_NOT_FOUND));
         memberFood.setFood(findFood);
         memberFood.setMember(member);
+        memberFood.setFoodName(findFood.getFoodName());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate expirationDate = LocalDate.parse(memberFood.getExpirationDate(), formatter);
