@@ -101,8 +101,8 @@ public class MemberFoodService extends ExtractMemberEmail {
     }
 
     public Page<MemberFood> findMemberFoodsSort(int page, int size, Sort sort,Authentication authentication) {
-        extractMemberFromAuthentication(authentication, memberRepository);
-        return memberFoodRepository.findAll(PageRequest.of(page, size, sort));
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        return memberFoodRepository.findAllByMember(PageRequest.of(page, size, sort),member);
     }
 
     public List<MemberFood> searchMemberFoodsByKeyword(String keyword,Authentication authentication) {
