@@ -1,5 +1,6 @@
 package com.nonangbie.menuLike.entity;
 
+import com.nonangbie.member.entity.Member;
 import com.nonangbie.menu.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,8 @@ public class MenuLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

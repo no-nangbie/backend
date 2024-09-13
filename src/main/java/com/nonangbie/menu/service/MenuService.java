@@ -1,5 +1,7 @@
 package com.nonangbie.menu.service;
 
+import com.nonangbie.board.entity.Board;
+import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
@@ -8,6 +10,8 @@ import com.nonangbie.memberFood.entity.MemberFood;
 import com.nonangbie.memberFood.repository.MemberFoodRepository;
 import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.reposiitory.MenuRepository;
+import com.nonangbie.menuLike.entity.MenuLike;
+import com.nonangbie.menuLike.repository.MenuLikeRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +34,7 @@ public class MenuService extends ExtractMemberEmail {
     private final MenuRepository menuRepository;
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
+    private final MenuLikeRepository menuLikeRepository;
 
     public Menu createMenu(Menu menu, Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
@@ -97,11 +102,17 @@ public class MenuService extends ExtractMemberEmail {
     }
 
     //메뉴 좋아요 기능(추후에 authentication으로 검증)
-    public void createLike(long menuId,Authentication authentication) {
-        extractMemberFromAuthentication(authentication,memberRepository);
-        Menu menu = findMenuById(menuId,authentication);
-        menu.setMenuLikeCount(menu.getMenuLikeCount() + 1);
-        menuRepository.save(menu);
+    public boolean likeMenu(long menuId, Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+        Menu findMenu = findMenuById(menuId,authentication);
+        if(findVerifiedMenuLike(member,findMenu)) {
+            findMenu.setMenuLikeCount(findMenu.getMenuLikeCount() - 1);
+            return false;
+        }
+        else {
+            findMenu.setMenuLikeCount(findMenu.getMenuLikeCount() + 1);
+            return true;
+        }
     }
 
     public List<String> getMemberFoodNames(Authentication authentication) {
@@ -119,6 +130,20 @@ public class MenuService extends ExtractMemberEmail {
         }
 
         return memberFoodNames; // 보유 재료의 이름 리스트를 반환
+    }
+
+    private boolean findVerifiedMenuLike(Member member, Menu menu) {
+        Optional<MenuLike> findMenuLike = menuLikeRepository.findByMemberAndMenu(member,menu);
+        if(findMenuLike.isPresent()){
+            menuLikeRepository.delete(findMenuLike.get());
+            return true;
+        }else{
+            MenuLike menuLike = new MenuLike();
+            menuLike.setMenu(menu);
+            menuLike.setMember(member);
+            menuLikeRepository.save(menuLike);
+            return false;
+        }
     }
 
 }
