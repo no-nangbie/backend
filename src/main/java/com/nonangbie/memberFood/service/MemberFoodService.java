@@ -57,9 +57,9 @@ public class MemberFoodService extends ExtractMemberEmail {
         return memberFoodRepository.save(memberFood);
     }
 
-    public MemberFood updateMemberFood(MemberFood memberFood,Authentication authentication) {
-        Member member = extractMemberFromAuthentication(authentication,memberRepository);
-        MemberFood findMemberFood = findVerifiedMemberFood(memberFood.getMemberFoodId(),authentication);
+    public MemberFood updateMemberFood(MemberFood memberFood, Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        MemberFood findMemberFood = findVerifiedMemberFood(memberFood.getMemberFoodId(), authentication);
 
         if (!Objects.equals(findMemberFood.getMember(), member)) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
@@ -74,27 +74,28 @@ public class MemberFoodService extends ExtractMemberEmail {
                     findMemberFood.setFood(findFood);
                 });
         Optional.ofNullable(memberFood.getFoodCategory())
-                .ifPresent(foodCategory -> findMemberFood.setFoodCategory(foodCategory));
+                .ifPresent(findMemberFood::setFoodCategory);
         Optional.ofNullable(memberFood.getExpirationDate())
-                .ifPresent(expirationDate -> findMemberFood.setExpirationDate(expirationDate));
+                .ifPresent(findMemberFood::setExpirationDate);
         Optional.ofNullable(memberFood.getMemo())
-                .ifPresent(memo -> findMemberFood.setMemo(memo));
+                .ifPresent(findMemberFood::setMemo);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate expirationDate = LocalDate.parse(memberFood.getExpirationDate(), formatter);
+        LocalDate expirationDate = LocalDate.parse(findMemberFood.getExpirationDate(), formatter);
         LocalDate currentDate = LocalDate.now();
         long remainingShelfLife = ChronoUnit.DAYS.between(currentDate, expirationDate);
 
         if (remainingShelfLife >= 0 && remainingShelfLife <= 3) {
-            memberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Approaching_Expiry);
+            findMemberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Approaching_Expiry);
         } else if (remainingShelfLife < 0) {
-            memberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Near_Expiry);
+            findMemberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Near_Expiry);
         } else {
-            memberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Fresh);
+            findMemberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Fresh);
         }
 
         return memberFoodRepository.save(findMemberFood);
     }
+
 
     public MemberFood findMemberFood(long memberFoodId,Authentication authentication) {
         return findVerifiedMemberFood(memberFoodId,authentication);
