@@ -1,5 +1,6 @@
 package com.nonangbie.board.controller;
 
+import com.nonangbie.S3.service.S3Uploader;
 import com.nonangbie.auth.service.AuthService;
 import com.nonangbie.board.dto.BoardDto;
 import com.nonangbie.board.entity.Board;
@@ -16,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -30,7 +33,16 @@ public class BoardController {
     private final static String BOARD_DEFAULT_URL = "/boards";
     private final BoardService service;
     private final BoardMapper mapper;
+    private final S3Uploader s3Uploader;
     private final AuthService authService;
+
+    @PostMapping("/menus")
+    public ResponseEntity createMenu(
+            @RequestParam("image") MultipartFile image) throws IOException {
+        service.createMenu(image);
+        System.out.println("hello");
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     /**
      * 게시글 추가 메서드
@@ -40,9 +52,10 @@ public class BoardController {
      * @Author 신민준
      */
     @PostMapping
-    public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post requestBody,
+    public ResponseEntity postBoard(@Valid @ModelAttribute BoardDto.Post requestBody,
                                     Authentication authentication) {
-        Board createBoard = service.createBoard(mapper.boardPostDtoToBoard(requestBody),authentication);
+        MultipartFile imageFile = requestBody.getImageFile();
+        Board createBoard = service.createBoard(mapper.boardPostDtoToBoard(requestBody),imageFile,authentication);
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, createBoard.getBoardId());
 
         return ResponseEntity.created(location).build();

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 public class BoardDto{
     @Setter
@@ -35,7 +36,7 @@ public class BoardDto{
         private String recipeContent;
 
         @NotBlank
-        private String imageUrl;
+        private MultipartFile imageFile;
 
         @NotNull
         private int cookingTime;
@@ -99,7 +100,7 @@ public class BoardDto{
         private long boardId;
         private String title;
         private String author;
-        private String imageUrl;
+        private MultipartFile imageFile;
         private String menuCategory;
         private int cookingTime;
         private int servingSize;
@@ -117,7 +118,7 @@ public class BoardDto{
         private String boardContent;
         private String foodContent;
         private String recipeContent;
-        private String imageUrl;
+        private MultipartFile imageFile;
         private int cookingTime;
         private int servingSize;
         private int likesCount;
