@@ -6,7 +6,6 @@ import com.nonangbie.dto.SingleResponseDto;
 import com.nonangbie.menu.dto.MenuDto;
 import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.mapper.MenuMapper;
-import com.nonangbie.menu.reposiitory.MenuRepository;
 import com.nonangbie.menu.service.MenuService;
 import com.nonangbie.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
@@ -204,8 +203,8 @@ public class MenuController {
     //메뉴 좋아요
     @PostMapping("/{menu-id}/like")
     public ResponseEntity postLike(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
-        menuService.createLike(menuId,authentication);
-        return new ResponseEntity(HttpStatus.OK);
+        return menuService.likeMenu(menuId,authentication) ?
+                new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 
