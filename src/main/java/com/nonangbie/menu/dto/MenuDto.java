@@ -97,5 +97,7 @@ public class MenuDto {
         private List<FoodMenuDto.Response> foodMenuQuantityList;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private String ownedFoods;
+        private String missingFoods;
     }
 }

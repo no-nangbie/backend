@@ -4,6 +4,8 @@ import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
+import com.nonangbie.memberFood.entity.MemberFood;
+import com.nonangbie.memberFood.repository.MemberFoodRepository;
 import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.reposiitory.MenuRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
@@ -27,7 +29,7 @@ public class MenuService extends ExtractMemberEmail {
 
     private final MenuRepository menuRepository;
     private final MemberRepository memberRepository;
-
+    private final MemberFoodRepository memberFoodRepository;
 
     public Menu createMenu(Menu menu, Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
@@ -100,6 +102,23 @@ public class MenuService extends ExtractMemberEmail {
         Menu menu = findMenuById(menuId,authentication);
         menu.setMenuLikeCount(menu.getMenuLikeCount() + 1);
         menuRepository.save(menu);
+    }
+
+    public List<String> getMemberFoodNames(Authentication authentication) {
+        // 현재 인증된 사용자의 이메일을 이용하여 Member 객체를 가져옴
+
+        Member member =  extractMemberFromAuthentication(authentication, memberRepository);
+
+        // MemberFood 테이블에서 현재 사용자가 가지고 있는 재료 목록을 조회
+        List<MemberFood> memberFoods = memberFoodRepository.findByMember(member);
+
+        // 보유한 재료들의 이름을 List<String>으로 반환
+        List<String> memberFoodNames = new ArrayList<>();
+        for (MemberFood memberFood : memberFoods) {
+            memberFoodNames.add(memberFood.getFood().getFoodName());
+        }
+
+        return memberFoodNames; // 보유 재료의 이름 리스트를 반환
     }
 
 }

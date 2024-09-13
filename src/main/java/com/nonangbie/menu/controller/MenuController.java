@@ -54,7 +54,10 @@ public class MenuController {
 
         Menu patchMenu = menuService.updateMenu(menuMapper.menuPatchDtoToMenu(menuPatchDto),authentication);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu)), HttpStatus.OK);
+        // 사용자의 보유 재료 목록을 가져옴
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu, memberFoodNames)), HttpStatus.OK);
     }
 
     @GetMapping("all")
@@ -69,15 +72,23 @@ public class MenuController {
 
         Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder,authentication);
         List<Menu> menus = pageMenu.getContent();
+        // 사용자의 보유 재료 목록을 가져옴
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
         return new ResponseEntity(
-                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus), pageMenu), HttpStatus.OK
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), pageMenu), HttpStatus.OK
         );
     }
 
     @GetMapping("/{menu-id}")
     public ResponseEntity getMenu(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
         Menu findMenu = menuService.findMenuById(menuId,authentication);
-        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(findMenu)), HttpStatus.OK);
+
+
+        // 현재 사용자의 보유 재료 리스트를 가져옴 (MemberFood 정보)
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(findMenu, memberFoodNames)), HttpStatus.OK);
     }
 
     @GetMapping
@@ -98,10 +109,14 @@ public class MenuController {
             return new ResponseEntity("유효하지 않은 카테고리입니다.", HttpStatus.BAD_REQUEST);
         }
 
+        //추가
+        // 현재 사용자의 보유 재료 리스트를 가져옴 (MemberFood 정보)
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
         Page<Menu> pageMenu = menuService.findMenuSort(page - 1, size, sortOrder, menuCategory_,authentication);
         List<Menu> menus = pageMenu.getContent();
         return new ResponseEntity(
-                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus), pageMenu), HttpStatus.OK
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), pageMenu), HttpStatus.OK
         );
     }
 
@@ -147,9 +162,13 @@ public class MenuController {
         // PageRequest에서 동적으로 정렬 기준 및 방향 설정
         pageable = PageRequest.of(page, pageable.getPageSize(), sortOrder);
 
-        Page<Menu> searchList = menuService.search(pageable, keyword, menuCategory_,authentication);
-        List<MenuDto.Response> responseList = searchList.stream()
-                .map(menuMapper::menuToMenuResponseDto)
+        // 사용자의 보유 재료 목록을 가져옴
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
+        // Menu 리스트를 검색한 후 보유 재료와 미보유 재료를 처리
+        Page<Menu> searchList = menuService.search(pageable, keyword, menuCategory_, authentication);
+        List<MenuDto.Response> responseList = searchList.getContent().stream()
+                .map(menu -> menuMapper.menuToMenuResponseDto(menu, memberFoodNames)) // memberFoodNames 전달
                 .collect(Collectors.toList());
 
         return new ResponseEntity(
@@ -165,8 +184,13 @@ public class MenuController {
 
         List<Menu> menus = menuService.searchMenuByKeyword(keyword, authentication);
         Page<Menu> menuPage = new PageImpl<>(menus, PageRequest.of(page, size), menus.size());
+
+        //추가
+        // 사용자의 보유 재료 목록을 가져옴
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
         MultiResponseDto<MenuDto.Response> responseDto = new MultiResponseDto<>(
-                menuMapper.menusToMenuResponseDtos(menus), menuPage
+                menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), menuPage
         );
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }
