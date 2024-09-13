@@ -41,6 +41,9 @@ dependencies {
 	// Google Speech To Text
 	implementation 'com.google.cloud:google-cloud-speech:4.28.0'
 
+	//AWS
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 	//DB - h2
 	runtimeOnly 'com.h2database:h2'
 

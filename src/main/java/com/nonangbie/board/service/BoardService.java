@@ -1,5 +1,6 @@
 package com.nonangbie.board.service;
 
+import com.nonangbie.S3.service.S3Uploader;
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.board.repository.BoardRepository;
 import com.nonangbie.boardLike.entity.BoardLike;
@@ -17,7 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,9 +32,27 @@ public class BoardService extends ExtractMemberEmail {
     private final BoardRepository repository;
     private final MemberRepository memberRepository;
     private final BoardLikeRepository boardLikeRepository;
-    public Board createBoard(Board board, Authentication authentication) {
+    private final S3Uploader s3Uploader;
+
+
+
+    public void createMenu(MultipartFile image) throws IOException {
+        if(image.isEmpty()) {
+            throw new IllegalArgumentException("이미지가 없습니다.");
+        }
+        String storedFileName = s3Uploader.upload(image,"images");
+    }
+
+
+    public Board createBoard(Board board,MultipartFile multipartFile, Authentication authentication) {
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
-        board.setMember(member);
+        try{
+            String imageUrl = s3Uploader.upload(multipartFile,"boards");
+            board.setImageUrl(imageUrl);
+            board.setMember(member);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return repository.save(board);
     }
     public Board updateBoard(Board board,long boardId,Authentication authentication) {
