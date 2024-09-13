@@ -33,8 +33,6 @@ public class BoardController {
     private final static String BOARD_DEFAULT_URL = "/boards";
     private final BoardService service;
     private final BoardMapper mapper;
-    private final S3Uploader s3Uploader;
-    private final AuthService authService;
 
     @PostMapping("/menus")
     public ResponseEntity createMenu(
