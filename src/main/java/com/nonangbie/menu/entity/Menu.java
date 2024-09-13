@@ -43,9 +43,6 @@ public class Menu extends Auditable {
     @Column(nullable = false)
     private int cookingTime;
 
-//    @Column(nullable = false)
-//    private String cookingFood;
-
     @Column(nullable = false)
     private int servingSize;
 

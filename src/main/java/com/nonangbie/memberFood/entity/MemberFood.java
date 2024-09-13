@@ -31,9 +31,14 @@ public class MemberFood {
     @Column(nullable = false)
     private String memo;
 
+    @Column(nullable = false)
+    private String foodName;
+
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private MemberFoodStatus memberFoodStatus;
+
 
     public enum MemberFoodStatus {
         Fresh("신선"),
