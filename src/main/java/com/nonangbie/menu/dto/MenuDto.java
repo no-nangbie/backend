@@ -100,5 +100,6 @@ public class MenuDto {
         private String ownedFoods;
         private String missingFoods;
         private String LikeCheck = "F";
+        private int missingFoodsCount;
     }
 }

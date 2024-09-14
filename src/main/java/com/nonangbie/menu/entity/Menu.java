@@ -53,6 +53,9 @@ public class Menu extends Auditable {
     @Column(nullable = false)
     private int menuLikeCount = 0;
 
+    @Column(nullable = false)
+    private int missingFoodsCount;
+
     public enum MenuCategory {
         MENU_CATEGORY_SIDE("밑 반찬"),
         MENU_CATEGORY_SOUP("국/찌개"),

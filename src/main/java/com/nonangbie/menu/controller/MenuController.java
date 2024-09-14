@@ -64,12 +64,14 @@ public class MenuController {
                                       @Positive @RequestParam int size,
                                       @RequestParam String sort,
                                       Authentication authentication) {
-        Sort sortOrder = Sort.by(sort.split("_")[0]).ascending();
-        if(sort.split("_")[1].equalsIgnoreCase("desc")) {
-            sortOrder = sortOrder.descending();
-        }
+        // Sorting direction and property
+        String[] sortParams = sort.split("_");
+        String sortProperty = sortParams[0];
+        String sortDirection = sortParams[1].toUpperCase();
 
-        Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder,authentication);
+        Sort sortOrder = Sort.by(Sort.Order.by(sortProperty).with(Sort.Direction.fromString(sortDirection)));
+
+        Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder, authentication);
         List<Menu> menus = pageMenu.getContent();
         // 사용자의 보유 재료 목록을 가져옴
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
