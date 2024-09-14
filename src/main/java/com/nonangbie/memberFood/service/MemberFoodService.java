@@ -146,6 +146,14 @@ public class MemberFoodService extends ExtractMemberEmail {
         }
     }
 
+    // MemberFoodService.java
+    public void deleteAllMemberFoods(Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        List<MemberFood> memberFoods = memberFoodRepository.findAllByMember(member);
+        memberFoodRepository.deleteAll(memberFoods);
+    }
+
+
     public MemberFood findVerifiedMemberFood(long memberFoodId,Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
         Optional<MemberFood> optionalMemberFood = memberFoodRepository.findById(memberFoodId);
