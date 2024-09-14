@@ -64,6 +64,7 @@ public interface MenuMapper {
         // 보유 재료와 미보유 재료를 콤마로 구분한 문자열로 변환하여 설정
         response.setOwnedFoods(String.join(", ", ownedFoodsList));
         response.setMissingFoods(String.join(", ", missingFoodsList));
+        response.setMissingFoodsCount(missingFoodsList.size());
 
         return response;
     }
