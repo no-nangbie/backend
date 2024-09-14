@@ -17,4 +17,6 @@ public interface MemberFoodRepository extends JpaRepository<MemberFood, Long> {
     List<MemberFood> findByFood_FoodId(Long foodId);
 
     Page<MemberFood> findAllByMember(Pageable pageable, Member member);
+
+    List<MemberFood> findAllByMember(Member member);
 }

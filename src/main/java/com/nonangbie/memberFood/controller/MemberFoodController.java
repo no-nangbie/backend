@@ -136,4 +136,12 @@ public class MemberFoodController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    // MemberFoodController.java
+    @DeleteMapping("/all")
+    public ResponseEntity deleteAllMemberFoods(Authentication authentication) {
+        memberFoodService.deleteAllMemberFoods(authentication);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
 }
