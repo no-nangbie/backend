@@ -24,7 +24,7 @@ public interface MenuMapper {
 //    @Mapping(source = "foodMenuList",target = "foodMenuQuantityList", qualifiedByName = "foodMenusToFoodMenuResponse")
 //    MenuDto.Response menuToMenuResponseDto(Menu menu);
 
-    default MenuDto.Response menuToMenuResponseDto(Menu menu, List<String> memberFoodNames) {
+    default MenuDto.Response menuToMenuResponseDto(Menu menu, Boolean likeCheck,List<String> memberFoodNames) {
         MenuDto.Response response = new MenuDto.Response();
 
         // Menu의 기본 필드 매핑
@@ -39,6 +39,8 @@ public interface MenuMapper {
         response.setMenuLikeCount(menu.getMenuLikeCount());
         response.setCreatedAt(menu.getCreatedAt());
         response.setModifiedAt(menu.getModifiedAt());
+        if(likeCheck)
+            response.setLikeCheck("T");
 
         // FoodMenu 리스트 변환
         List<FoodMenuDto.Response> foodMenuQuantityList = new ArrayList<>();
@@ -105,7 +107,7 @@ public interface MenuMapper {
     default List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus, List<String> memberFoodNames) {
         List<MenuDto.Response> responses = new ArrayList<>();
         for (Menu menu : menus) {
-            responses.add(menuToMenuResponseDto(menu, memberFoodNames));
+            responses.add(menuToMenuResponseDto(menu, false, memberFoodNames));
         }
         return responses;
     }
