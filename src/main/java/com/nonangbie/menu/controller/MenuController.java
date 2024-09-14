@@ -56,7 +56,7 @@ public class MenuController {
         // 사용자의 보유 재료 목록을 가져옴
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu, memberFoodNames)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu,false,memberFoodNames)), HttpStatus.OK);
     }
 
     @GetMapping("all")
@@ -86,8 +86,9 @@ public class MenuController {
 
         // 현재 사용자의 보유 재료 리스트를 가져옴 (MemberFood 정보)
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+        boolean likeCheck = menuService.findVerifiedMenuLike((String) authentication.getPrincipal(),findMenu);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(findMenu, memberFoodNames)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(findMenu,likeCheck,memberFoodNames)), HttpStatus.OK);
     }
 
     @GetMapping
@@ -167,7 +168,7 @@ public class MenuController {
         // Menu 리스트를 검색한 후 보유 재료와 미보유 재료를 처리
         Page<Menu> searchList = menuService.search(pageable, keyword, menuCategory_, authentication);
         List<MenuDto.Response> responseList = searchList.getContent().stream()
-                .map(menu -> menuMapper.menuToMenuResponseDto(menu, memberFoodNames)) // memberFoodNames 전달
+                .map(menu -> menuMapper.menuToMenuResponseDto(menu, false, memberFoodNames)) // memberFoodNames 전달
                 .collect(Collectors.toList());
 
         return new ResponseEntity(

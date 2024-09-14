@@ -132,6 +132,12 @@ public class MenuService extends ExtractMemberEmail {
         return memberFoodNames; // 보유 재료의 이름 리스트를 반환
     }
 
+    @Transactional(readOnly = true)
+    public boolean findVerifiedMenuLike(String memberEmail, Menu menu) {
+        Optional<MenuLike> findBoardLike = menuLikeRepository.findByMember_emailAndMenu(memberEmail,menu);
+        return findBoardLike.isPresent();
+    }
+
     private boolean findVerifiedMenuLike(Member member, Menu menu) {
         Optional<MenuLike> findMenuLike = menuLikeRepository.findByMemberAndMenu(member,menu);
         if(findMenuLike.isPresent()){

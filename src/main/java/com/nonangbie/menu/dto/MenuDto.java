@@ -99,5 +99,6 @@ public class MenuDto {
         private LocalDateTime modifiedAt;
         private String ownedFoods;
         private String missingFoods;
+        private String LikeCheck = "F";
     }
 }
