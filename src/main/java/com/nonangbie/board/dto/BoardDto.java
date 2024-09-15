@@ -114,6 +114,7 @@ public class BoardDto{
     public static class Response {
         private long boardId;
         private String author;
+        private String authorEmail;
         private String title;
         private String boardContent;
         private String foodContent;
