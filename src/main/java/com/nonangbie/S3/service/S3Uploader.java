@@ -94,8 +94,10 @@ public class S3Uploader {
         }
     }
 
-    public String updateFile(MultipartFile newFile, String oldFileName, String dirName) throws IOException {
+    public String updateFile(MultipartFile newFile,  String dirName, String fileUrl) throws IOException {
         // 기존 파일 삭제
+        String extracted = extractFileNameFromUrl(fileUrl);
+        String oldFileName = dirName + "/" + extracted;
         log.info("S3 oldFileName: " + oldFileName);
         deleteFile(oldFileName);
         // 새 파일 업로드
@@ -110,6 +112,18 @@ public class S3Uploader {
         } catch (UnsupportedEncodingException e) {
             log.error("Error while decoding the file name: {}", e.getMessage());
             throw new RuntimeException("Error while decoding the file name");
+        }
+    }
+
+    public String extractFileNameFromUrl(String fileUrl) {
+        try {
+            // URL을 디코딩하여 안전하게 파일 이름을 추출
+            String decodedUrl = URLDecoder.decode(fileUrl, "UTF-8");
+            // 마지막 "/" 이후의 부분이 파일 이름
+            return decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
+        } catch (UnsupportedEncodingException e) {
+            log.error("Error while decoding the URL: {}", e.getMessage());
+            throw new RuntimeException("Error while decoding the URL");
         }
     }
 }

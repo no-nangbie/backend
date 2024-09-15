@@ -68,9 +68,10 @@ public class BoardController {
      */
     @PatchMapping("/{board-id}")
     public ResponseEntity patchBoard(@PathVariable("board-id") long boardId,
-                                    @Valid @RequestBody BoardDto.Patch requestBody,
+                                    @Valid @ModelAttribute BoardDto.Patch requestBody,
                                      Authentication authentication) {
-        Board createBoard = service.updateBoard(mapper.boardpatchDtoToBoard(requestBody),boardId,authentication);
+        MultipartFile imageFile = requestBody.getImageFile();
+        Board createBoard = service.updateBoard(mapper.boardpatchDtoToBoard(requestBody),imageFile,boardId,authentication);
         URI location = UriCreator.createUri(BOARD_DEFAULT_URL, createBoard.getBoardId());
 
         return ResponseEntity.created(location).build();

@@ -55,12 +55,24 @@ public class BoardService extends ExtractMemberEmail {
         }
         return repository.save(board);
     }
-    public Board updateBoard(Board board,long boardId,Authentication authentication) {
+    public Board updateBoard(Board board,MultipartFile multipartFile,
+                             long boardId,Authentication authentication) {
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
         Board findBoard = repository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         if(!Objects.equals(findBoard.getMember(), member))
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
+        if(multipartFile == null || multipartFile.isEmpty()) {
+            board.setImageUrl(findBoard.getImageUrl());
+        }else{
+            try{
+                String imageUrl = s3Uploader.updateFile(multipartFile,"boards", findBoard.getImageUrl());
+                board.setImageUrl(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
         board.setMember(member);
         board.setLikeCount(findBoard.getLikeCount());
         board.setBoardId(findBoard.getBoardId());
