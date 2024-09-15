@@ -73,11 +73,19 @@ public class MenuController {
 
         Page<Menu> pageMenu = menuService.findMenusSort(page - 1, size, sortOrder, authentication);
         List<Menu> menus = pageMenu.getContent();
+
         // 사용자의 보유 재료 목록을 가져옴
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
 
+
+        // 각 메뉴의 likeCheck 값을 가져옴
+        List<Boolean> likeCheks = menus.stream()
+                .map(menu -> menuService.findVerifiedMenuLike((String) authentication.getPrincipal(), menu))
+                .collect(Collectors.toList());
+
+
         return new ResponseEntity(
-                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), pageMenu), HttpStatus.OK
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames, likeCheks), pageMenu), HttpStatus.OK
         );
     }
 
@@ -117,8 +125,14 @@ public class MenuController {
 
         Page<Menu> pageMenu = menuService.findMenuSort(page - 1, size, sortOrder, menuCategory_,authentication);
         List<Menu> menus = pageMenu.getContent();
+
+        // 각 메뉴의 좋아요 여부를 확인하여 List<Boolean> 생성
+        List<Boolean> likeChecks = menus.stream()
+                .map(menu -> menuService.findVerifiedMenuLike((String) authentication.getPrincipal(), menu))
+                .collect(Collectors.toList());
+
         return new ResponseEntity(
-                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), pageMenu), HttpStatus.OK
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames, likeChecks), pageMenu), HttpStatus.OK
         );
     }
 
@@ -191,8 +205,13 @@ public class MenuController {
         // 사용자의 보유 재료 목록을 가져옴
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
 
+        // 각 메뉴의 좋아요 여부를 확인하여 List<Boolean> 생성
+        List<Boolean> likeChecks = menus.stream()
+                .map(menu -> menuService.findVerifiedMenuLike((String) authentication.getPrincipal(), menu))
+                .collect(Collectors.toList());
+
         MultiResponseDto<MenuDto.Response> responseDto = new MultiResponseDto<>(
-                menuMapper.menusToMenuResponseDtos(menus, memberFoodNames), menuPage
+                menuMapper.menusToMenuResponseDtos(menus, memberFoodNames, likeChecks), menuPage
         );
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }

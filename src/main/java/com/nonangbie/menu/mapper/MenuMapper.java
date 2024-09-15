@@ -105,11 +105,17 @@ public interface MenuMapper {
     }
 
     // 여러 개의 메뉴에 대해 처리하는 메서드
-    default List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus, List<String> memberFoodNames) {
+    default List<MenuDto.Response> menusToMenuResponseDtos(List<Menu> menus, List<String> memberFoodNames, List<Boolean> likeChecks) {
         List<MenuDto.Response> responses = new ArrayList<>();
-        for (Menu menu : menus) {
-            responses.add(menuToMenuResponseDto(menu, false, memberFoodNames));
+
+        // 메뉴와 likeCheck 값을 매칭하여 각각의 메뉴에 대한 응답을 생성
+        for (int i = 0; i < menus.size(); i++) {
+            Menu menu = menus.get(i);
+            Boolean likeCheck = likeChecks.get(i); // 각 메뉴에 대해 likeCheck 값을 가져옴
+            responses.add(menuToMenuResponseDto(menu, likeCheck, memberFoodNames));
         }
+
         return responses;
     }
+
 }
