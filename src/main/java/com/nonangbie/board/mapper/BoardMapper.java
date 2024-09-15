@@ -18,6 +18,7 @@ public interface BoardMapper {
         response.setDifficulty(board.getDifficulty().getStatus());
         response.setBoardId(board.getBoardId());
         response.setAuthor(board.getMember().getNickname());
+        response.setAuthorEmail(board.getMember().getEmail());
         response.setTitle(board.getTitle());
         response.setBoardContent(board.getBoardContent());
         response.setFoodContent(board.getFoodContent());
