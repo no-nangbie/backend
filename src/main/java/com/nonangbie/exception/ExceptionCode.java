@@ -34,7 +34,8 @@ public enum ExceptionCode {
 
     //토큰 인증 관련
     UNAUTHORIZED_MEMBER(401, "권한이 없는 멤버입니다."),
-    TOKEN_INVALID(404, "토큰값이 유효하지 않습니다.");
+    TOKEN_INVALID(403, "토큰값이 유효하지 않습니다."),
+    TOKEN_ISNULL(404,"토큰값을 전달받지 못했습니다.");
 
 
 

@@ -10,7 +10,9 @@ public abstract class ExtractMemberEmail {
 
     public Member extractMemberFromAuthentication(Authentication authentication,
                                                   MemberRepository memberRepository)  {
-
+        if(authentication == null){
+            throw new BusinessLogicException(ExceptionCode.TOKEN_INVALID);
+        }
         String email = (String) authentication.getPrincipal();
 
         return memberRepository.findByEmail(email)

@@ -59,29 +59,26 @@ public class BoardDto{
 
         private long boardId;
 
-        @NotBlank
+        @NotNull
         @Pattern(regexp = "^[a-zA-Z0-9가-힣\\s]+$", message = "제목은 영문자,숫자,공백,한글만 허용됩니다")
         private String title;
 
-        @NotBlank
+        @NotNull
         @Size(min = 1, max = 255, message = "1자에서 255자 이내로 작성 가능합니다")
         private String boardContent;
 
-        @NotBlank
+        @NotNull
         @Size(min = 1, max = 5000, message = "1자에서 5000자 이내로 작성 가능합니다")
         private String foodContent;
 
-        @NotBlank
+        @NotNull
         @Size(min = 1, max = 5000, message = "1자에서 5000자 이내로 작성 가능합니다")
         private String recipeContent;
 
-        @NotBlank
-        private String imageUrl;
+        private MultipartFile imageFile;
 
-        @NotNull
         private int cookingTime;
 
-        @NotNull
         private int servingSize;
 
         @NotNull
