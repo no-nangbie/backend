@@ -88,7 +88,7 @@ VALUES
      40,
      2,
      'DIFFICULTY_MEDIUM',
-     'https://example.com/images/tteokbokki.jpg',
+     'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_1.png',
      0,
      NOW()  -- 현재 시각으로 설정
      );
@@ -103,7 +103,7 @@ VALUES
         30, -- cooking_time (예: 30분)
         2,  -- serving_size (예: 2인분)
         'DIFFICULTY_MEDIUM',
-        'https://example.com/images/jjajangmyeon.jpg',
+        'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_2.png',
         0,
         NOW()  -- 현재 시각으로 설정
     );
@@ -118,7 +118,7 @@ VALUES
      20,
      2,
      'DIFFICULTY_MEDIUM',
-     'https://example.com/images/chestnut-ramen.jpg',
+     'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_3.png',
      0,
      NOW()  -- 현재 시각으로 설정
     );
@@ -132,7 +132,7 @@ VALUES
      30,  -- 예시로 30분
      2,   -- 예시로 2인분
      'DIFFICULTY_MEDIUM',
-     'https://example.com/images/stir-fried-udon.jpg',
+     'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_4.png',
      0,
      NOW()  -- 현재 시각으로 설정
     );
@@ -146,7 +146,7 @@ VALUES
      20,
      2,
      'DIFFICULTY_MEDIUM',
-     'https://example.com/images/kimchi-fried-rice.jpg',
+     'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_5.png',
      0,
      NOW()
     );
@@ -157,7 +157,7 @@ VALUES
      '달콤하고 짭조름한 감자조림으로, 밑반찬으로 적합합니다.',
      'MENU_CATEGORY_SIDE',
      '["1. 감자는 껍질을 벗기고 먹기 좋게 썬다.", "2. 물을 끓이고 감자를 살짝 익힌다.", "3. 팬에 간장, 설탕, 물을 넣고 졸이다가 감자를 넣고 간이 배도록 졸인다.", "4. 마지막에 참기름과 통깨를 뿌려 마무리한다."]',
-     30, 4, 'DIFFICULTY_EASY', 'https://example.com/images/potato-stew.jpg', 0, NOW());
+     30, 4, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_6.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -165,7 +165,7 @@ VALUES
      '소고기와 미역으로 만든 고소한 미역국입니다.',
      'MENU_CATEGORY_SOUP',
      '["1. 미역을 물에 불린 후 적당한 크기로 자른다.", "2. 냄비에 참기름을 두르고 소고기를 볶아준다.", "3. 소고기가 익으면 미역을 넣고 함께 볶는다.", "4. 물을 붓고 간장을 넣어 끓인다.", "5. 마지막으로 소금으로 간을 맞춘다."]',
-     40, 4, 'DIFFICULTY_EASY', 'https://example.com/images/seaweed-soup.jpg', 0, NOW());
+     40, 4, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_7.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -173,7 +173,7 @@ VALUES
      '고소하고 부드러운 양송이 크림 스프입니다.',
      'MENU_CATEGORY_DESSERT',
      '["1. 양송이를 얇게 썰어 준비한다.", "2. 냄비에 버터를 녹이고 양송이를 볶는다.", "3. 밀가루를 넣고 약불에서 섞어가며 볶는다.", "4. 생크림과 물을 넣고 끓인 후 소금, 후추로 간을 맞춘다.", "5. 마지막에 파슬리를 뿌려 완성한다."]',
-     25, 2, 'DIFFICULTY_MEDIUM', 'https://example.com/images/cream-soup.jpg', 0, NOW());
+     25, 2, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_8.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -181,7 +181,7 @@ VALUES
      '매콤하고 달콤한 제육볶음입니다.',
      'MENU_CATEGORY_RICE',
      '["1. 돼지고기는 얇게 썰어 준비한다.", "2. 고추장, 간장, 설탕으로 양념장을 만든다.", "3. 팬에 돼지고기를 볶고, 양념장을 넣어 간이 배도록 볶는다.", "4. 마지막에 참기름을 넣고 마무리한다."]',
-     30, 3, 'DIFFICULTY_MEDIUM', 'https://example.com/images/spicy-pork.jpg', 0, NOW());
+     30, 3, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_9.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -189,7 +189,7 @@ VALUES
      '영양가 있는 전통 한국식 삼계탕.',
      'MENU_CATEGORY_SOUP',
      '["1. 닭을 손질하고 배에 찹쌀을 넣어준다.", "2. 물에 닭을 넣고 푹 끓인다.", "3. 대추, 마늘, 생강을 넣어 함께 끓인다.", "4. 소금으로 간을 맞추고 마지막으로 참기름을 넣어 완성한다."]',
-     120, 4, 'DIFFICULTY_HARD', 'https://example.com/images/samgyetang.jpg', 0, NOW());
+     120, 4, 'DIFFICULTY_HARD', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_10.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -197,7 +197,7 @@ VALUES
      '매콤한 양념과 함께 볶아낸 닭갈비입니다.',
      'MENU_CATEGORY_NOODLE',
      '["1. 닭고기는 먹기 좋은 크기로 썬다.", "2. 닭갈비 양념을 만든다.", "3. 팬에 식용유를 두르고 닭고기를 볶는다.", "4. 양념을 넣고 중불에서 잘 섞어가며 볶아준다.", "5. 마지막에 참기름을 넣어 완성한다."]',
-     40, 4, 'DIFFICULTY_MEDIUM', 'https://example.com/images/dakgalbi.jpg', 0, NOW());
+     40, 4, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_11.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -205,7 +205,7 @@ VALUES
      '매콤한 김치를 푹 끓인 김치찜입니다.',
      'MENU_CATEGORY_SOUP',
      '["1. 김치를 큰 덩어리로 썬다.", "2. 돼지고기는 두꺼운 덩어리로 준비한다.", "3. 냄비에 김치와 돼지고기를 켜켜이 쌓고, 물을 부어 푹 끓인다.", "4. 끓기 시작하면 고춧가루와 다진 마늘을 넣고, 중약불에서 푹 끓여준다.", "5. 마지막으로 참기름을 넣어 마무리한다."]',
-     60, 4, 'DIFFICULTY_EASY', 'https://example.com/images/kimchi-jjim.jpg', 0, NOW());
+     60, 4, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_12.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -213,7 +213,7 @@ VALUES
      '바삭하고 달콤한 고구마 튀김입니다.',
      'MENU_CATEGORY_DESSERT',
      '["1. 고구마는 얇게 썰어 준비한다.", "2. 밀가루와 물로 튀김 반죽을 만든다.", "3. 고구마를 반죽에 적셔 튀긴다.", "4. 노릇해질 때까지 튀겨 완성한다."]',
-     30, 3, 'DIFFICULTY_MEDIUM', 'https://example.com/images/sweet-potato-fries.jpg', 0, NOW());
+     30, 3, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_13.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -221,7 +221,7 @@ VALUES
      '부드러운 크림 소스와 함께하는 크림 파스타입니다.',
      'MENU_CATEGORY_WESTERN',
      '["1. 파스타 면을 삶아 준비한다.", "2. 팬에 버터를 녹이고 생크림을 넣어 끓인다.", "3. 삶은 파스타 면을 넣고 소스와 함께 버무린다.", "4. 소금과 후추로 간을 맞추고 마지막에 파슬리를 뿌려 완성한다."]',
-     25, 2, 'DIFFICULTY_MEDIUM', 'https://example.com/images/cream-pasta.jpg', 0, NOW());
+     25, 2, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_14.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -229,7 +229,7 @@ VALUES
      '김치와 볶은 면을 함께 먹는 퓨전 요리입니다.',
      'MENU_CATEGORY_FUSION',
      '["1. 김치를 송송 썰어 준비한다.", "2. 면을 삶아 물기를 뺀다.", "3. 팬에 식용유를 두르고 김치를 볶다가 면을 넣고 볶아준다.", "4. 마지막에 소금을 넣어 간을 맞춘다."]',
-     20, 2, 'DIFFICULTY_EASY', 'https://example.com/images/kimchi-noodles.jpg', 0, NOW());
+     20, 2, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_15.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -237,7 +237,7 @@ VALUES
      '신선한 굴로 만든 뜨끈한 굴국밥.',
      'MENU_CATEGORY_SOUP',
      '["1. 굴을 깨끗이 씻어 준비한다.", "2. 냄비에 물과 멸치, 다시마를 넣고 육수를 끓인다.", "3. 육수에 굴을 넣고 끓인다.", "4. 소금으로 간을 맞춘 후 완성한다."]',
-     30, 2, 'DIFFICULTY_EASY', 'https://example.com/images/oyster-soup.jpg', 0, NOW());
+     30, 2, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_16.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -245,7 +245,7 @@ VALUES
      '상큼한 토마토로 만든 파스타.',
      'MENU_CATEGORY_WESTERN',
      '["1. 토마토를 껍질 벗겨 다진다.", "2. 팬에 올리브유를 두르고 토마토를 볶아준다.", "3. 삶은 파스타 면을 넣고 소금과 후추로 간을 맞춘다.", "4. 완성된 파스타에 파슬리를 뿌린다."]',
-     20, 2, 'DIFFICULTY_EASY', 'https://example.com/images/tomato-pasta.jpg', 0, NOW());
+     20, 2, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_17.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -253,7 +253,7 @@ VALUES
      '간장 양념으로 조린 두부 요리.',
      'MENU_CATEGORY_SIDE',
      '["1. 두부를 도톰하게 썬다.", "2. 간장, 설탕, 물로 양념장을 만든다.", "3. 팬에 두부를 굽고 양념장을 넣어 졸인다.", "4. 참기름을 넣어 마무리한다."]',
-     25, 4, 'DIFFICULTY_EASY', 'https://example.com/images/tofu-jjim.jpg', 0, NOW());
+     25, 4, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_18.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -261,7 +261,7 @@ VALUES
      '참치와 김치가 어우러진 김치볶음밥.',
      'MENU_CATEGORY_RICE',
      '["1. 김치를 작게 썰어 준비한다.", "2. 참치를 기름을 빼고 준비한다.", "3. 팬에 참기름을 두르고 김치를 볶는다.", "4. 밥과 참치를 넣고 볶아준다.", "5. 소금으로 간을 맞추고 완성한다."]',
-     20, 2, 'DIFFICULTY_EASY', 'https://example.com/images/tuna-kimchi-fried-rice.jpg', 0, NOW());
+     20, 2, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_19.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -269,7 +269,7 @@ VALUES
      '달콤하고 부드러운 호박죽.',
      'MENU_CATEGORY_RICE',
      '["1. 호박을 잘게 썰어 물에 푹 삶는다.", "2. 삶은 호박을 체에 걸러 곱게 만든다.", "3. 물과 쌀가루를 넣어 끓이며 저어준다.", "4. 소금을 넣어 간을 맞춘 후 완성한다."]',
-     40, 3, 'DIFFICULTY_MEDIUM', 'https://example.com/images/pumpkin-porridge.jpg', 0, NOW());
+     40, 3, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_20.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -277,7 +277,7 @@ VALUES
      '매콤하고 맛있는 오징어볶음.',
      'MENU_CATEGORY_SIDE',
      '["1. 오징어를 깨끗이 손질한 후 먹기 좋게 썬다.", "2. 팬에 기름을 두르고 양파와 오징어를 볶는다.", "3. 고추장과 고춧가루를 넣고 양념이 고루 배도록 볶아준다.", "4. 마지막으로 참기름을 넣어 마무리한다."]',
-     25, 4, 'DIFFICULTY_MEDIUM', 'https://example.com/images/spicy-squid.jpg', 0, NOW());
+     25, 4, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_21.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -285,7 +285,7 @@ VALUES
      '소고기를 넣어 진한 맛을 낸 미역국.',
      'MENU_CATEGORY_SOUP',
      '["1. 미역을 물에 불려 적당한 크기로 자른다.", "2. 소고기를 볶다가 미역을 넣어 볶아준다.", "3. 물을 붓고 끓인 후 소금과 간장으로 간을 맞춘다."]',
-     60, 4, 'DIFFICULTY_MEDIUM', 'https://example.com/images/beef-seaweed-soup.jpg', 0, NOW());
+     60, 4, 'DIFFICULTY_MEDIUM', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_22.png', 0, NOW());
 
 INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at)
 VALUES
@@ -293,7 +293,7 @@ VALUES
      '구수한 맛의 된장찌개.',
      'MENU_CATEGORY_SOUP',
      '["1. 된장을 물에 풀어 준비한다.", "2. 채소와 고기를 넣어 끓인다.", "3. 소금으로 간을 맞추고 마지막에 고춧가루를 뿌린다."]',
-     30, 4, 'DIFFICULTY_EASY', 'https://example.com/images/doenjang-soup.jpg', 0, NOW());
+     30, 4, 'DIFFICULTY_EASY', 'https://no-nangbie-20240912.s3.ap-northeast-2.amazonaws.com/boards/menu_23.png', 0, NOW());
 
 
 
