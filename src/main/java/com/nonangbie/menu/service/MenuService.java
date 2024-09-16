@@ -1,7 +1,5 @@
 package com.nonangbie.menu.service;
 
-import com.nonangbie.board.entity.Board;
-import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
@@ -9,7 +7,7 @@ import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.memberFood.entity.MemberFood;
 import com.nonangbie.memberFood.repository.MemberFoodRepository;
 import com.nonangbie.menu.entity.Menu;
-import com.nonangbie.menu.reposiitory.MenuRepository;
+import com.nonangbie.menu.repository.MenuRepository;
 import com.nonangbie.menuLike.entity.MenuLike;
 import com.nonangbie.menuLike.repository.MenuLikeRepository;
 import com.nonangbie.utils.ExtractMemberEmail;

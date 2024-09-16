@@ -6,6 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionCode {
 
+
+    STATISTICS_NOT_FOUND(404,"STATISTICS_NOT_FOUND"),
+
     //board 관련
     BOARD_NOT_FOUND(404,"Board Not Found"),
     BOARD_EXISTS(409,"Board exists"),
