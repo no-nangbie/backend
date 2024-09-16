@@ -78,6 +78,9 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (65, '호박'
 INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (66, '미역', 'FISH_SEAFOOD');
 INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (67, '국간장', 'SAUCES');
 INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (68, '양송이버섯', 'VEGETABLES_FRUITS');
+INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (69, '대추', 'VEGETABLES_FRUITS');
+INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES (70, '생강', 'VEGETABLES_FRUITS');
+
 
 -- Insert a single menu item (떡볶이) into the menu table
 -- menu 테이블에 데이터 삽입
@@ -378,9 +381,9 @@ INSERT IGNORE INTO food_menu (food_menu_id, food_quantity, food_id, menu_id) VAL
                                                             (75, '10g', 15, 9),   -- 참기름 10g
                                                             (76, '20g', 29, 9),   -- 황설탕 20g
                                                             (77, '1kg', 42, 10),   -- 닭 1kg
-                                                            (78, '50g', 23, 10),   -- 물 50g
-                                                            (79, '30g', 39, 10),   -- 무 30g
-                                                            (80, '10g', 14, 10),   -- 진간장 10g
+                                                            (78, '100g', 69, 10),   -- 대추 100g
+                                                            (79, '30g', 39, 10),   -- 마늘 30g
+                                                            (80, '10g', 18, 10),   -- 진간장 10g
                                                             (81, '500g', 42, 11),  -- 닭고기 500g
                                                             (82, '50g', 12, 11),   -- 고추장 50g
                                                             (83, '30g', 14, 11),   -- 진간장 30g
