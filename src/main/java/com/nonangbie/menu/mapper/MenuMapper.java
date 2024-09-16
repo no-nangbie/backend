@@ -39,6 +39,7 @@ public interface MenuMapper {
         response.setMenuLikeCount(menu.getMenuLikeCount());
         response.setCreatedAt(menu.getCreatedAt());
         response.setModifiedAt(menu.getModifiedAt());
+        response.setImageUrl(menu.getImageUrl());
         if(likeCheck)
             response.setLikeCheck("T");
 

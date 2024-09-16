@@ -91,6 +91,7 @@ public class MenuDto {
         private Menu.MenuCategory menuCategory;
         private int cookingTime;
         private int servingSize;
+        private String imageUrl;
         private Menu.Difficulty difficulty;
         private List<String> recipes;
         private int menuLikeCount;
