@@ -32,7 +32,7 @@ public enum ExceptionCode {
 
     //Access
     ACCESS_DENIED(403,"Access denied"),
-
+    PASSWORD_MISMATCH(403,"Password Mismatch"),
     MEMBER_FOOD_NOT_FOUND(404, "Member Food Not Found"),
 
     //토큰 인증 관련

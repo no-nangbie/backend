@@ -69,6 +69,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer()) // JWT 필터 적용
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // OPTIONS 요청 허용
                         .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER", "ADMIN")
                         .anyRequest().permitAll() // 모든 요청을 허용 (추가 보안 필요 시 제한 가능)
                 );
@@ -125,9 +126,11 @@ public class SecurityConfiguration {
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Accept", "content-type"));  // 허용되는 헤더g
         configuration.setExposedHeaders(Arrays.asList("Authorization", "memberId"));  // 노출할 헤더 추가
         configuration.setAllowCredentials(true);  // 인증 관련 정보를 허용
+        configuration.addAllowedOriginPattern("*");  // 모든 Origin 허용 (테스트 목적)
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); //모든 경로에 대해 CORS 허용
         return source;
     }
 

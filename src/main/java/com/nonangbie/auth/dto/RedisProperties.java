@@ -10,15 +10,6 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class RedisProperties {
-
     private int port;
     private String host;
-
-    private int getPort() {
-        return this.port;
-    }
-
-    private String getHost() {
-        return this.host;
-    }
 }

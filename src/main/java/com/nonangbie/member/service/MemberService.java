@@ -3,6 +3,7 @@ package com.nonangbie.member.service;
 import com.nonangbie.auth.utils.CustomAuthorityUtils;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
+import com.nonangbie.member.dto.MemberDto;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
@@ -67,6 +68,20 @@ public class MemberService extends ExtractMemberEmail {
 
         return memberRepository.save(authenticatedMember);
     }
+
+    public Member updatePassword(String email, MemberDto.UpdatePassword updatePasswordDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(updatePasswordDto.getCurrentPassword(), member.getPassword())) {
+            throw new BusinessLogicException(ExceptionCode.PASSWORD_MISMATCH);
+        }
+
+        String newEncryptedPassword = passwordEncoder.encode(updatePasswordDto.getNewPassword());
+        member.setPassword(newEncryptedPassword);
+        return memberRepository.save(member);
+    }
+
 
     public Member findMemberId(Member member) {
         Optional<Member> verifiedMember =
