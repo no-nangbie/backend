@@ -52,4 +52,21 @@ public interface BoardMapper {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    default List<BoardDto.Responses> boardToBoardDtoResponsesLikeList(List<Board> boards) {
+        return boards
+                .stream()
+                .map(board -> BoardDto.Responses
+                        .builder()
+                        .boardId(board.getBoardId())
+                        .title(board.getTitle())
+                        .author(board.getMember().getNickname())
+                        .imageUrl(board.getImageUrl())
+                        .menuCategory(board.getMenuCategory().getStatus())
+                        .cookingTime(board.getCookingTime())
+                        .servingSize(board.getServingSize())
+                        .likesCount(board.getLikeCount())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

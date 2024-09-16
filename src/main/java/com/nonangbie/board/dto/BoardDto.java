@@ -102,6 +102,7 @@ public class BoardDto{
         private int cookingTime;
         private int servingSize;
         private int likesCount;
+        private String likeCheck;
     }
 
     @Getter

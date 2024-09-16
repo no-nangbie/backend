@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -93,26 +95,41 @@ public class BoardService extends ExtractMemberEmail {
         extractMemberFromAuthentication(authentication, memberRepository);
         Sort sortBy;
         Board.MenuCategory menuCategory;
+        Pageable pageable;
         switch (sort) {
+            case "LIKE_LIST":
+                pageable = PageRequest.of(page, size); break;
             case "LIKE_ASC":
-                sortBy = Sort.by("likeCount").ascending(); break;
+                sortBy = Sort.by("likeCount").ascending();
+                pageable = PageRequest.of(page, size, sortBy); break;
             case "LIKE_DESC":
-                sortBy = Sort.by("likeCount").descending(); break;
+                sortBy = Sort.by("likeCount").descending();
+                pageable = PageRequest.of(page, size, sortBy); break;
             case "CREATED_AT_ASC":
-                sortBy = Sort.by("boardId").ascending(); break;
+                sortBy = Sort.by("boardId").ascending();
+                pageable = PageRequest.of(page, size, sortBy); break;
             case "CREATED_AT_DESC":
-                sortBy = Sort.by("boardId").descending(); break;
+                sortBy = Sort.by("boardId").descending();
+                pageable = PageRequest.of(page, size, sortBy); break;
             default:
                 throw new IllegalArgumentException("Invalid sort type: " + sort);
         }
-        Pageable pageable = PageRequest.of(page, size, sortBy);
 
         try {
             menuCategory = Board.MenuCategory.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
-            if(type.equals("ALL"))
+            if(type.equals("ALL")) {
+                if(sort.equals("LIKE_LIST")) {
+                    List<Long> likeBoardIds = findVerifiedBoardLike((String) authentication.getPrincipal());
+                    return repository.findAllByBoardIdIn(likeBoardIds, pageable);
+                }
                 return repository.findAll(pageable);
+            }
             throw new BusinessLogicException(ExceptionCode.INVALID_BOARD_FILTER_TYPE);
+        }
+        if(sort.equals("LIKE_LIST")) {
+            List<Long> likeBoardIds = findVerifiedBoardLike((String) authentication.getPrincipal());
+            return repository.findAllByMenuCategoryAndBoardIdIn(menuCategory, likeBoardIds, pageable);
         }
         return repository.findAllByMenuCategory(menuCategory, pageable);
     }
@@ -143,6 +160,14 @@ public class BoardService extends ExtractMemberEmail {
             boardLikeRepository.save(boardLike);
             return false;
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> findVerifiedBoardLike(String memberEmail) {
+        List<BoardLike> findBoardLikes = boardLikeRepository.findByMember_email(memberEmail);
+        return findBoardLikes.stream()
+                .map(BoardLike::getBoardLikeId)  // BoardLike의 getId()를 사용해 PK(Long) 값을 추출
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
