@@ -104,7 +104,12 @@ public class BoardController {
 
         Page<Board> pageBoards = service.findBoardsByType(boardType, sort, page - 1, size, authentication);
         List<Board> boards = pageBoards.getContent();
-
+        if(sort.equals("LIKE_LIST")) {
+            List<Long> likeBoardIds = service.findVerifiedBoardLike((String) authentication.getPrincipal());
+            return new ResponseEntity<>(
+                    new MultiResponseDto<>(mapper.boardToBoardDtoResponses(boards), pageBoards),
+                    HttpStatus.OK);
+        }
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.boardToBoardDtoResponses(boards), pageBoards),
                 HttpStatus.OK);
