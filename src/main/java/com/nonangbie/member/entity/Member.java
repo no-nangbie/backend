@@ -5,6 +5,7 @@ import com.nonangbie.board.entity.Board;
 import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.memberFood.entity.MemberFood;
 import com.nonangbie.menuLike.entity.MenuLike;
+import com.nonangbie.statistics.entity.Statistics;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,6 +47,10 @@ public class Member {
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonManagedReference
     private List<MenuLike> menuLikeList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member")
+    @JsonManagedReference
+    private Statistics statistics;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
