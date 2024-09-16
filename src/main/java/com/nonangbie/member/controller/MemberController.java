@@ -137,6 +137,27 @@ public class MemberController {
                 new SingleResponseDto<>(memberMapper.memberToResponseDto(member)), HttpStatus.OK);
     }
 
+    @PatchMapping("/members/password")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity updatePassword(Authentication authentication,
+                                         @Valid @RequestBody MemberDto.UpdatePassword updatePasswordDto,
+                                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
+        String email = (String) authentication.getPrincipal();
+        boolean isLoggedOut = !authService.isTokenValid(email);
+        if (isLoggedOut) {
+            return new ResponseEntity<>("User Logged Out", HttpStatus.UNAUTHORIZED);
+        }
+
+        Member member = service.updatePassword(email, updatePasswordDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/members")
     public ResponseEntity deleteMember(Authentication authentication) {
         String email = null;
