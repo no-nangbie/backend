@@ -43,8 +43,8 @@ public class DataInitializer implements CommandLineRunner {
         if (menuCookTimeRepository.count() == 0) {
             menuCookTimeRepository.save(new MenuCookTime(1L, "0_TO_1HOURS", "1시간미만"));
             menuCookTimeRepository.save(new MenuCookTime(2L, "1HOURS_TO_2HOURS", "1시간이상2시간미만"));
-            menuCookTimeRepository.save(new MenuCookTime(3L, "2HOURS_TO_3HOURS", "2시간이상3시간미만"));
-            menuCookTimeRepository.save(new MenuCookTime(4L, "3HOURS_OVER", "3시간이상"));
+            menuCookTimeRepository.save(new MenuCookTime(3L, "2HOURS_TO_4HOURS", "2시간이상4시간미만"));
+            menuCookTimeRepository.save(new MenuCookTime(4L, "4HOURS_OVER", "4시간이상"));
         }
     }
 }
