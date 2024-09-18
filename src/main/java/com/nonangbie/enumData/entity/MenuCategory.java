@@ -1,11 +1,15 @@
-package com.nonangbie.menuCategory.entity;
+package com.nonangbie.enumData.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.statistics.entity.Statistics;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,4 +27,9 @@ public class MenuCategory {
 
     @Column(name = "category_name", nullable = false)
     private String name;
+
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "menuCategory")
+//    private List<Statistics> statisticsList = new ArrayList<>();
+
 }

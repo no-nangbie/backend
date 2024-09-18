@@ -6,6 +6,8 @@ import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.dto.MemberDto;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
+import com.nonangbie.statistics.entity.Statistics;
+import com.nonangbie.statistics.service.StatisticsService;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class MemberService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final StatisticsService statisticsService;
 
     public Member createMember(Member member) {
         verifyExistMember(member.getEmail());
@@ -37,8 +40,11 @@ public class MemberService extends ExtractMemberEmail {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-
-        return memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+        List<Statistics> statisticsList = statisticsService.createStatistics(savedMember);
+        member.setStatisticsList(statisticsList);
+//        Member savedMember = memberRepository.save(member);
+        return savedMember;
     }
 
     @Transactional(readOnly = true)
