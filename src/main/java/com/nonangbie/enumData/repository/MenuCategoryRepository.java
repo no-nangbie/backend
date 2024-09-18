@@ -1,5 +1,5 @@
-package com.nonangbie.menuCategory.repository;
-import com.nonangbie.menuCategory.entity.MenuCategory;
+package com.nonangbie.enumData.repository;
+import com.nonangbie.enumData.entity.MenuCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
