@@ -6,7 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionCode {
 
-
+    //통계관련
+    MMC_NOT_FOUND(404,"MemberMenuCategory not found"),
     STATISTICS_NOT_FOUND(404,"STATISTICS_NOT_FOUND"),
 
     //board 관련
