@@ -7,11 +7,16 @@ import com.nonangbie.enumData.repository.MenuDifficultyRepository;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.entity.Member;
+import com.nonangbie.member.repository.MemberRepository;
+import com.nonangbie.menu.entity.Menu;
+import com.nonangbie.menu.repository.MenuRepository;
 import com.nonangbie.statistics.entity.Statistics;
 import com.nonangbie.statistics.repository.StatisticsRepository;
 import com.nonangbie.enumData.entity.MenuCategory;
 import com.nonangbie.enumData.repository.MenuCategoryRepository;
+import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +26,12 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class StatisticsService {
+public class StatisticsService extends ExtractMemberEmail {
     private final MenuCategoryRepository menuCategoryRepository;
     private final MenuDifficultyRepository menuDifficultyRepository;
     private final MenuCookTimeRepository menuCookTimeRepository;
+    private final MenuRepository menuRepository;
+    private final MemberRepository memberRepository;
     private final StatisticsRepository repository;
 
     public List<Statistics> createStatistics(Member saveMember){
@@ -63,42 +70,32 @@ public class StatisticsService {
         return repository.saveAll(statisticsList);
     }
 
-//    public void incrementCount(Member member, String MenuCategoryCode, String MenuDifficultyCode, String MenuCookTime) {
-//        List<Statistics> findStatistics = repository.findAllByMemberAndMenuCategory_CodeORMenuDifficulty_CodeORMenuCookTime_Code(
-//                member, MenuCategoryCode, MenuDifficultyCode,MenuCookTime);
-//        for(Statistics statistics : findStatistics){
-//            statistics.setCount(statistics.getCount()+1);
-//            repository.save(statistics);
-//        }
-//    }
+    public boolean incrementCount(Long menuId, Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+        Menu findMenu = menuRepository.findById(menuId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
+        String MenuCategoryCode = String.valueOf(findMenu.getMenuCategory());
+        String MenuDifficultyCode = String.valueOf(findMenu.getDifficulty());
+        String MenuCookTime;
+        if(findMenu.getCookingTime() >= 240 )
+            MenuCookTime = "4HOURS_OVER";
+        else if(findMenu.getCookingTime() >= 120)
+            MenuCookTime = "2HOURS_TO_4HOURS";
+        else if(findMenu.getCookingTime() >= 60)
+            MenuCookTime = "1HOURS_TO_2HOURS";
+        else
+            MenuCookTime = "0_TO_1HOURS";
 
-    public void variationCount(Member member, String Code, Statistics.DType dType, String variation) {
-        Statistics findStatistics;
-        switch (dType){
-            case CA:
-                findStatistics = repository.findByMemberAndInfoTypeAndMenuCategory_Code(member, dType, Code)
-                        .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-                if(variation.equals("increment"))
-                    findStatistics.setCount(findStatistics.getCount()+1);
-                else
-                    findStatistics.setCount(findStatistics.getCount()-1);
-                repository.save(findStatistics); break;
-            case CO:
-                findStatistics = repository.findByMemberAndInfoTypeAndMenuDifficulty_Code(member, dType, Code)
-                        .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-                if(variation.equals("increment"))
-                    findStatistics.setCount(findStatistics.getCount()+1);
-                else
-                    findStatistics.setCount(findStatistics.getCount()-1);
-                repository.save(findStatistics); break;
-            case DI:
-                findStatistics = repository.findByMemberAndInfoTypeAndMenuCookTime_Code(member, dType, Code)
-                        .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-                if(variation.equals("increment"))
-                    findStatistics.setCount(findStatistics.getCount()+1);
-                else
-                    findStatistics.setCount(findStatistics.getCount()-1);
-                repository.save(findStatistics); break;
+        List<Statistics> findStatistics = new ArrayList<>();
+        findStatistics.add(repository.findByMemberAndMenuCategory_Code(member,MenuCategoryCode)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        findStatistics.add(repository.findByMemberAndMenuDifficulty_Code(member,MenuDifficultyCode)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        findStatistics.add(repository.findByMemberAndMenuCookTime_Code(member,MenuCookTime)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        for(Statistics statistics : findStatistics){
+            statistics.setCount(statistics.getCount()+1);
+            repository.save(statistics);
         }
+        return true;
     }
 }
