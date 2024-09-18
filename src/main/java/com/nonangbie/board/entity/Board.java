@@ -65,6 +65,7 @@ public class Board extends Auditable {
     private Member member;
 
     @AllArgsConstructor
+    @NoArgsConstructor
     public enum MenuCategory{
         MENU_CATEGORY_SIDE("밑 반찬"),
         MENU_CATEGORY_SOUP("국/찌개"),
