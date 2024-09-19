@@ -1,4 +1,5 @@
 package com.nonangbie.eventListener;
+import com.nonangbie.statistics.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -10,11 +11,13 @@ import static com.nonangbie.eventListener.EventCaseEnum.EventCase.*;
 @Component
 @RequiredArgsConstructor
 public class ServiceEventListener {
-
+    private final StatisticsService statisticsService;
     @EventListener
     public void handleMyCustomEvent(CustomEvent event) {
         switch (event.getMethodName()) {
-            case EVENT_CASE_1:
+            case STATISTICS_INCREMENT_COUNT:
+                log.debug("Event : STATISTICS_INCREMENT_COUNT");
+                statisticsService.increaseCount(event.getMember(), event.getDescription(), event.getCount());
                 break;
             case EVENT_CASE_2:
                 break;
