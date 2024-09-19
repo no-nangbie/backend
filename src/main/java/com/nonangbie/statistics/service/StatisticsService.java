@@ -111,6 +111,8 @@ public class StatisticsService extends ExtractMemberEmail {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
         findStatistics.add(repository.findByMemberAndMenuCookTime_Code(member, MenuCookTime)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        findStatistics.add(repository.findByMemberAndDescription(member, "COOK_COUNT")
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
         for (Statistics statistics : findStatistics) {
             statistics.setCount(statistics.getCount() + 1);
             repository.save(statistics);

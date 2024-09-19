@@ -44,5 +44,6 @@ public class StatisticsDto {
         private int menuCookTime1HoursTo2Hours;
         private int menuCookTime2HoursTo4Hours;
         private int menuCookTime4HoursOver;
+        private int menuCookCount;
     }
 }

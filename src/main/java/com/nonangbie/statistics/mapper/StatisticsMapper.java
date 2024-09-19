@@ -30,7 +30,6 @@ public interface StatisticsMapper {
     default StatisticsDto.RecipeResponse statisticsToStatisticsRecipeResponseDto(List<Statistics> statisticsList) {
         StatisticsDto.RecipeResponse response = new StatisticsDto.RecipeResponse();
         for (Statistics statistics : statisticsList) {
-            if(!statistics.getInfoType().equals(Statistics.DType.COUNT)){
                 switch (statistics.getDescription()){
                     case "MENU_CATEGORY_SIDE":
                         response.setMenuCategorySide(statistics.getCount()); break;
@@ -66,8 +65,9 @@ public interface StatisticsMapper {
                         response.setMenuCookTime2HoursTo4Hours(statistics.getCount()); break;
                     case "4HOURS_OVER":
                         response.setMenuCookTime4HoursOver(statistics.getCount()); break;
+                    case "COOK_COUNT":
+                        response.setMenuCookCount(statistics.getCount()); break;
                 }
-            }
         }
         return response;
     }
