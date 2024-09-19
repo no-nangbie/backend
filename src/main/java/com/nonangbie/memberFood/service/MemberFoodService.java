@@ -116,8 +116,8 @@ public class MemberFoodService extends ExtractMemberEmail {
     }
 
     public List<MemberFood> searchMemberFoodsByKeyword(String keyword,Authentication authentication) {
-        extractMemberFromAuthentication(authentication, memberRepository);
-        return memberFoodRepository.findByFood_FoodNameContainingOrMemoContaining(keyword, keyword);
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        return memberFoodRepository.findByFood_FoodNameContainingOrMemoContaining(keyword, keyword, member);
     }
 
     // 카테고리 내에서 검색
