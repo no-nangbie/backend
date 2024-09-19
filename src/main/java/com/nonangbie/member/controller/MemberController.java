@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -177,6 +178,7 @@ public class MemberController {
     }
     // 닉네임 중복 확인 API 추가
     @GetMapping("/nickname-check")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> checkNickname(@RequestParam String nickname) {
         boolean exists = service.checkNicknameExists(nickname);
         if (exists) {
@@ -184,6 +186,14 @@ public class MemberController {
         } else {
             return ResponseEntity.ok("NickName available");
         }
+    }
+
+    // 닉네임 변경
+    @PatchMapping("/members/nickname")
+    public ResponseEntity changeNickname(@RequestBody Map<String, String> requestBody, Authentication authentication) {
+        String newNickname = requestBody.get("nickname");
+        service.updateMemberNickname(authentication, newNickname);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/info")

@@ -1,5 +1,6 @@
 package com.nonangbie.member.service;
 
+import com.nonangbie.auth.jwt.JwtTokenizer;
 import com.nonangbie.auth.utils.CustomAuthorityUtils;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
@@ -31,6 +32,7 @@ public class MemberService extends ExtractMemberEmail {
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
     private final StatisticsService statisticsService;
+    private final JwtTokenizer jwtTokenizer;
 
     public Member createMember(Member member) {
         verifyExistMember(member.getEmail());
@@ -147,5 +149,18 @@ public class MemberService extends ExtractMemberEmail {
     @Transactional(readOnly = true)
     public boolean checkNicknameExists(String nickname) {
         return memberRepository.existsByNickname(nickname);
+    }
+
+    // 닉네임 변경
+    @Transactional
+    public void updateMemberNickname(Authentication authentication, String newNickname) {
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+
+        if (checkNicknameExists(newNickname)) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
+        }
+
+        member.setNickname(newNickname);
+        memberRepository.save(member);
     }
 }
