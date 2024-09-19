@@ -9,7 +9,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
 																(8, '돼지고기', 'MEAT'),
 																(9, '어묵', 'FISH_SEAFOOD'),
 																(10, '달걀', 'EGGS_DAIRY'),
-																(11, '마요네즈', 'EGGS_DAIRY'),
+																(11, '마요네즈', 'SAUCES'),
 																(12, '고추장', 'SAUCES'),
 																(13, '된장', 'SAUCES'),
 																(14, '진간장', 'SAUCES'),
@@ -37,7 +37,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
 																(36, '밀가루', 'OTHERS'),
 																(37, '파슬리', 'OTHERS'),
 																(38, '돼지갈비', 'MEAT'),
-																(39, '무', 'VEGETABLES_FRUITS'),
+																(39, '아스파라거스', 'VEGETABLES_FRUITS'),
 																(40, '고등어', 'FISH_SEAFOOD'),
 																(41, '생크림', 'EGGS_DAIRY'),
 																(42, '닭고기', 'MEAT'),
@@ -71,7 +71,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
 																(70, '생강', 'VEGETABLES_FRUITS'),
 																(71, '부추', 'VEGETABLES_FRUITS'),
 																(72, '콩나물', 'VEGETABLES_FRUITS'),
-																(73, '미나리', 'VEGETABLES_FRUITS'),
+																(73, '고추', 'VEGETABLES_FRUITS'),
 																(74, '연근', 'VEGETABLES_FRUITS'),
 																(75, '깻잎', 'VEGETABLES_FRUITS'),
 																(76, '브로콜리', 'VEGETABLES_FRUITS'),
@@ -85,14 +85,14 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
 																(84, '문어', 'FISH_SEAFOOD'),
 																(85, '꽃게', 'FISH_SEAFOOD'),
 																(86, '전복', 'FISH_SEAFOOD'),
-																(87, '홍합', 'FISH_SEAFOOD'),
+																(87, '갈치', 'FISH_SEAFOOD'),
 																(88, '체다치즈', 'EGGS_DAIRY'),
 																(89, '모짜렐라치즈', 'EGGS_DAIRY'),
-																(90, '생크림', 'EGGS_DAIRY'),
+																(90, '리코타치즈', 'EGGS_DAIRY'),
 																(91, '굴소스', 'SAUCES'),
 																(92, '데리야끼소스', 'SAUCES'),
 																(93, '케첩', 'SAUCES'),
-																(94, '마요네즈', 'SAUCES'),
+																(94, '그릭요거트', 'EGGS_DAIRY'),
 																(95, '당면', 'OTHERS'),
 																(96, '떡국떡', 'OTHERS'),
 																(97, '카레가루', 'OTHERS'),
@@ -102,7 +102,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
                                                                 (101, '오이', 'VEGETABLES_FRUITS'),
                                                                 (102, '파인애플', 'VEGETABLES_FRUITS'),
                                                                 (103, '레몬', 'VEGETABLES_FRUITS'),
-                                                                (104, '배', 'VEGETABLES_FRUITS'),
+                                                                (104, '무화과', 'VEGETABLES_FRUITS'),
                                                                 (105, '사과', 'VEGETABLES_FRUITS'),
                                                                 (106, '딸기', 'VEGETABLES_FRUITS'),
                                                                 (107, '바나나', 'VEGETABLES_FRUITS'),
@@ -123,7 +123,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
                                                                 (122, '파스타면', 'OTHERS'),
                                                                 (123, '피자도우', 'OTHERS'),
                                                                 (124, '또띠아', 'OTHERS'),
-                                                                (125, '크림치즈', 'OTHERS'),
+                                                                (125, '훈제란', 'EGGS_DAIRY'),
                                                                 (126, '다진소고기', 'OTHERS'),
                                                                 (127, '팥앙금', 'OTHERS'),
                                                                 (128, '코코넛밀크', 'OTHERS'),
@@ -132,7 +132,7 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
                                                                 (131, '라임', 'OTHERS'),
                                                                 (132, '청주', 'OTHERS'),
                                                                 (133, '두반장', 'OTHERS'),
-                                                                (134, '춘장', 'OTHERS'),
+                                                                (134, '하이라이스가루', 'OTHERS'),
                                                                 (135, '쌀국수면', 'OTHERS'),
                                                                 (136, '월남쌈피', 'OTHERS'),
                                                                 (137, '김', 'VEGETABLES_FRUITS'),
@@ -142,26 +142,26 @@ INSERT IGNORE INTO food (food_id, food_name, food_category) VALUES
                                                                 (141, '도토리묵', 'OTHERS'),
                                                                 (142, '청포묵', 'OTHERS'),
                                                                 (143, '냉면', 'OTHERS'),
-                                                                (144, '오이', 'VEGETABLES_FRUITS'),
+                                                                (144, '양상추', 'VEGETABLES_FRUITS'),
                                                                 (145, '배', 'VEGETABLES_FRUITS'),
                                                                 (146, '겨자', 'SAUCES'),
                                                                 (147, '밀면', 'OTHERS'),
                                                                 (148, '밀가루 면', 'OTHERS'),
                                                                 (149, '만두피', 'OTHERS'),
-                                                                (150, '당면', 'OTHERS'),
-                                                                (151, '청양고추', 'VEGETABLES_FRUITS'),
-                                                                (152, '돼지갈비', 'MEAT'),
+                                                                (150, '라이스페이퍼', 'OTHERS'),
+                                                                (151, '민트', 'VEGETABLES_FRUITS'),
+                                                                (152, '양갈비', 'MEAT'),
                                                                 (153, '소갈비', 'MEAT'),
                                                                 (154, '미나리', 'VEGETABLES_FRUITS'),
                                                                 (155, '무', 'VEGETABLES_FRUITS'),
-                                                                (156, '콩나물', 'VEGETABLES_FRUITS'),
-                                                                (157, '새우젓', 'SAUCES'),
-                                                                (158, '설탕', 'OTHERS'),
+                                                                (156, '죽순', 'VEGETABLES_FRUITS'),
+                                                                (157, '양파소스', 'SAUCES'),
+                                                                (158, '땅콩', 'OTHERS'),
                                                                 (159, '홍합', 'FISH_SEAFOOD'),
                                                                 (160, '바지락', 'FISH_SEAFOOD'),
                                                                 (161, '짜장소스', 'SAUCES'),
                                                                 (162, '춘장', 'SAUCES'),
-                                                                (163, '굴소스', 'SAUCES'),
+                                                                (163, '초고추장', 'SAUCES'),
                                                                 (164, '고구마전분', 'OTHERS'),
                                                                 (165, '돼지등뼈', 'MEAT'),
                                                                 (166, '감자당면', 'OTHERS'),
@@ -1060,7 +1060,7 @@ INSERT IGNORE INTO food_menu (food_menu_id, food_quantity, food_id, menu_id) VAL
                                                             (76, '20g', 29, 9),   -- 황설탕 20g
                                                             (77, '1kg', 42, 10),   -- 닭 1kg
                                                             (78, '100g', 69, 10),   -- 대추 100g
-                                                            (79, '30g', 39, 10),   -- 마늘 30g
+                                                            (79, '30g', 193, 10),   -- 마늘 30g
                                                             (80, '10g', 18, 10),   -- 진간장 10g
                                                             (81, '500g', 42, 11),  -- 닭고기 500g
                                                             (82, '50g', 12, 11),   -- 고추장 50g
@@ -1217,7 +1217,7 @@ INSERT IGNORE INTO food_menu (food_menu_id, food_quantity, food_id, menu_id) VAL
                                                             (233, '1큰술', 138, 39), -- 참깨
                                                             (234, '400g', 143, 40),   -- 냉면
                                                             (235, '200ml', 23, 40),   -- 물 (육수)
-                                                            (236, '50g', 144, 40),    -- 오이
+                                                            (236, '50g', 101, 40),    -- 오이
                                                             (237, '50g', 145, 40),    -- 배
                                                             (238, '2개', 10, 40),     -- 달걀
                                                             (239, '2큰술', 12, 40),   -- 고추장
@@ -1284,7 +1284,7 @@ INSERT IGNORE INTO food_menu (food_menu_id, food_quantity, food_id, menu_id) VAL
                                                             (300, '1큰술', 18, 47),   -- 간마늘
                                                             (301, '50g', 1, 47),      -- 대파
                                                             (302, '2큰술', 167, 47),   -- 들깨가루
-                                                            (303, '200g', 156, 48),   -- 콩나물
+                                                            (303, '200g', 72, 48),   -- 콩나물
                                                             (304, '1L', 23, 48),      -- 물
                                                             (305, '50g', 22, 48),     -- 멸치
                                                             (306, '30g', 46, 48),     -- 다시마
@@ -1293,7 +1293,7 @@ INSERT IGNORE INTO food_menu (food_menu_id, food_quantity, food_id, menu_id) VAL
                                                             (309, '2공기', 32, 48),   -- 밥
                                                             (310, '2개', 10, 48),     -- 달걀
                                                             (311, '50g', 1, 48),      -- 대파
-                                                            (312, '100g', 144, 49),   -- 오이
+                                                            (312, '100g', 101, 49),   -- 오이
                                                             (313, '500ml', 23, 49),   -- 물
                                                             (314, '2큰술', 27, 49),   -- 식초
                                                             (315, '1큰술', 139, 49),  -- 설탕
