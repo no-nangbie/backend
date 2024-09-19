@@ -36,10 +36,19 @@ public class StatisticsController {
     @GetMapping
     public ResponseEntity getStatisticsFridge(@RequestParam String page,
                                               Authentication authentication){
-        List<Statistics> statisticsList = service.findVerifiedStatistics(authentication);
-        return new ResponseEntity(
-                new SingleResponseDto<>(mapper.statisticsToStatisticsFridgeResponseDto(statisticsList)), HttpStatus.OK
-        );
-
+        if(page.equals("fridge")) {
+            List<Statistics> statisticsList = service.findVerifiedStatistics(page,authentication);
+            return new ResponseEntity(
+                    new SingleResponseDto<>(mapper.statisticsToStatisticsFridgeResponseDto(statisticsList)), HttpStatus.OK
+            );
+        }else if(page.equals("recipe")){
+            List<Statistics> statisticsList = service.findVerifiedStatistics(page,authentication);
+            return new ResponseEntity(
+                    new SingleResponseDto<>(mapper.statisticsToStatisticsRecipeResponseDto(statisticsList)), HttpStatus.OK
+            );
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
+
+
 }

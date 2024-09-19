@@ -137,12 +137,14 @@ public class StatisticsService extends ExtractMemberEmail {
         return (100 - minusPoint);
     }
 
-    public List<Statistics> findVerifiedStatistics(Authentication authentication) {
+    public List<Statistics> findVerifiedStatistics(String page, Authentication authentication) {
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
-        Statistics findstatistics = repository.findByMemberAndDescription(member,"FOOD_MANAGER_SCORE")
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-        findstatistics.setCount(calculatorScore(member));
-        repository.save(findstatistics);
+        if(page.equals("fridge")) {
+            Statistics findstatistics = repository.findByMemberAndDescription(member, "FOOD_MANAGER_SCORE")
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+            findstatistics.setCount(calculatorScore(member));
+            repository.save(findstatistics);
+        }
         return repository.findAllByMember(member);
     }
 }
