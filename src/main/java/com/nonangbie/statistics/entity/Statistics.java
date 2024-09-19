@@ -29,6 +29,9 @@ public class Statistics {
     @JsonBackReference
     private Member member;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_category_id", nullable = true)
     @JsonBackReference
@@ -54,9 +57,10 @@ public class Statistics {
     @Getter
     @AllArgsConstructor
     public enum DType{
-        CA("menuCategory"),
-        CO("menuCookTime"),
-        DI("menuDifficulty");
+        CATEGORY("menuCategory"),
+        COOKTIME("menuCookTime"),
+        DIFFICULTY("menuDifficulty"),
+        COUNT("countStatistics");
 
         private String status;
 

@@ -60,7 +60,8 @@ public class MemberFoodController {
     @GetMapping("/{member-food-id}")
     public ResponseEntity getMemberFood(@PathVariable("member-food-id") @Positive long memberFoodId,
                                         Authentication authentication) {
-        MemberFood memberFood = memberFoodService.findMemberFood(memberFoodId,authentication);
+        //authentication 안써도 될듯.. 중복적용때문에 검색이 느려져요
+        MemberFood memberFood = memberFoodService.findMemberFood(memberFoodId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(memberFoodMapper.memberFoodToMemberFoodResponseDto(memberFood)), HttpStatus.OK
         );

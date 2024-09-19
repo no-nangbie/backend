@@ -1,8 +1,6 @@
 package com.nonangbie.statistics.controller;
 
-import com.nonangbie.dto.SingleResponseDto;
 import com.nonangbie.statistics.service.StatisticsService;
-import com.nonangbie.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class StatisticsController {
     @PatchMapping("/{menu-id}")
     public ResponseEntity patchStatistics(@PathVariable("menu-id") @Positive long menuId,
                                           Authentication authentication) {
-        boolean result = service.incrementCount(menuId,authentication);
+        boolean result = service.increaseCookCount(menuId,authentication);
         if(result)
             return new ResponseEntity(HttpStatus.OK);
         else

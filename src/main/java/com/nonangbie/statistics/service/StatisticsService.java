@@ -38,39 +38,58 @@ public class StatisticsService extends ExtractMemberEmail {
         List<MenuCategory> allCategories = menuCategoryRepository.findAll();
         List<MenuDifficulty> allDifficulty = menuDifficultyRepository.findAll();
         List<MenuCookTime> allCookTime = menuCookTimeRepository.findAll();
+        List<String> countStatisticsList = new ArrayList<>();
+        countStatisticsList.add("FOOD_MANAGER_SCORE");
+        countStatisticsList.add("INPUT_FOOD_COUNT");
+        countStatisticsList.add("OUTPUT_FOOD_COUNT");
+        countStatisticsList.add("EXPIRE_FOOD_COUNT");
+        countStatisticsList.add("COOK_COUNT");
         List<Statistics> statisticsList = new ArrayList<>();
 
         for(MenuCategory menuCategory : allCategories){
             Statistics statistics = new Statistics();
+            statistics.setDescription(menuCategory.getCode());
             statistics.setMember(saveMember);
             statistics.setMenuCategory(menuCategory);
             statistics.setMenuCookTime(null);
             statistics.setMenuDifficulty(null);
-            statistics.setInfoType(Statistics.DType.CA);
+            statistics.setInfoType(Statistics.DType.CATEGORY);
             statisticsList.add(statistics);
         }
         for(MenuDifficulty menuDifficulty : allDifficulty){
             Statistics statistics = new Statistics();
+            statistics.setDescription(menuDifficulty.getCode());
             statistics.setMember(saveMember);
             statistics.setMenuCategory(null);
             statistics.setMenuCookTime(null);
             statistics.setMenuDifficulty(menuDifficulty);
-            statistics.setInfoType(Statistics.DType.DI);
+            statistics.setInfoType(Statistics.DType.DIFFICULTY);
             statisticsList.add(statistics);
         }
         for(MenuCookTime menuCookTime : allCookTime){
             Statistics statistics = new Statistics();
+            statistics.setDescription(menuCookTime.getCode());
             statistics.setMember(saveMember);
             statistics.setMenuCategory(null);
             statistics.setMenuCookTime(menuCookTime);
             statistics.setMenuDifficulty(null);
-            statistics.setInfoType(Statistics.DType.CO);
+            statistics.setInfoType(Statistics.DType.COOKTIME);
+            statisticsList.add(statistics);
+        }
+        for(String string : countStatisticsList){
+            Statistics statistics = new Statistics();
+            statistics.setDescription(string);
+            statistics.setMember(saveMember);
+            statistics.setMenuCategory(null);
+            statistics.setMenuCookTime(null);
+            statistics.setMenuDifficulty(null);
+            statistics.setInfoType(Statistics.DType.COUNT);
             statisticsList.add(statistics);
         }
         return repository.saveAll(statisticsList);
     }
 
-    public boolean incrementCount(Long menuId, Authentication authentication) {
+    public boolean increaseCookCount(Long menuId, Authentication authentication) {
         Member member = extractMemberFromAuthentication(authentication,memberRepository);
         Menu findMenu = menuRepository.findById(menuId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
         String MenuCategoryCode = String.valueOf(findMenu.getMenuCategory());
@@ -97,5 +116,11 @@ public class StatisticsService extends ExtractMemberEmail {
             repository.save(statistics);
         }
         return true;
+    }
+
+    public void increaseCount(Member member, String description, int count){
+        Statistics findStatistics = repository.findByMemberAndDescription(member,description)
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+        findStatistics.setCount(findStatistics.getCount()+count);
     }
 }

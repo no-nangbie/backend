@@ -31,21 +31,8 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Long> {
     Optional<Statistics> findByMemberAndMenuCookTime_Code(
             @Param("member") Member member,
             @Param("menuCookTimeCode") String menuCookTimeCode);
-//    Optional<Statistics> findByMemberAndMenuCategory_Code(Member member, String menuCategoryCode);
-//    Optional<Statistics> findByMemberAndMenuDifficulty_Code(Member member, String menuDifficultyCode);
-//    Optional<Statistics> findByMemberAndMenuCookTime_Code(Member member, String menuCookTimeCode);
 
-    @Query(value = "(SELECT * FROM statistics s WHERE s.member = :member AND s.menuCategory_code = :menuCategoryCode) " +
-            "UNION ALL " +
-            "(SELECT * FROM statistics s WHERE s.member = :member AND s.menuDifficulty_code = :menuDifficultyCode) " +
-            "UNION ALL " +
-            "(SELECT * FROM statistics s WHERE s.member = :member AND s.menuCookTime_code = :menuCookTimeCode)",
-            nativeQuery = true)
-    List<Statistics> findAllByMemberAndCodes(
-            @Param("member") Member member,
-            @Param("menuCategoryCode") String menuCategoryCode,
-            @Param("menuDifficultyCode") String menuDifficultyCode,
-            @Param("menuCookTimeCode") String menuCookTimeCode);
+    Optional<Statistics> findByMemberAndDescription(Member member, String description);
 
 }
 
