@@ -955,7 +955,7 @@ INSERT IGNORE INTO menu (menu_id, menu_title, menu_description, menu_category,
 VALUES
     (69, '떡꼬치',
      '쫄깃한 떡을 꼬치에 끼워 매콤한 소스를 바른 간식입니다.',
-     'MENU_CATEGORY_SNACK',
+     'MENU_CATEGORY_DESSERT',
      '["1. 떡을 끓는 물에 살짝 데쳐 물기를 제거합니다.",
        "2. 꼬치에 떡을 끼워줍니다.",
        "3. 팬에 기름을 두르고 떡꼬치를 노릇하게 구워줍니다.",
