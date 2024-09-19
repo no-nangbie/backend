@@ -29,6 +29,7 @@ public class Member {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
+    @Setter
     @Column(name = "nickname", length = 255, nullable = false)
     private String nickname;
 
