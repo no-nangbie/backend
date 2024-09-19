@@ -996,14 +996,54 @@ INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, r
        "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
        "6. 반찬 그릇에 담아 완성합니다."]', 67, 1, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/241x100.png/dddddd/000000', 76, NOW());
 
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (73, 'Jeth', 'Vasyutichev', 'MENU_CATEGORY_SIDE', 'Comedy', 10, 9, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/131x100.png/ff4444/ffffff', 95, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (74, 'Ferne', 'Lease', 'MENU_CATEGORY_SIDE', 'Crime|Drama|Thriller', 47, 5, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/161x100.png/ff4444/ffffff', 32, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (75, 'Jasper', 'McQuillan', 'MENU_CATEGORY_SIDE', 'Horror|Sci-Fi', 58, 6, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/114x100.png/5fa2dd/ffffff', 2, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (76, 'Mauricio', 'Shoutt', 'MENU_CATEGORY_SIDE', 'Comedy', 71, 1, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/193x100.png/5fa2dd/ffffff', 27, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (77, 'Nola', 'Styan', 'MENU_CATEGORY_SIDE', 'Action|Crime|Drama|Thriller', 53, 2, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/249x100.png/dddddd/000000', 15, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (78, 'Zach', 'Hessing', 'MENU_CATEGORY_SIDE', 'Action|Mystery|Thriller', 5, 6, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/203x100.png/ff4444/ffffff', 96, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (79, 'Elia', 'Giraudeau', 'MENU_CATEGORY_SIDE', 'Comedy|Drama', 55, 7, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/131x100.png/cc0000/ffffff', 67, NOW());
-INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (80, 'Lorraine', 'Maidment', 'MENU_CATEGORY_SIDE', 'Drama|War', 82, 2, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/104x100.png/ff4444/ffffff', 1, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (73, 'Jeth', 'Vasyutichev', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 10, 9, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/131x100.png/ff4444/ffffff', 95, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (74, 'Ferne', 'Lease', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 47, 5, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/161x100.png/ff4444/ffffff', 32, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (75, 'Jasper', 'McQuillan', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 58, 6, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/114x100.png/5fa2dd/ffffff', 2, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (76, 'Mauricio', 'Shoutt', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 71, 1, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/193x100.png/5fa2dd/ffffff', 27, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (77, 'Nola', 'Styan', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 53, 2, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/249x100.png/dddddd/000000', 15, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (78, 'Zach', 'Hessing', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 5, 6, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/203x100.png/ff4444/ffffff', 96, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (79, 'Elia', 'Giraudeau', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 55, 7, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/131x100.png/cc0000/ffffff', 67, NOW());
+INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (80, 'Lorraine', 'Maidment', 'MENU_CATEGORY_SIDE', '["1. 메추리알은 삶아 껍질을 벗깁니다.",
+       "2. 쇠고기는 물에 데쳐 불순물을 제거합니다.",
+       "3. 냄비에 물, 진간장, 설탕, 마늘을 넣고 끓입니다.",
+       "4. 고기와 메추리알을 넣고 중불에서 조려줍니다.",
+       "5. 국물이 자작해지면 불을 끄고 식혀줍니다.",
+       "6. 반찬 그릇에 담아 완성합니다."]', 82, 2, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/104x100.png/ff4444/ffffff', 1, NOW());
 -- INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (81, 'Vernon', 'MacGinney', 'MENU_CATEGORY_SIDE', 'Comedy', 98, 8, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/226x100.png/cc0000/ffffff', 72, NOW());
 -- INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (82, 'Hastings', 'Allsup', 'MENU_CATEGORY_SIDE', 'Action|Adventure|Drama', 92, 8, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/131x100.png/dddddd/000000', 96, NOW());
 -- INSERT IGNORE Into menu (menu_id, menu_title, menu_description, menu_category, recipes, cooking_time, serving_size, difficulty, image_url, menu_like_count, created_at) values (83, 'Edith', 'Hartnup', 'MENU_CATEGORY_SIDE', 'Drama|Romance', 68, 4, 'DIFFICULTY_MEDIUM', 'http://dummyimage.com/189x100.png/dddddd/000000', 12, NOW());
