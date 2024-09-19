@@ -29,6 +29,7 @@ public class Member {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
+    @Setter
     @Column(name = "nickname", length = 255, nullable = false)
     private String nickname;
 
@@ -48,9 +49,9 @@ public class Member {
     @JsonManagedReference
     private List<MenuLike> menuLikeList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
+    @OneToMany(mappedBy = "member")
     @JsonManagedReference
-    private Statistics statistics;
+    private List<Statistics> statisticsList;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

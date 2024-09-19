@@ -127,6 +127,15 @@ public class JwtTokenizer {
         return key;
     }
 
+    public String getEmailFromToken(String token) {
+        token = token.replace("Bearer ", "");
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
 //    // 로그아웃시 레디스에서 email를 기준으로 토큰 값 삭제
     public boolean deleteRegisterToken(String username) {
         return Optional.ofNullable(redisTemplate.hasKey(username))

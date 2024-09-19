@@ -11,10 +11,7 @@ import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -91,10 +89,12 @@ public class BoardService extends ExtractMemberEmail {
 //        findBoard.setBoardStatus(Board.BoardStatus.BOARD_DELETED);
 //        boardRepository.save(findBoard);
     }
-    public Page<Board> findBoardsByType(String type, String sort, int page, int size,Authentication authentication) {
+    public Page<Board> findBoardsByType(String type, String sort,
+                                        int page, int size,
+                                        String keyword,
+                                        Authentication authentication) {
         extractMemberFromAuthentication(authentication, memberRepository);
         Sort sortBy;
-        Board.MenuCategory menuCategory;
         Pageable pageable;
         switch (sort) {
             case "LIKE_LIST":
@@ -115,23 +115,29 @@ public class BoardService extends ExtractMemberEmail {
                 throw new IllegalArgumentException("Invalid sort type: " + sort);
         }
 
-        try {
-            menuCategory = Board.MenuCategory.valueOf(type.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            if(type.equals("ALL")) {
-                if(sort.equals("LIKE_LIST")) {
-                    List<Long> likeBoardIds = findVerifiedBoardLike((String) authentication.getPrincipal());
-                    return repository.findAllByBoardIdIn(likeBoardIds, pageable);
-                }
-                return repository.findAll(pageable);
+        // 메뉴 카테고리 설정
+        Board.MenuCategory menuCategory = null;
+        if (!type.equalsIgnoreCase("ALL")) {
+            try {
+                menuCategory = Board.MenuCategory.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new BusinessLogicException(ExceptionCode.INVALID_BOARD_FILTER_TYPE);
             }
-            throw new BusinessLogicException(ExceptionCode.INVALID_BOARD_FILTER_TYPE);
         }
-        if(sort.equals("LIKE_LIST")) {
-            List<Long> likeBoardIds = findVerifiedBoardLike((String) authentication.getPrincipal());
-            return repository.findAllByMenuCategoryAndBoardIdIn(menuCategory, likeBoardIds, pageable);
+        // 좋아요 목록 설정
+        List<Long> ids = null;
+        if (sort.equals("LIKE_LIST")) {
+            String username = (String) authentication.getPrincipal();
+            ids = findVerifiedBoardLike(username);
+            if (ids.isEmpty()) {
+                // 좋아요한 게시글이 없으면 빈 결과 반환
+                return new PageImpl<>(Collections.emptyList(), pageable, 0);
+            }
         }
-        return repository.findAllByMenuCategory(menuCategory, pageable);
+
+        if(keyword.isEmpty())
+            return repository.findBoardsNoKeyword(menuCategory,ids,pageable);
+        return repository.findBoards(menuCategory, keyword, ids, pageable);
     }
 
     public boolean likeBoard(long boardId,Authentication authentication) {

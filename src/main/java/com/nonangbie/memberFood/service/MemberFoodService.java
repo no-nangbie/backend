@@ -1,5 +1,7 @@
 package com.nonangbie.memberFood.service;
 
+import com.nonangbie.eventListener.CustomEvent;
+import com.nonangbie.eventListener.EventCaseEnum;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.food.entity.Food;
@@ -12,6 +14,7 @@ import com.nonangbie.memberFood.repository.MemberFoodRepository;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -24,11 +27,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import static com.nonangbie.eventListener.EventCaseEnum.EventCase.*;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberFoodService extends ExtractMemberEmail {
+    private final ApplicationEventPublisher eventPublisher;
     private final MemberFoodRepository memberFoodRepository;
     private final FoodRepository foodRepository;
     private final MemberRepository memberRepository;
@@ -54,12 +59,16 @@ public class MemberFoodService extends ExtractMemberEmail {
             memberFood.setMemberFoodStatus(MemberFood.MemberFoodStatus.Fresh);
         }
 
+        //통계 -> 식재료 추가 통계 수집
+        CustomEvent event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"INPUT_FOOD_COUNT",1);
+        eventPublisher.publishEvent(event);
+
         return memberFoodRepository.save(memberFood);
     }
 
     public MemberFood updateMemberFood(MemberFood memberFood, Authentication authentication) {
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
-        MemberFood findMemberFood = findVerifiedMemberFood(memberFood.getMemberFoodId(), authentication);
+        MemberFood findMemberFood = findVerifiedMemberFood(memberFood.getMemberFoodId());
 
         if (!Objects.equals(findMemberFood.getMember(), member)) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
@@ -97,8 +106,8 @@ public class MemberFoodService extends ExtractMemberEmail {
     }
 
 
-    public MemberFood findMemberFood(long memberFoodId,Authentication authentication) {
-        return findVerifiedMemberFood(memberFoodId,authentication);
+    public MemberFood findMemberFood(long memberFoodId) {
+        return findVerifiedMemberFood(memberFoodId);
     }
 
     public Page<MemberFood> findMemberFoodsSort(int page, int size, Sort sort,Authentication authentication) {
@@ -125,37 +134,62 @@ public class MemberFoodService extends ExtractMemberEmail {
     }
 
     public void deleteMemberFood(long memberFoodId,Authentication authentication) {
-        MemberFood findMemberFood = findMemberFood(memberFoodId,authentication);
-        String email = (String) authentication.getPrincipal();
-        if(!findMemberFood.getMember().getEmail().equals(email)) {
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+        MemberFood findMemberFood = findMemberFood(memberFoodId);
+        if (findMemberFood.getMember() != member) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
         }
+
+        //통계 -> 식재료 삭제 통계 수집
+        CustomEvent event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"OUTPUT_FOOD_COUNT",1);
+        eventPublisher.publishEvent(event);
+        if(findMemberFood.getMemberFoodStatus() == MemberFood.MemberFoodStatus.Near_Expiry){
+            event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"EXPIRE_FOOD_COUNT",1);
+            eventPublisher.publishEvent(event);
+        }
+
         memberFoodRepository.delete(findMemberFood);
     }
 
     public void deleteMultipleMemberFoods(List<Long> ids, Authentication authentication) {
-        String email = (String) authentication.getPrincipal();
-
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+        CustomEvent event;
         // 각 ID에 대해 MemberFood를 찾아서 삭제
         for (Long id : ids) {
-            MemberFood findMemberFood = findMemberFood(id, authentication);
-            if (!findMemberFood.getMember().getEmail().equals(email)) {
+            MemberFood findMemberFood = findMemberFood(id);
+            if (findMemberFood.getMember() != member) {
                 throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
+            }
+            if(findMemberFood.getMemberFoodStatus() == MemberFood.MemberFoodStatus.Near_Expiry){
+                event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"EXPIRE_FOOD_COUNT",1);
+                eventPublisher.publishEvent(event);
             }
             memberFoodRepository.delete(findMemberFood);
         }
+
+        //통계 -> 식재료 삭제 통계 수집
+        event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"OUTPUT_FOOD_COUNT",ids.size());
+        eventPublisher.publishEvent(event);
     }
 
     // MemberFoodService.java
     public void deleteAllMemberFoods(Authentication authentication) {
+        int expireCount = 0;
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
         List<MemberFood> memberFoods = memberFoodRepository.findAllByMember(member);
+        for(MemberFood memberFood : memberFoods){
+            if(memberFood.getMemberFoodStatus() == MemberFood.MemberFoodStatus.Near_Expiry)
+                expireCount++;
+        }
+        CustomEvent event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"OUTPUT_FOOD_COUNT",memberFoods.size());
+        eventPublisher.publishEvent(event);
+        event = new CustomEvent(this, STATISTICS_INCREMENT_COUNT,member,"EXPIRE_FOOD_COUNT",expireCount);
+        eventPublisher.publishEvent(event);
         memberFoodRepository.deleteAll(memberFoods);
     }
 
 
-    public MemberFood findVerifiedMemberFood(long memberFoodId,Authentication authentication) {
-        extractMemberFromAuthentication(authentication,memberRepository);
+    public MemberFood findVerifiedMemberFood(long memberFoodId) {
         Optional<MemberFood> optionalMemberFood = memberFoodRepository.findById(memberFoodId);
         MemberFood findmemberFood = optionalMemberFood.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_FOOD_NOT_FOUND));

@@ -98,11 +98,12 @@ public class BoardController {
     @GetMapping
     public ResponseEntity getBoards(@RequestParam(name = "type", required = false, defaultValue = "ALL") String boardType,
                                     @RequestParam(name = "sort") String sort,
+                                    @RequestParam(name = "keyword") String keyword,
                                     @Positive @RequestParam int page,
                                     @Positive @RequestParam int size,
                                     Authentication authentication) {
 
-        Page<Board> pageBoards = service.findBoardsByType(boardType, sort, page - 1, size, authentication);
+        Page<Board> pageBoards = service.findBoardsByType(boardType, sort, page - 1, size,keyword, authentication);
         List<Board> boards = pageBoards.getContent();
         if(sort.equals("LIKE_LIST")) {
             List<Long> likeBoardIds = service.findVerifiedBoardLike((String) authentication.getPrincipal());

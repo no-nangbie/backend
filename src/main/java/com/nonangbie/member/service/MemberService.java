@@ -1,11 +1,14 @@
 package com.nonangbie.member.service;
 
+import com.nonangbie.auth.jwt.JwtTokenizer;
 import com.nonangbie.auth.utils.CustomAuthorityUtils;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.member.dto.MemberDto;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
+import com.nonangbie.statistics.entity.Statistics;
+import com.nonangbie.statistics.service.StatisticsService;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class MemberService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final StatisticsService statisticsService;
+    private final JwtTokenizer jwtTokenizer;
 
     public Member createMember(Member member) {
         verifyExistMember(member.getEmail());
@@ -37,8 +42,11 @@ public class MemberService extends ExtractMemberEmail {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-
-        return memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+        List<Statistics> statisticsList = statisticsService.createStatistics(savedMember);
+        member.setStatisticsList(statisticsList);
+//        Member savedMember = memberRepository.save(member);
+        return savedMember;
     }
 
     @Transactional(readOnly = true)
@@ -124,6 +132,13 @@ public class MemberService extends ExtractMemberEmail {
         return findMember;
     }
 
+    public Member findVerifiedMembers(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Member findMember = optionalMember.orElseThrow(()
+                -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
+    }
+
     private void verifyNickName(String nickName) {
         Optional<Member> member = memberRepository.findByNickname(nickName);
         if(member.isPresent()) {
@@ -134,5 +149,18 @@ public class MemberService extends ExtractMemberEmail {
     @Transactional(readOnly = true)
     public boolean checkNicknameExists(String nickname) {
         return memberRepository.existsByNickname(nickname);
+    }
+
+    // 닉네임 변경
+    @Transactional
+    public void updateMemberNickname(Authentication authentication, String newNickname) {
+        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+
+        if (checkNicknameExists(newNickname)) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
+        }
+
+        member.setNickname(newNickname);
+        memberRepository.save(member);
     }
 }

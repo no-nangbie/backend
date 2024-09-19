@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -176,6 +178,7 @@ public class MemberController {
     }
     // 닉네임 중복 확인 API 추가
     @GetMapping("/nickname-check")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> checkNickname(@RequestParam String nickname) {
         boolean exists = service.checkNicknameExists(nickname);
         if (exists) {
@@ -183,5 +186,22 @@ public class MemberController {
         } else {
             return ResponseEntity.ok("NickName available");
         }
+    }
+
+    // 닉네임 변경
+    @PatchMapping("/members/nickname")
+    public ResponseEntity changeNickname(@RequestBody Map<String, String> requestBody, Authentication authentication) {
+        String newNickname = requestBody.get("nickname");
+        service.updateMemberNickname(authentication, newNickname);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity getMember(@AuthenticationPrincipal Object principal) {
+        Member member = service.findVerifiedMembers(principal.toString());
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(memberMapper.memberToMemberInfoResponse(member)), HttpStatus.OK
+        );
     }
 }
