@@ -127,14 +127,22 @@ public class StatisticsService extends ExtractMemberEmail {
     public int calculatorScore(Member member) {
         Statistics findInputStatistics = repository.findByMemberAndDescription(member, "INPUT_FOOD_COUNT")
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+        Statistics findOutputStatistics = repository.findByMemberAndDescription(member, "OUTPUT_FOOD_COUNT")
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
         Statistics findExpireStatistics = repository.findByMemberAndDescription(member, "EXPIRE_FOOD_COUNT")
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-        int minusPoint = 0;
+        float minusPoint = 0;
+        int outputScore = findOutputStatistics.getCount();
+        int outputScoreAdd = findOutputStatistics.getCount();
         int expireScore = findExpireStatistics.getCount();
-        int inputScore = findInputStatistics.getCount();
-        if(expireScore > 0 && inputScore > 0)
-            minusPoint = expireScore / inputScore * 100;
-        return (100 - minusPoint);
+        int inputScore = (int) (findInputStatistics.getCount() * 0.25);
+        if(inputScore > 20)
+            inputScore = 20;
+        if(outputScoreAdd > 80)
+            outputScoreAdd = 80;
+        if(expireScore > 0 && outputScore > 0)
+            minusPoint = (float) expireScore / outputScore * outputScoreAdd;
+        return (inputScore + outputScoreAdd - (int)minusPoint);
     }
 
     public List<Statistics> findVerifiedStatistics(String page, Authentication authentication) {
