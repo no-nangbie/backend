@@ -130,6 +130,13 @@ public class MemberService extends ExtractMemberEmail {
         return findMember;
     }
 
+    public Member findVerifiedMembers(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Member findMember = optionalMember.orElseThrow(()
+                -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
+    }
+
     private void verifyNickName(String nickName) {
         Optional<Member> member = memberRepository.findByNickname(nickName);
         if(member.isPresent()) {

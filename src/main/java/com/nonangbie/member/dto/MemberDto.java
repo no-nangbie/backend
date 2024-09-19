@@ -1,11 +1,13 @@
 package com.nonangbie.member.dto;
 
 import com.nonangbie.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 public class MemberDto {
     @Getter
@@ -86,4 +88,13 @@ public class MemberDto {
         private String confirmNewPassword;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class InfoResponse {
+        private long memberId;
+        private String nickname;
+        private String email;
+    }
 }
