@@ -6,6 +6,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 
 @Component
 @Slf4j
@@ -14,17 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmailTool {
     private final JavaMailSender javaMailSender;
 
-    public void sendEmail(String email, String title, String text) {
-        SimpleMailMessage emailForm = createEmailForm(email, title, text);
+    public void sendHtmlEmail(String email, String title, String htmlContent) {
         try {
-            javaMailSender.send(emailForm);
-            log.info("이메일 발송 성공");
-        } catch (Exception e) {
-            log.error("이메일 발송 오류");
-            e.printStackTrace();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            helper.setTo(email);
+            helper.setSubject(title);
+            helper.setText(htmlContent, true); // true means it's HTML
+
+            javaMailSender.send(mimeMessage);
+            log.info("HTML 이메일 발송 성공");
+        } catch (MessagingException e) {
+            log.error("HTML 이메일 발송 오류", e);
         }
     }
-
     // 발신할 이메일 데이터 세팅
     private SimpleMailMessage createEmailForm(String toEmail, String title, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
