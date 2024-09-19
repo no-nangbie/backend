@@ -34,7 +34,7 @@ public class StatisticsService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final StatisticsRepository repository;
 
-    public List<Statistics> createStatistics(Member saveMember){
+    public List<Statistics> createStatistics(Member saveMember) {
         List<MenuCategory> allCategories = menuCategoryRepository.findAll();
         List<MenuDifficulty> allDifficulty = menuDifficultyRepository.findAll();
         List<MenuCookTime> allCookTime = menuCookTimeRepository.findAll();
@@ -46,7 +46,7 @@ public class StatisticsService extends ExtractMemberEmail {
         countStatisticsList.add("COOK_COUNT");
         List<Statistics> statisticsList = new ArrayList<>();
 
-        for(MenuCategory menuCategory : allCategories){
+        for (MenuCategory menuCategory : allCategories) {
             Statistics statistics = new Statistics();
             statistics.setDescription(menuCategory.getCode());
             statistics.setMember(saveMember);
@@ -56,7 +56,7 @@ public class StatisticsService extends ExtractMemberEmail {
             statistics.setInfoType(Statistics.DType.CATEGORY);
             statisticsList.add(statistics);
         }
-        for(MenuDifficulty menuDifficulty : allDifficulty){
+        for (MenuDifficulty menuDifficulty : allDifficulty) {
             Statistics statistics = new Statistics();
             statistics.setDescription(menuDifficulty.getCode());
             statistics.setMember(saveMember);
@@ -66,7 +66,7 @@ public class StatisticsService extends ExtractMemberEmail {
             statistics.setInfoType(Statistics.DType.DIFFICULTY);
             statisticsList.add(statistics);
         }
-        for(MenuCookTime menuCookTime : allCookTime){
+        for (MenuCookTime menuCookTime : allCookTime) {
             Statistics statistics = new Statistics();
             statistics.setDescription(menuCookTime.getCode());
             statistics.setMember(saveMember);
@@ -76,7 +76,7 @@ public class StatisticsService extends ExtractMemberEmail {
             statistics.setInfoType(Statistics.DType.COOKTIME);
             statisticsList.add(statistics);
         }
-        for(String string : countStatisticsList){
+        for (String string : countStatisticsList) {
             Statistics statistics = new Statistics();
             statistics.setDescription(string);
             statistics.setMember(saveMember);
@@ -90,37 +90,59 @@ public class StatisticsService extends ExtractMemberEmail {
     }
 
     public boolean increaseCookCount(Long menuId, Authentication authentication) {
-        Member member = extractMemberFromAuthentication(authentication,memberRepository);
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
         Menu findMenu = menuRepository.findById(menuId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
         String MenuCategoryCode = String.valueOf(findMenu.getMenuCategory());
         String MenuDifficultyCode = String.valueOf(findMenu.getDifficulty());
         String MenuCookTime;
-        if(findMenu.getCookingTime() >= 240 )
+        if (findMenu.getCookingTime() >= 240)
             MenuCookTime = "4HOURS_OVER";
-        else if(findMenu.getCookingTime() >= 120)
+        else if (findMenu.getCookingTime() >= 120)
             MenuCookTime = "2HOURS_TO_4HOURS";
-        else if(findMenu.getCookingTime() >= 60)
+        else if (findMenu.getCookingTime() >= 60)
             MenuCookTime = "1HOURS_TO_2HOURS";
         else
             MenuCookTime = "0_TO_1HOURS";
 
         List<Statistics> findStatistics = new ArrayList<>();
-        findStatistics.add(repository.findByMemberAndMenuCategory_Code(member,MenuCategoryCode)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
-        findStatistics.add(repository.findByMemberAndMenuDifficulty_Code(member,MenuDifficultyCode)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
-        findStatistics.add(repository.findByMemberAndMenuCookTime_Code(member,MenuCookTime)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
-        for(Statistics statistics : findStatistics){
-            statistics.setCount(statistics.getCount()+1);
+        findStatistics.add(repository.findByMemberAndMenuCategory_Code(member, MenuCategoryCode)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        findStatistics.add(repository.findByMemberAndMenuDifficulty_Code(member, MenuDifficultyCode)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        findStatistics.add(repository.findByMemberAndMenuCookTime_Code(member, MenuCookTime)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_DENIED)));
+        for (Statistics statistics : findStatistics) {
+            statistics.setCount(statistics.getCount() + 1);
             repository.save(statistics);
         }
         return true;
     }
 
-    public void increaseCount(Member member, String description, int count){
-        Statistics findStatistics = repository.findByMemberAndDescription(member,description)
+    public void increaseCount(Member member, String description, int count) {
+        Statistics findStatistics = repository.findByMemberAndDescription(member, description)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+        findStatistics.setCount(findStatistics.getCount() + count);
+    }
+
+    public int calculatorScore(Member member) {
+        Statistics findInputStatistics = repository.findByMemberAndDescription(member, "INPUT_FOOD_COUNT")
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+        Statistics findExpireStatistics = repository.findByMemberAndDescription(member, "EXPIRE_FOOD_COUNT")
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
+        int minusPoint = 0;
+        int expireScore = findExpireStatistics.getCount();
+        int inputScore = findInputStatistics.getCount();
+        if(expireScore > 0 && inputScore > 0)
+            minusPoint = expireScore / inputScore * 100;
+        return (100 - minusPoint);
+    }
+
+    public List<Statistics> findVerifiedStatistics(Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        Statistics findstatistics = repository.findByMemberAndDescription(member,"FOOD_MANAGER_SCORE")
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.STATISTICS_NOT_FOUND));
-        findStatistics.setCount(findStatistics.getCount()+count);
+        findstatistics.setCount(calculatorScore(member));
+        repository.save(findstatistics);
+        return repository.findAllByMember(member);
     }
 }

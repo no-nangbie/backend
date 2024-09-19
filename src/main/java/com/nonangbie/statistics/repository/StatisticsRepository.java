@@ -34,5 +34,7 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Long> {
 
     Optional<Statistics> findByMemberAndDescription(Member member, String description);
 
+    List<Statistics> findAllByMember(Member member);
+
 }
 
