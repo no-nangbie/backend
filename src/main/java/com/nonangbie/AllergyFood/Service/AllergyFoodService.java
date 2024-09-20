@@ -2,6 +2,7 @@ package com.nonangbie.AllergyFood.Service;
 
 import com.nonangbie.AllergyFood.Entity.AllergyFood;
 import com.nonangbie.AllergyFood.Repository.AllergyFoodRepository;
+import com.nonangbie.eventListener.CustomEvent;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.food.entity.Food;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -90,6 +92,19 @@ public class AllergyFoodService extends ExtractMemberEmail {
         }
         allergyFoodRepository.delete(findAllergyFood);
 
+    }
+
+    public void deleteMultipleAllergyFoods(List<Long> ids, Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        CustomEvent event;
+
+        for (Long id : ids) {
+            AllergyFood findAllergyFood = findAllergyFood(id);
+            if (findAllergyFood.getMember() != member) {
+                throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
+            }
+            allergyFoodRepository.delete(findAllergyFood);
+        }
     }
 
 }

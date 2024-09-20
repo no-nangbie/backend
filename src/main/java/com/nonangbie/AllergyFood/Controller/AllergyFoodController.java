@@ -80,4 +80,10 @@ public class AllergyFoodController {
         allergyFoodService.deleteAllergyFood(allergyFoodId, authentication);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping
+    public ResponseEntity deleteMultipleAllergyFoods(@RequestBody List<Long> ids, Authentication authentication) {
+        allergyFoodService.deleteMultipleAllergyFoods(ids, authentication);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
