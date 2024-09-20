@@ -60,17 +60,17 @@ public class MenuController {
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu,false,memberFoodNames)), HttpStatus.OK);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test") //hello
     public ResponseEntity getMenus(@Positive @RequestParam int page,
                                    @Positive @RequestParam int size,
                                    @RequestParam String menuCategory,
                                    @RequestParam String sort,
                                    @RequestParam String keyword,
-                                   @RequestParam long foodId,
+                                   @RequestParam String foodName,
                                    Authentication authentication){
 
         //sort 날라오는 거 , menuLikeCount_asc , missingFoodsCount_asc, menuLikeCount_desc, likeList
-        Page<Menu> pageMenu = menuService.findMenusIntegration(page - 1, size, menuCategory, sort, keyword, foodId,authentication);
+        Page<Menu> pageMenu = menuService.findMenusIntegration(page - 1, size, menuCategory, sort, keyword, foodName,authentication);
         List<Menu> menus = pageMenu.getContent();
 
         // 사용자의 보유 재료 목록을 가져옴
