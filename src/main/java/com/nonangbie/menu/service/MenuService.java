@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.nonangbie.menu.entity.Menu.MenuCategory.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -69,6 +71,68 @@ public class MenuService extends ExtractMemberEmail {
                 new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
 
         return findMenu;
+    }
+
+    public Page<Menu> findMenusIntegration(int page, int size, String menuCategory,
+                                           String sort, String keyword, Long foodId,
+                                           Authentication authentication) {
+        extractMemberFromAuthentication(authentication, memberRepository);
+        Sort sortBy;
+        Pageable pageable;
+        Menu.MenuCategory mmc = null;
+        //sort 날라오는 거 , menuLikeCount_asc , missingFoodsCount_asc, menuLikeCount_desc, likeList
+        switch (sort) {
+            case "likeList":
+                pageable = PageRequest.of(page, size); break;
+            case "menuLikeCount_asc":
+                sortBy = Sort.by("menuLikeCount").ascending();
+                pageable = PageRequest.of(page, size, sortBy); break;
+            case "menuLikeCount_desc":
+                sortBy = Sort.by("menuLikeCount").descending();
+                pageable = PageRequest.of(page, size, sortBy); break;
+            case "missingFoodsCount_asc":
+                sortBy = Sort.by("missingFoodsCount").ascending();
+                pageable = PageRequest.of(page, size, sortBy); break;
+            default:
+                throw new IllegalArgumentException("Invalid sort type: " + sort);
+        }
+        if(menuCategory.isBlank() || menuCategory.isEmpty() || menuCategory.equals("전체")) {
+            menuCategory = null;
+        }
+        else{
+            mmc = findMenuCategory(menuCategory);
+        }
+        if(keyword.isBlank() || keyword.isEmpty())
+            keyword = null;
+        if(foodId == -1)
+            foodId = null;
+
+        return menuRepository.findAllMenusIntegration(pageable,mmc,keyword,foodId);
+    }
+
+    private Menu.MenuCategory findMenuCategory(String s){
+        switch (s) {
+            case "밑 반찬":
+                return MENU_CATEGORY_SIDE;
+            case "국/찌개":
+                return MENU_CATEGORY_SOUP;
+            case "디저트":
+                return MENU_CATEGORY_DESSERT;
+            case "면":
+                return MENU_CATEGORY_NOODLE;
+            case "밥/죽/떡":
+                return MENU_CATEGORY_RICE;
+            case "김치":
+                return MENU_CATEGORY_KIMCHI;
+            case "퓨전":
+                return MENU_CATEGORY_FUSION;
+            case "양념":
+                return MENU_CATEGORY_SEASONING;
+            case "양식":
+                return MENU_CATEGORY_WESTERN;
+            default: //"기타":
+                return MENU_CATEGORY_ETC;
+        }
     }
 
     public Page<Menu> findMenusSort(int page, int size, Sort sort, Authentication authentication) {
