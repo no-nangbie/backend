@@ -1,6 +1,7 @@
 package com.nonangbie.menu.controller;
 
 import com.nonangbie.auth.service.AuthService;
+import com.nonangbie.board.entity.Board;
 import com.nonangbie.dto.MultiResponseDto;
 import com.nonangbie.dto.SingleResponseDto;
 import com.nonangbie.menu.dto.MenuDto;
@@ -57,6 +58,32 @@ public class MenuController {
         List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
 
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu,false,memberFoodNames)), HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity getMenus(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int size,
+                                   @RequestParam String menuCategory,
+                                   @RequestParam String sort,
+                                   @RequestParam String keyword,
+                                   @RequestParam long foodId,
+                                   Authentication authentication){
+
+        //sort 날라오는 거 , menuLikeCount_asc , missingFoodsCount_asc, menuLikeCount_desc, likeList
+        Page<Menu> pageMenu = menuService.findMenusIntegration(page - 1, size, menuCategory, sort, keyword, foodId,authentication);
+        List<Menu> menus = pageMenu.getContent();
+
+        // 사용자의 보유 재료 목록을 가져옴
+        List<String> memberFoodNames = menuService.getMemberFoodNames(authentication);
+
+        // 각 메뉴의 likeCheck 값을 가져옴
+        List<Boolean> likeCheks = menus.stream()
+                .map(menu -> menuService.findVerifiedMenuLike((String) authentication.getPrincipal(), menu))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity(
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseDtos(menus, memberFoodNames, likeCheks), pageMenu), HttpStatus.OK
+        );
     }
 
     @GetMapping("all")
