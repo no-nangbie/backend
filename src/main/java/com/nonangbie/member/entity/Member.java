@@ -1,6 +1,7 @@
 package com.nonangbie.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.AllergyFood.Entity.AllergyFood;
 import com.nonangbie.board.entity.Board;
 import com.nonangbie.boardLike.entity.BoardLike;
 import com.nonangbie.memberFood.entity.MemberFood;
@@ -52,6 +53,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<Statistics> statisticsList;
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonManagedReference
+    private List<AllergyFood> allergyFoodList = new ArrayList<>();
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

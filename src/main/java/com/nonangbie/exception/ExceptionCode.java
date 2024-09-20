@@ -35,6 +35,7 @@ public enum ExceptionCode {
     ACCESS_DENIED(403,"Access denied"),
     PASSWORD_MISMATCH(403,"Password Mismatch"),
     MEMBER_FOOD_NOT_FOUND(404, "Member Food Not Found"),
+    ALLERGY_Food_FOOD_NOT_FOUND(404, "Allergy Food Not Found"),
 
     //토큰 인증 관련
     UNAUTHORIZED_MEMBER(401, "권한이 없는 멤버입니다."),
