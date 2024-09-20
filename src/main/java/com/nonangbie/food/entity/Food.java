@@ -1,6 +1,7 @@
 package com.nonangbie.food.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.nonangbie.AllergyFood.Entity.AllergyFood;
 import com.nonangbie.audit.Auditable;
 import com.nonangbie.foodMenu.entity.FoodMenu;
 import com.nonangbie.member.entity.Member;
@@ -53,4 +54,8 @@ public class Food extends Auditable {
     @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JsonManagedReference
     private List<MemberFood> memberFoodList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "food", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<AllergyFood> allergyFoodList = new ArrayList<>();
 }
