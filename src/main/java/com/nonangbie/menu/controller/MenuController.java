@@ -60,7 +60,7 @@ public class MenuController {
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu,false,memberFoodNames)), HttpStatus.OK);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test") //hello
     public ResponseEntity getMenus(@Positive @RequestParam int page,
                                    @Positive @RequestParam int size,
                                    @RequestParam String menuCategory,
