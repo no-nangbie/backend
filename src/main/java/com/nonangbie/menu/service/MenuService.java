@@ -2,6 +2,8 @@ package com.nonangbie.menu.service;
 
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
+import com.nonangbie.food.entity.Food;
+import com.nonangbie.food.repository.FoodRepository;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.memberFood.entity.MemberFood;
@@ -31,6 +33,7 @@ import static com.nonangbie.menu.entity.Menu.MenuCategory.*;
 @Transactional
 public class MenuService extends ExtractMemberEmail {
 
+    private final FoodRepository foodRepository;
     private final MenuRepository menuRepository;
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
@@ -74,12 +77,13 @@ public class MenuService extends ExtractMemberEmail {
     }
 
     public Page<Menu> findMenusIntegration(int page, int size, String menuCategory,
-                                           String sort, String keyword, Long foodId,
+                                           String sort, String keyword, String foodName,
                                            Authentication authentication) {
         extractMemberFromAuthentication(authentication, memberRepository);
         Sort sortBy;
         Pageable pageable;
         Menu.MenuCategory mmc = null;
+        Long foodId = -1L;
         //sort 날라오는 거 , menuLikeCount_asc , missingFoodsCount_asc, menuLikeCount_desc, likeList
         switch (sort) {
             case "likeList":
@@ -96,7 +100,7 @@ public class MenuService extends ExtractMemberEmail {
             default:
                 throw new IllegalArgumentException("Invalid sort type: " + sort);
         }
-        if(menuCategory.isBlank() || menuCategory.isEmpty() || menuCategory.equals("전체")) {
+        if(menuCategory.isBlank() || menuCategory.isEmpty() || menuCategory.equals("ALL")) {
             menuCategory = null;
         }
         else{
@@ -104,31 +108,37 @@ public class MenuService extends ExtractMemberEmail {
         }
         if(keyword.isBlank() || keyword.isEmpty())
             keyword = null;
-        if(foodId == -1)
+        if(foodName.isBlank() || foodName.isEmpty())
             foodId = null;
+        else {
+            Food food = foodRepository.findByFoodName(foodName)
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.FOOD_NOT_FOUND));
+            foodId = food.getFoodId();
+        }
+
 
         return menuRepository.findAllMenusIntegration(pageable,mmc,keyword,foodId);
     }
 
     private Menu.MenuCategory findMenuCategory(String s){
         switch (s) {
-            case "밑 반찬":
+            case "MENU_CATEGORY_SIDE":
                 return MENU_CATEGORY_SIDE;
-            case "국/찌개":
+            case "MENU_CATEGORY_SOUP":
                 return MENU_CATEGORY_SOUP;
-            case "디저트":
+            case "MENU_CATEGORY_DESSERT":
                 return MENU_CATEGORY_DESSERT;
-            case "면":
+            case "MENU_CATEGORY_NOODLE":
                 return MENU_CATEGORY_NOODLE;
-            case "밥/죽/떡":
+            case "MENU_CATEGORY_RICE":
                 return MENU_CATEGORY_RICE;
-            case "김치":
+            case "MENU_CATEGORY_KIMCHI":
                 return MENU_CATEGORY_KIMCHI;
-            case "퓨전":
+            case "MENU_CATEGORY_FUSION":
                 return MENU_CATEGORY_FUSION;
-            case "양념":
+            case "MENU_CATEGORY_SEASONING":
                 return MENU_CATEGORY_SEASONING;
-            case "양식":
+            case "MENU_CATEGORY_WESTERN":
                 return MENU_CATEGORY_WESTERN;
             default: //"기타":
                 return MENU_CATEGORY_ETC;
