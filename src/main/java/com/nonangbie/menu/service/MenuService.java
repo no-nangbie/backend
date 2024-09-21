@@ -100,7 +100,8 @@ public class MenuService extends ExtractMemberEmail {
             default:
                 throw new IllegalArgumentException("Invalid sort type: " + sort);
         }
-        if(menuCategory.isBlank() || menuCategory.isEmpty() || menuCategory.equals("ALL")) {
+        if(menuCategory.isBlank() || menuCategory.isEmpty() ||
+                menuCategory.equals("ALL")) {
             menuCategory = null;
         }
         else{
@@ -108,7 +109,7 @@ public class MenuService extends ExtractMemberEmail {
         }
         if(keyword.isBlank() || keyword.isEmpty())
             keyword = null;
-        if(foodName.isBlank() || foodName.isEmpty())
+        if(foodName.isBlank() || foodName.isEmpty() || foodName.equals("전체"))
             foodId = null;
         else {
             Food food = foodRepository.findByFoodName(foodName)
