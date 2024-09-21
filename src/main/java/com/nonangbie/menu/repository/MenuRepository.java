@@ -21,7 +21,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("SELECT m FROM Menu m WHERE "
             + "(:keyword IS NULL OR m.menuTitle LIKE CONCAT('%', :keyword, '%')) AND "
             + "(:menuCategory IS NULL OR m.menuCategory = :menuCategory) AND "
-            + "(:foodId IS NULL OR EXISTS (SELECT n FROM FoodMenu n WHERE n.menu = m AND n.food.id = :foodId))")
+            + "(:foodId IS NULL OR EXISTS (SELECT n FROM FoodMenu n WHERE n.menu = m AND n.food.foodId = :foodId))")
     Page<Menu> findAllMenusIntegration(Pageable pageable,
                                        @Param("menuCategory") Menu.MenuCategory menuCategory,
                                        @Param("keyword") String keyword,

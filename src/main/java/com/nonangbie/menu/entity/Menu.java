@@ -28,7 +28,7 @@ public class Menu extends Auditable {
     @Column(nullable = false)
     private String menuDescription;
 
-//    @ElementCollection
+    //    @ElementCollection
     @Convert(converter = RecipesConverter.class)
     @Column(nullable = false, columnDefinition = "TEXT")  // JSON 데이터는 길이가 길 수 있으므로 TEXT로 정의
     private List<String> recipes = new ArrayList<>();

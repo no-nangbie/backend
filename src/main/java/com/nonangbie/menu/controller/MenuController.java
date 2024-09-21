@@ -112,6 +112,11 @@ public class MenuController {
                 new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/recomend")
+    public ResponseEntity recommendMenus(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
+        return menuService.likeMenu(menuId,authentication) ?
+                new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 
 }
