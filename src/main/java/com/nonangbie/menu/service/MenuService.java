@@ -4,6 +4,7 @@ import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.food.entity.Food;
 import com.nonangbie.food.repository.FoodRepository;
+import com.nonangbie.foodMenu.entity.FoodMenu;
 import com.nonangbie.member.entity.Member;
 import com.nonangbie.member.repository.MemberRepository;
 import com.nonangbie.memberFood.entity.MemberFood;
@@ -12,19 +13,19 @@ import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.repository.MenuRepository;
 import com.nonangbie.menuLike.entity.MenuLike;
 import com.nonangbie.menuLike.repository.MenuLikeRepository;
+//import com.nonangbie.menuRecommend.service.MenuRecommendService;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.nonangbie.menu.entity.Menu.MenuCategory.*;
 
@@ -38,6 +39,7 @@ public class MenuService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
     private final MenuLikeRepository menuLikeRepository;
+//    private final MenuRecommendService menuRecommendService;
 
     public Menu createMenu(Menu menu, Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
@@ -74,6 +76,15 @@ public class MenuService extends ExtractMemberEmail {
                 new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
 
         return findMenu;
+    }
+
+    public static <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        // 리스트에서 해당 페이지 범위만큼 잘라서 Page 객체 생성
+        List<T> subList = list.subList(start, end);
+        return new PageImpl<>(subList, pageable, list.size());
     }
 
     public Page<Menu> findMenusIntegration(int page, int size, String menuCategory,
@@ -119,6 +130,38 @@ public class MenuService extends ExtractMemberEmail {
 
 
         return menuRepository.findAllMenusIntegration(pageable,mmc,keyword,foodId);
+    }
+    //page-1,size,ateMenus,menuCategories,authentication
+    public Page<Menu> findMenuRecommendations(int page,int size,String ateMenus,String menuCategories,Authentication authentication){
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<String> menuTitleList = Arrays.asList(ateMenus.split("-"));
+        List<Menu.MenuCategory> menuCategoryList = new ArrayList<>();
+
+        String[] categories = menuCategories.split("-");
+
+        for (String category : categories) {
+            Menu.MenuCategory foundCategory = findMenuCategory(category);
+            menuCategoryList.add(foundCategory);
+        }
+        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
+
+        List<String> memberFoodNames = getMemberFoodNames(authentication);
+        for(Menu menu : addMenuRecommend) {
+            for (FoodMenu foodMenu : menu.getFoodMenuList()) {
+                String foodName = foodMenu.getFood().getFoodName();
+                if (!memberFoodNames.contains(foodName)){
+                    addMenuRecommend.remove(menu);
+                    break;
+                }
+            }
+        }
+
+        // List를 Page로 변환
+        Page<Menu> menuPage = convertListToPage(addMenuRecommend, pageable);
+
+        return menuPage;
     }
 
     private Menu.MenuCategory findMenuCategory(String s){

@@ -103,4 +103,17 @@ public class MenuDto {
         private String LikeCheck = "F";
         private int missingFoodsCount;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponseRecommend{
+        private long menuId;
+        private String menuTitle;
+        private Menu.MenuCategory menuCategory;
+        private String imageUrl;
+        private int menuLikeCount;
+        private String missingFoods;
+    }
 }

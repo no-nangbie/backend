@@ -60,7 +60,21 @@ public class MenuController {
         return new ResponseEntity<>(new SingleResponseDto<>(menuMapper.menuToMenuResponseDto(patchMenu,false,memberFoodNames)), HttpStatus.OK);
     }
 
-    @GetMapping("/test") //hello
+    /**
+     * 새로운 메뉴 검색 메서드.
+     * 기존 사용 하던 검색 메서드는 상황 별 마다 분리를 하였었는데, 부정확성과 잦은 오류로 인해 새롭게 만들었습니다.
+     * 중복적인 코드의 사용을 방지하고 재사용성을 높이기 위해 하나로 통일 하였으며 동적 Query를 사용하여 유동적 검색이 가능해졌습니다.
+     * @param page : 페이지
+     * @param size : 불러올 사이즈
+     * @param menuCategory : 메뉴의 카테고리
+     * @param sort : 정렬 방식
+     * @param keyword : 검색 키워드
+     * @param foodName : 식재료 이름
+     * @param authentication : jwt 토큰 인증정보
+     * @return : 검색된 레시피 리스트
+     * @author : 신민준
+     */
+    @GetMapping("/test")
     public ResponseEntity getMenus(@Positive @RequestParam int page,
                                    @Positive @RequestParam int size,
                                    @RequestParam String menuCategory,
@@ -86,6 +100,20 @@ public class MenuController {
         );
     }
 
+    @GetMapping("/recommendations")
+    public ResponseEntity getRecommendMenus(@Positive @RequestParam int page,
+                                            @Positive @RequestParam int size,
+                                            @RequestParam String ateMenus,
+                                            @RequestParam String menuCategories,
+                                            Authentication authentication){
+
+        Page<Menu> pageMenu = menuService.findMenuRecommendations(page-1,size,ateMenus,menuCategories,authentication);
+        List<Menu> menus = pageMenu.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseRecommendDtos(menus),pageMenu), HttpStatus.OK
+        );
+    }
 
     @GetMapping("/{menu-id}")
     public ResponseEntity getMenu(@PathVariable("menu-id") @Positive long menuId,Authentication authentication) {
