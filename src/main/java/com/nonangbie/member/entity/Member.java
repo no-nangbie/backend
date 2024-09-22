@@ -50,7 +50,7 @@ public class Member {
     @JsonManagedReference
     private List<MenuLike> menuLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JsonManagedReference
     private List<Statistics> statisticsList;
 
