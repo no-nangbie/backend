@@ -32,7 +32,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "SELECT 1 FROM Menu mt WHERE " +
             "(mt.menuTitle LIKE CONCAT('%', :menuTitle, '%')) " +
             "AND mt.menuId = m.menuId)) " +
-            "AND m.menuCategory IN :menuCategoryList")
+            "AND (:menuCategoryList IS NULL OR m.menuCategory IN :menuCategoryList)")
     List<Menu> findAllByRecommendations(@Param("menuTitles") List<String> menuTitles,
                                         @Param("menuCategoryList") List<Menu.MenuCategory> menuCategoryList);
 
