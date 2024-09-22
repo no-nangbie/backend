@@ -145,19 +145,36 @@ public class MenuService extends ExtractMemberEmail {
             Menu.MenuCategory foundCategory = findMenuCategory(category);
             menuCategoryList.add(foundCategory);
         }
-        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
+//        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
+
+
+        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuCategoryList);
 
         List<String> memberFoodNames = getMemberFoodNames(authentication);
+
+        List<Menu> RemoveMenuList = new ArrayList<>();
+
+
+        boolean loopTrigger = true;
         for(Menu menu : addMenuRecommend) {
-            for (FoodMenu foodMenu : menu.getFoodMenuList()) {
-                String foodName = foodMenu.getFood().getFoodName();
-                if (!memberFoodNames.contains(foodName)){
-                    addMenuRecommend.remove(menu);
+            loopTrigger = true;
+            for(String checkTitle : menuTitleList){
+                if(menu.getMenuTitle().contains(checkTitle)){
+                    loopTrigger = false;
                     break;
                 }
             }
+            if(loopTrigger) {
+                for (FoodMenu foodMenu : menu.getFoodMenuList()) {
+                    String foodName = foodMenu.getFood().getFoodName();
+                    if (!memberFoodNames.contains(foodName)) {
+                        RemoveMenuList.add(menu);
+                        break;
+                    }
+                }
+            }
         }
-
+        addMenuRecommend.removeAll(RemoveMenuList);
         // List를 Page로 변환
         Page<Menu> menuPage = convertListToPage(addMenuRecommend, pageable);
 

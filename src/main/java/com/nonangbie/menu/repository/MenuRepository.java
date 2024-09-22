@@ -27,14 +27,19 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
                                        @Param("keyword") String keyword,
                                        @Param("foodId") Long foodId); // foodId 타입을 Long으로 변경
 
+//    @Query("SELECT m FROM Menu m " +
+//            "WHERE (:menuTitles IS NULL OR NOT EXISTS (" +
+//            "SELECT 1 FROM Menu mt WHERE " +
+//            "(mt.menuTitle LIKE CONCAT('%', :menuTitle, '%')) " +
+//            "AND mt.menuId = m.menuId)) " +
+//            "AND (:menuCategoryList IS NULL OR m.menuCategory IN :menuCategoryList)")
+//    List<Menu> findAllByRecommendations(@Param("menuTitles") List<String> menuTitles,
+//                                        @Param("menuCategoryList") List<Menu.MenuCategory> menuCategoryList);
+
+
     @Query("SELECT m FROM Menu m " +
-            "WHERE (:menuTitles IS NULL OR NOT EXISTS (" +
-            "SELECT 1 FROM Menu mt WHERE " +
-            "(mt.menuTitle LIKE CONCAT('%', :menuTitle, '%')) " +
-            "AND mt.menuId = m.menuId)) " +
-            "AND (:menuCategoryList IS NULL OR m.menuCategory IN :menuCategoryList)")
-    List<Menu> findAllByRecommendations(@Param("menuTitles") List<String> menuTitles,
-                                        @Param("menuCategoryList") List<Menu.MenuCategory> menuCategoryList);
+            "WHERE (:menuCategoryList IS NULL OR m.menuCategory IN :menuCategoryList)")
+    List<Menu> findAllByRecommendations(@Param("menuCategoryList") List<Menu.MenuCategory> menuCategoryList);
 
 
 
