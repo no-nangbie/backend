@@ -1,5 +1,7 @@
 package com.nonangbie.menu.service;
 
+import com.nonangbie.AllergyFood.Entity.AllergyFood;
+import com.nonangbie.AllergyFood.Repository.AllergyFoodRepository;
 import com.nonangbie.exception.BusinessLogicException;
 import com.nonangbie.exception.ExceptionCode;
 import com.nonangbie.food.entity.Food;
@@ -39,6 +41,7 @@ public class MenuService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
     private final MenuLikeRepository menuLikeRepository;
+    private final AllergyFoodRepository allergyFoodRepository;
 //    private final MenuRecommendService menuRecommendService;
 
     public Menu createMenu(Menu menu, Authentication authentication) {
@@ -154,6 +157,12 @@ public class MenuService extends ExtractMemberEmail {
 
         List<Menu> RemoveMenuList = new ArrayList<>();
 
+        List<AllergyFood> allergyFoodList = allergyFoodRepository.findByMember(member);
+
+        List<String> allergyFoodList_ = new ArrayList<>();
+        for(AllergyFood allergyFood : allergyFoodList){
+            allergyFoodList_.add(allergyFood.getFoodName());
+        }
 
         boolean loopTrigger = true;
         for(Menu menu : addMenuRecommend) {
@@ -167,7 +176,8 @@ public class MenuService extends ExtractMemberEmail {
             if(loopTrigger) {
                 for (FoodMenu foodMenu : menu.getFoodMenuList()) {
                     String foodName = foodMenu.getFood().getFoodName();
-                    if (!memberFoodNames.contains(foodName)) {
+                    if (!memberFoodNames.contains(foodName) ||
+                    allergyFoodList_.contains(foodName)) {
                         RemoveMenuList.add(menu);
                         break;
                     }
