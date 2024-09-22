@@ -106,7 +106,13 @@ public class MenuController {
                                             @RequestParam String ateMenus,
                                             @RequestParam String menuCategories,
                                             Authentication authentication){
+
         Page<Menu> pageMenu = menuService.findMenuRecommendations(page-1,size,ateMenus,menuCategories,authentication);
+        List<Menu> menus = pageMenu.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(menuMapper.menusToMenuResponseRecommendDtos(menus),pageMenu), HttpStatus.OK
+        );
     }
 
     @GetMapping("/{menu-id}")

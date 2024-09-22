@@ -13,13 +13,10 @@ import com.nonangbie.menu.entity.Menu;
 import com.nonangbie.menu.repository.MenuRepository;
 import com.nonangbie.menuLike.entity.MenuLike;
 import com.nonangbie.menuLike.repository.MenuLikeRepository;
-import com.nonangbie.menuRecommend.service.MenuRecommendService;
+//import com.nonangbie.menuRecommend.service.MenuRecommendService;
 import com.nonangbie.utils.ExtractMemberEmail;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +39,7 @@ public class MenuService extends ExtractMemberEmail {
     private final MemberRepository memberRepository;
     private final MemberFoodRepository memberFoodRepository;
     private final MenuLikeRepository menuLikeRepository;
-    private final MenuRecommendService menuRecommendService;
+//    private final MenuRecommendService menuRecommendService;
 
     public Menu createMenu(Menu menu, Authentication authentication) {
         extractMemberFromAuthentication(authentication,memberRepository);
@@ -79,6 +76,15 @@ public class MenuService extends ExtractMemberEmail {
                 new BusinessLogicException(ExceptionCode.MENU_NOT_FOUND));
 
         return findMenu;
+    }
+
+    public static <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        // 리스트에서 해당 페이지 범위만큼 잘라서 Page 객체 생성
+        List<T> subList = list.subList(start, end);
+        return new PageImpl<>(subList, pageable, list.size());
     }
 
     public Page<Menu> findMenusIntegration(int page, int size, String menuCategory,
@@ -130,7 +136,7 @@ public class MenuService extends ExtractMemberEmail {
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
         Pageable pageable = PageRequest.of(page, size);
 
-        List<String> menuList = Arrays.asList(ateMenus.split("-"));
+        List<String> menuTitleList = Arrays.asList(ateMenus.split("-"));
         List<Menu.MenuCategory> menuCategoryList = new ArrayList<>();
 
         String[] categories = menuCategories.split("-");
@@ -139,7 +145,7 @@ public class MenuService extends ExtractMemberEmail {
             Menu.MenuCategory foundCategory = findMenuCategory(category);
             menuCategoryList.add(foundCategory);
         }
-        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuList,menuCategoryList);
+        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
 
         List<String> memberFoodNames = getMemberFoodNames(authentication);
         for(Menu menu : addMenuRecommend) {
@@ -151,8 +157,11 @@ public class MenuService extends ExtractMemberEmail {
                 }
             }
         }
-//        menuRecommendService.saveAll(member,addMenuRecommend);
 
+        // List를 Page로 변환
+        Page<Menu> menuPage = convertListToPage(addMenuRecommend, pageable);
+
+        return menuPage;
     }
 
     private Menu.MenuCategory findMenuCategory(String s){

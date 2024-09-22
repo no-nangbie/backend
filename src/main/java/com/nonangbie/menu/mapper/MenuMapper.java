@@ -119,4 +119,19 @@ public interface MenuMapper {
         return responses;
     }
 
+    default List<MenuDto.ResponseRecommend> menusToMenuResponseRecommendDtos(List<Menu> menus){
+        List<MenuDto.ResponseRecommend> responseRecommendList = new ArrayList<>();
+        for (Menu menu : menus) {
+            MenuDto.ResponseRecommend responseRecommend = new MenuDto.ResponseRecommend();
+            responseRecommend.setMenuCategory(menu.getMenuCategory());
+            responseRecommend.setMenuTitle(menu.getMenuTitle());
+            responseRecommend.setMenuId(menu.getMenuId());
+            responseRecommend.setMenuLikeCount(menu.getMenuLikeCount());
+            responseRecommend.setImageUrl(menu.getImageUrl());
+            responseRecommend.setMenuLikeCount(menu.getMenuLikeCount());
+            responseRecommendList.add(responseRecommend);
+        }
+        return responseRecommendList;
+    }
+
 }
