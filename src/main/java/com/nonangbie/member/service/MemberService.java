@@ -110,6 +110,7 @@ public class MemberService extends ExtractMemberEmail {
         return member;
     }
 
+    @Transactional
     public void deleteMember(Authentication authentication) {
         Member authenticatedMember = extractMemberFromAuthentication(authentication,memberRepository);
         memberRepository.delete(authenticatedMember);
