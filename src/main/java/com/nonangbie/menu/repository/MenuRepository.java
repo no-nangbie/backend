@@ -38,7 +38,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
 
     @Query("SELECT m FROM Menu m " +
-            "WHERE (:menuCategoryList IS NULL OR m.menuCategory IN :menuCategoryList)")
+            "WHERE m.menuCategory IN :menuCategoryList")
     List<Menu> findAllByRecommendations(@Param("menuCategoryList") List<Menu.MenuCategory> menuCategoryList);
 
 
