@@ -183,6 +183,7 @@ public class MenuService extends ExtractMemberEmail {
             loopTrigger = true;
             for(String checkTitle : menuTitleList){
                 if(menu.getMenuTitle().contains(checkTitle)){
+                    RemoveMenuList.add(menu);
                     loopTrigger = false;
                     break;
                 }
