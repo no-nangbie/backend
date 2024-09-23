@@ -78,7 +78,7 @@
 |  |  |  |
 |-----------------|-----------------|-----------------|
 | 👑<br>   신민준   |  <img src="https://github.com/user-attachments/assets/7cd2442d-bad2-4499-b3a6-8f4563c0502d" alt="신민준" width="100"> | <ul><li>프로젝트 계획 및 관리</li><li>팀 리딩 및 커뮤니케이션</li><li>JWT Security 구현</li></li><li>UI/UX 구현</li></ul>     |
-|   윤영아   |  <img src="https://github.com/user-attachments/assets/65376949-699b-4b50-ab2a-d8821ba900fa" alt="윤영아" width="150" height="70">| <ul><li>길드 검색, 길드 보드, 길드원 관리 페이지 게시판 제작</li><li>길드, 이벤트 조회 및 상세 확인, 길드원 가입 신청 및 수락 기능</li><li>Axios 를 활용한 백엔드와의 비동기 통신 구현</li><li>페이지별 컴포넌트 세분화 및 코드 베이스 일관화</li></ul> |
+|   윤영아   |  <img src="https://github.com/user-attachments/assets/65376949-699b-4b50-ab2a-d8821ba900fa" alt="윤영아" width="100" height="70">| <ul><li>길드 검색, 길드 보드, 길드원 관리 페이지 게시판 제작</li><li>길드, 이벤트 조회 및 상세 확인, 길드원 가입 신청 및 수락 기능</li><li>Axios 를 활용한 백엔드와의 비동기 통신 구현</li><li>페이지별 컴포넌트 세분화 및 코드 베이스 일관화</li></ul> |
 |   양수명   |  <img src="https://github.com/user-attachments/assets/c20ac766-1351-41fe-98e3-924b6aa854f0" alt="양수명" width="100" height="80" height="80">    |<ul><li>테이블 설계 및 객체 연관 관계 매핑</li><li>인증, 인가를 위한 시큐리티 적용 및 JWT 구현 </li><li>레디스를 활용한 로그아웃 구현</li><li>계층 구조에 따른 회원가입, 길드 가입요청, 가입요청수락 등 전반적인 핵심 서비스 로직 구현</li><li>전역 예외 처리 구현</li></ul>  |
 |   김준하    |  <img src="https://github.com/user-attachments/assets/080bf5a1-bc7d-4279-944f-9a2ca49f562c" alt="김준하" width="100" height="80">    | <ul><li>메뉴 CRUD</li><li>Web Speech API 연결</li><li>EC2 및 S3 배포</li><li>요구사항 분석을 통한 테이블 관계 정의 및 ERD 정규화</li><li>HTTPS 도메인 적용</li></ul>    |
 
