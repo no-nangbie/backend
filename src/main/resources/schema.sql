@@ -1,3 +1,4 @@
+-- index 적용
 CREATE INDEX idx_food_isk ON member(email);
 CREATE INDEX idx_food_isa ON food(food_name);
 CREATE INDEX idx_food_isb ON menu(menu_title, menu_category);
