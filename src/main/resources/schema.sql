@@ -1,29 +1,9 @@
--- CREATE TABLE IF NOT EXISTS food (
---                       food_id BIGINT AUTO_INCREMENT PRIMARY KEY,
---                       food_name VARCHAR(50) NOT NULL,
---                       food_category VARCHAR(50) NOT NULL,
---                       UNIQUE (food_name, food_category)
--- );
---
--- CREATE TABLE IF NOT EXISTS menu (
---                       menu_id BIGINT AUTO_INCREMENT PRIMARY KEY,
---                       menu_title VARCHAR(20) NOT NULL,
---                       menu_description VARCHAR(255) NOT NULL,
---                       menu_category VARCHAR(50) NOT NULL,
---                       recipes TEXT NOT NULL,  -- List<String>을 저장하기 위해 TEXT 사용
---                       cooking_time INT NOT NULL,
---                       serving_size INT NOT NULL,
---                       difficulty VARCHAR(50) NOT NULL,
---                       image_url VARCHAR(255) NOT NULL,
---                       menu_like_count INT DEFAULT 0,
---                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
---
--- CREATE TABLE IF NOT EXISTS food_menu (
---                            food_menu_id BIGINT AUTO_INCREMENT PRIMARY KEY,
---                            food_quantity VARCHAR(50) NOT NULL,
---                            food_id BIGINT NOT NULL,
---                            menu_id BIGINT NOT NULL,
---                            FOREIGN KEY (food_id) REFERENCES food(food_id) ON DELETE CASCADE ON UPDATE CASCADE,
---                            FOREIGN KEY (menu_id) REFERENCES menu(menu_id) ON DELETE CASCADE ON UPDATE CASCADE
--- );
+CREATE INDEX idx_food_isk ON member(email);
+CREATE INDEX idx_food_isa ON food(food_name);
+CREATE INDEX idx_food_isb ON menu(menu_title, menu_category);
+CREATE INDEX idx_food_isq ON food_menu(food_id);
+CREATE INDEX idx_food_isw ON food_menu(menu_id);
+CREATE INDEX idx_food_isc ON food_menu(food_id, menu_id);
+CREATE INDEX idx_food_iqw ON member_food(member_id);
+CREATE INDEX idx_food_isd ON menu_like(menu_id);
+CREATE INDEX idx_food_ise ON menu_like(member_id);
