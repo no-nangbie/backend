@@ -160,8 +160,12 @@ public class MenuService extends ExtractMemberEmail {
         }
 //        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
 
-
-        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuCategoryList);
+        List<Menu> addMenuRecommend = new ArrayList<>();
+        if(!menuCategoryList.isEmpty()){
+            addMenuRecommend = menuRepository.findAllByRecommendations(menuCategoryList);
+        }else{
+            addMenuRecommend.clear();
+        }
 
         List<String> memberFoodNames = getMemberFoodNames(authentication);
 
