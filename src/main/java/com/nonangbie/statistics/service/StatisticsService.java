@@ -157,4 +157,13 @@ public class StatisticsService extends ExtractMemberEmail {
         }
         return repository.findAllByMember(member);
     }
+
+    public void clearStatistics(Authentication authentication) {
+        Member member = extractMemberFromAuthentication(authentication, memberRepository);
+        List<Statistics> StatisticsList = repository.findAllByMember(member);
+        for (Statistics statistics : StatisticsList) {
+            statistics.setCount(0);
+            repository.save(statistics);
+        }
+    }
 }

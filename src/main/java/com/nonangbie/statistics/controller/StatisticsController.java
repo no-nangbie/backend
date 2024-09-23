@@ -50,5 +50,10 @@ public class StatisticsController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    @DeleteMapping
+    public ResponseEntity clearStatistics(Authentication authentication){
+        service.clearStatistics(authentication);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 }
