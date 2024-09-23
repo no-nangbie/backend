@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/1f46a3da-acc8-4fba-b806-4dbd06273cb7" alt="배너" width="100%"/>
+<img src="https://github.com/user-attachments/assets/f241754a-1612-4428-82e6-3983153e9c9a" alt="배너" width="100%"/>
 </a>
 
 <br/>
