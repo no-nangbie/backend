@@ -138,15 +138,25 @@ public class MenuService extends ExtractMemberEmail {
     public Page<Menu> findMenuRecommendations(int page,int size,String ateMenus,String menuCategories,Authentication authentication){
         Member member = extractMemberFromAuthentication(authentication, memberRepository);
         Pageable pageable = PageRequest.of(page, size);
-
-        List<String> menuTitleList = Arrays.asList(ateMenus.split("-"));
+        List<String> menuTitleList = new ArrayList<>();
         List<Menu.MenuCategory> menuCategoryList = new ArrayList<>();
 
         String[] categories = menuCategories.split("-");
 
-        for (String category : categories) {
-            Menu.MenuCategory foundCategory = findMenuCategory(category);
-            menuCategoryList.add(foundCategory);
+
+        if(ateMenus.isEmpty() || ateMenus.isBlank()) {
+            menuTitleList.clear();
+        }else{
+            menuTitleList = Arrays.asList(ateMenus.split("-"));
+        }
+
+        if(menuCategories.isEmpty() || menuCategories.isBlank()) {
+            menuCategoryList.clear();
+        }else {
+            for (String category : categories) {
+                Menu.MenuCategory foundCategory = findMenuCategoryUpperCase(category);
+                menuCategoryList.add(foundCategory);
+            }
         }
 //        List<Menu> addMenuRecommend = menuRepository.findAllByRecommendations(menuTitleList,menuCategoryList);
 
@@ -210,6 +220,31 @@ public class MenuService extends ExtractMemberEmail {
             case "MENU_CATEGORY_SEASONING":
                 return MENU_CATEGORY_SEASONING;
             case "MENU_CATEGORY_WESTERN":
+                return MENU_CATEGORY_WESTERN;
+            default: //"기타":
+                return MENU_CATEGORY_ETC;
+        }
+    }
+
+    private Menu.MenuCategory findMenuCategoryUpperCase(String s){
+        switch (s) {
+            case "menuCategorySide":
+                return MENU_CATEGORY_SIDE;
+            case "menuCategorySoup":
+                return MENU_CATEGORY_SOUP;
+            case "menuCategoryDessert":
+                return MENU_CATEGORY_DESSERT;
+            case "menuCategoryNoodle":
+                return MENU_CATEGORY_NOODLE;
+            case "menuCategoryRice":
+                return MENU_CATEGORY_RICE;
+            case "menuCategoryKimchi":
+                return MENU_CATEGORY_KIMCHI;
+            case "menuCategoryFusion":
+                return MENU_CATEGORY_FUSION;
+            case "menuCategorySeasoning":
+                return MENU_CATEGORY_SEASONING;
+            case "menuCategoryWestern":
                 return MENU_CATEGORY_WESTERN;
             default: //"기타":
                 return MENU_CATEGORY_ETC;
