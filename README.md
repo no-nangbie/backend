@@ -4,21 +4,23 @@
 <br/>
 <br/>
 
-# 0. Getting Started (시작하기)
-[서비스 링크]()
+# 낭비없냉
 
-
-<br/>
-<br/>
-
-# 1. Project Overview (프로젝트 개요)
-- 프로젝트 이름: 낭비없냉
-- 프로젝트 설명: 나의 냉장고 속 식료품을 관리하여 불필요한 지출 및 음식물 쓰레기 발생 최소화
-
-<br/>
+### 프로젝트 소개
+- 나의 냉장고 속 식료품을 관리하는 서비스입니다.
+- 냉장고 속 식료품을 가지고 만들 수 있는 요리를 검색 할 수 있습니다.
+- 사용자의 취향 및 알레르기 정보, 식료품의 상태에 따라 최적의 요리 레시피를 추천해 줍니다.
+- 개발 기간 : 2024.08.30 ~ 2024.09.23
+- URL : https://nonangbie.site
 <br/>
 
-# 2. Key Features (주요 기능)
+### 기대효과
+식료품 소비기한을 관리하고 불필요한 지출 및 음식물 쓰레기 발생을 최소화에 도움을 줄 수 있습니다.
+
+<br/>
+<hr/>
+
+# Key Features (주요 기능)
 
 - **냉장고 관련 기능**:
   - 냉장고 재료 등록 
@@ -60,7 +62,7 @@
 <br/>
 <br/>
 
-# 3.📝 관련 문서
+# 📝 관련 문서
 
 #### [📌 요구사항 정의서](https://docs.google.com/spreadsheets/d/1gfuB42EHzzEN3mD6FSUGyY0NquEhttps://docs.google.com/spreadsheets/d/1fiRrCwtlphy_jmjqqs45Bgn-7dJVolpgS5HwgvlJ5A0/edit)
 
@@ -74,7 +76,7 @@
 <br/>
 <br/>
 
-# 4. Tasks & Responsibilities (작업 및 역할 분담)
+# Tasks & Responsibilities (작업 및 역할 분담)
 |  |  |  |
 |-----------------|-----------------|-----------------|
 | 👑<br>   신민준   |  <img src="https://github.com/user-attachments/assets/7cd2442d-bad2-4499-b3a6-8f4563c0502d" alt="신민준" width="100"> | <ul><li>프로젝트 계획 및 관리</li><li>팀 리딩 및 커뮤니케이션</li><li>JWT Security 구현</li></li><li>UI/UX 구현</li></ul>     |
@@ -85,7 +87,7 @@
 <br/>
 <br/>
 
-# 5. Technology Stack (기술 스택)
+# Technology Stack (기술 스택)
 ### 🔨 Front-end
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"><img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
 
@@ -108,7 +110,7 @@
 
 
 
-# 6. Project Structure (프로젝트 구조)
+# Project Structure (프로젝트 구조)
 <br>
 <details>
 
@@ -336,7 +338,7 @@
 <br>
 <br/>
 
-## 7. 구현 이미지
+## 구현 이미지
 
 | 페이지 (기능)         | 이미지                                                                                                                          |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
